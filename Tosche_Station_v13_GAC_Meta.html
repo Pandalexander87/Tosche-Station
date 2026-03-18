@@ -1,0 +1,3498 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tosche Station v13 - GAC Meta Overlay (2026-03-18)</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#e0e0e0;font-family:'Inter',sans-serif;font-size:13px}
+header{background:#111;border-bottom:3px solid #f5c842;padding:16px 20px;text-align:center}
+h1{font-family:'Orbitron',sans-serif;font-size:clamp(14px,2.5vw,24px);color:#f5c842;letter-spacing:2px}
+.sub{color:#666;font-size:11px;margin-top:4px}
+
+.key{background:#111;border-bottom:1px solid #222;padding:7px 16px;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11px;color:#888;align-items:center}
+.key b{color:#ccc}
+.kp{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+.ctrl{background:#111;border-bottom:1px solid #222;padding:8px 16px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.cl{font-size:10px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+.cg{display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+button{padding:4px 10px;border:1px solid #2a2a2a;background:#161616;color:#888;border-radius:3px;cursor:pointer;font-size:11px;font-weight:600;font-family:'Inter',sans-serif;transition:all .12s;white-space:nowrap}
+button:hover{border-color:#f5c842;color:#f5c842}
+button.on{background:#f5c842;color:#000;border-color:#f5c842;font-weight:700}
+button.on.r{background:#ff4455;color:#fff;border-color:#ff4455}
+button.on.g{background:#22cc77;color:#000;border-color:#22cc77}
+button.on.b{background:#4488ff;color:#fff;border-color:#4488ff}
+button.on.p{background:#cc44ff;color:#fff;border-color:#cc44ff}
+button.on.o{background:#ff8800;color:#000;border-color:#ff8800}
+button.on.t{background:#00bbaa;color:#000;border-color:#00bbaa}
+input[type=text]{padding:4px 9px;background:#161616;border:1px solid #2a2a2a;color:#fff;border-radius:3px;font-size:11px;outline:none;width:150px;font-family:'Inter',sans-serif}
+input[type=text]:focus{border-color:#f5c842}
+select{padding:4px 8px;background:#161616;border:1px solid #2a2a2a;color:#ccc;border-radius:3px;font-size:11px;font-family:'Inter',sans-serif;outline:none;cursor:pointer}
+
+.stats{background:#0a0a0a;border-bottom:1px solid #1a1a1a;padding:5px 16px;display:flex;flex-wrap:wrap;gap:10px;font-size:10px;color:#555}
+.stats b{color:#bbb;font-size:11px}
+
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:1000px}
+thead th{background:#111;padding:8px 10px;text-align:left;font-size:10px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #222;white-space:nowrap}
+tbody tr{background:#000;border-bottom:1px solid #141414;transition:background .1s}
+tbody tr:hover{background:#0d0d0d}
+tbody tr.ts{border-left:3px solid #f5c842;background:#040300}
+tbody tr.ts:hover{background:#080600}
+tbody tr.ta{border-left:3px solid #0088dd;background:#00040c}
+tbody tr.ta:hover{background:#00060e}
+tbody tr.tg{border-left:3px solid #226644;background:#010503}
+td{padding:8px 10px;vertical-align:middle;color:#ccc}
+
+.rk{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;color:#2a2a2a;width:28px;text-align:center}
+.rk.s{color:#f5c842}.rk.a{color:#0088dd}.rk.b{color:#226644}
+
+.cname{font-size:13px;font-weight:700;color:#fff}
+.csub{font-size:10px;color:#444;margin-top:1px}
+.cbadges{margin-top:4px;display:flex;flex-wrap:wrap;gap:2px}
+
+.sw{display:flex;align-items:center;gap:6px}
+.sn{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:900;min-width:22px;text-align:right}
+.sn.s{color:#f5c842}.sn.a{color:#0088dd}.sn.b{color:#226644}.sn.c{color:#2a2a2a}
+.sbg{width:40px;height:4px;background:#161616;border-radius:2px;overflow:hidden}
+.sf{height:100%;border-radius:2px}
+
+.rn{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700}
+.r0{color:#333}.r3{color:#22cc77}.r5{color:#f5c842}.r7{color:#ff8800}.r9{color:#ff4455}
+
+.gt{font-size:9px;font-weight:700;padding:2px 5px;border-radius:2px;display:inline-block;margin-bottom:3px}
+.gr{display:flex;align-items:center;gap:4px;font-size:9px;margin-top:2px}
+.gl2{color:#333;font-size:9px;font-weight:700;width:18px}
+.gb{width:40px;height:3px;background:#161616;border-radius:2px;overflow:hidden}
+.gn{font-size:10px;font-weight:700;min-width:10px}
+
+.badge{display:inline-block;padding:1px 5px;border-radius:2px;font-size:9px;font-weight:700;line-height:14px;white-space:nowrap}
+.b-gl  {background:#110a00;color:#f5c842;border:1px solid #2a1800}
+.b-glo {background:#130010;color:#ff77cc;border:1px solid #330033}
+.b-at  {background:#000d18;color:#33ccff;border:1px solid #002233}
+.b-jg  {background:#0d0900;color:#bb7722;border:1px solid #221500;font-style:italic}
+.b-cq  {background:#130800;color:#ff8800;border:1px solid #331500}
+.b-ship{background:#000d1a;color:#4488ff;border:1px solid #001133}
+.b-caps{background:#001010;color:#00bbaa;border:1px solid #002222}
+.b-lst {background:#001111;color:#00bbaa;border:1px solid #002222}
+.b-raid{background:#130000;color:#ff5555;border:1px solid #330000}
+.b-sbp {background:#001300;color:#33ee66;border:1px solid #002200}
+.b-glunl{background:#1a0033;color:#dd88ff;border:1px solid #440066}
+
+.unlocks{display:flex;flex-direction:column;gap:2px}
+.ul{font-size:10px;line-height:1.4}
+.ul-gl{color:#dd88ff}.ul-jg{color:#bb7722}.ul-cap{color:#00bbaa}.ul-ab{color:#ff6666}
+
+.oe{display:flex;align-items:flex-start;gap:3px;margin-bottom:2px}
+.od{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.od.s{background:#ff4455}.od.a{background:#bb44ff}.od.b{background:#333}
+.om{font-size:9px;font-weight:700;padding:1px 4px;border-radius:2px;white-space:nowrap;flex-shrink:0}
+.mgac{background:#110022;color:#cc66ff}.mtw{background:#150d00;color:#ffaa33}
+.mtb{background:#001508;color:#33ffaa}.mcq{background:#150900;color:#ffaa33}
+.ot{font-size:10px;color:#888;line-height:1.4}
+
+.nil{color:#222;font-size:11px}
+.nr{text-align:center;padding:50px;color:#333;font-size:14px}
+footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:8px 16px;display:flex;flex-wrap:wrap;gap:5px 16px;font-size:10px;color:#444}
+
+/* ═══════ TABS ═══════ */
+.tab-nav{display:flex;gap:0;background:#0a0a0a;border-bottom:2px solid #1e1e1e;padding:0 16px;}
+.tab-btn{background:none;border:none;color:#555;padding:12px 22px;font-size:13px;font-weight:600;
+letter-spacing:.5px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;
+transition:color .2s,border-color .2s;text-transform:uppercase;}
+.tab-btn:hover{color:#999;}
+.tab-btn.on{color:#f5c842;border-bottom-color:#f5c842;}
+
+/* ═══════ ROSTER PANEL ═══════ */
+#panel-roster{display:block;padding:16px;}
+#panel-scoring{display:none;}
+
+.rp-hero{background:linear-gradient(135deg,#0d1117 0%,#111820 100%);
+border:1px solid #1e2a38;border-radius:10px;padding:20px 24px;margin-bottom:16px;
+display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.rp-hero h2{margin:0;font-size:18px;color:#f5c842;font-weight:700;}
+.rp-hero p{margin:4px 0 0;color:#666;font-size:12px;}
+.ally-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.ally-input{background:#0d1117;border:1px solid #2a3a4a;border-radius:6px;
+padding:9px 14px;color:#eee;font-size:14px;width:180px;outline:none;
+transition:border-color .2s;}
+.ally-input:focus{border-color:#f5c842;}
+.ally-btn{background:#f5c842;color:#000;border:none;border-radius:6px;
+padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;
+transition:opacity .2s;}
+.ally-btn:hover{opacity:.85;}
+.ally-btn:disabled{opacity:.4;cursor:not-allowed;}
+.rp-status{font-size:12px;color:#666;margin-left:4px;}
+.rp-status.ok{color:#33ee66;}
+.rp-status.err{color:#ff5555;}
+.rp-status.loading{color:#f5c842;animation:pulse 1s infinite alternate;}
+@keyframes pulse{from{opacity:.5}to{opacity:1}}
+
+/* ─── roster filter bar ─── */
+.rp-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+.rp-filters .cl{color:#555;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.rp-flt{background:#111;border:1px solid #222;border-radius:5px;
+padding:5px 12px;color:#777;font-size:11px;font-weight:600;cursor:pointer;
+transition:background .15s,color .15s,border-color .15s;}
+.rp-flt.on{background:#f5c842;color:#000;border-color:#f5c842;}
+.rp-flt.r{border-color:#330;}
+.rp-flt.r.on{background:#f5c842;border-color:#f5c842;}
+
+/* ─── sort + search bar ─── */
+.rp-sortbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.rp-sortbar select,.rp-sortbar input{
+background:#111;border:1px solid #222;border-radius:5px;
+color:#ccc;padding:6px 10px;font-size:12px;outline:none;}
+.rp-sortbar input{width:200px;}
+
+/* ─── unlock cards ─── */
+.unlock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;}
+.unlock-card{background:#0e0e0e;border:1px solid #1e1e1e;border-radius:10px;overflow:hidden;
+transition:border-color .2s;}
+.unlock-card:hover{border-color:#2e2e2e;}
+.uc-head{padding:12px 14px;display:flex;align-items:center;gap:10px;
+border-bottom:1px solid #1a1a1a;cursor:pointer;}
+.uc-head h3{margin:0;font-size:14px;color:#eee;font-weight:700;flex:1;}
+.uc-type{font-size:9px;font-weight:700;letter-spacing:.5px;padding:2px 7px;
+border-radius:3px;text-transform:uppercase;}
+.uc-type.gl{background:#553300;color:#f5c842;}
+.uc-type.jg{background:#1a2a44;color:#66aaff;}
+.uc-score{font-size:20px;font-weight:800;color:#f5c842;min-width:44px;text-align:right;}
+.uc-score span{font-size:10px;color:#555;font-weight:400;}
+
+/* progress bar */
+.uc-prog{padding:8px 14px 4px;border-bottom:1px solid #111;}
+.prog-bar-wrap{background:#111;border-radius:4px;height:7px;overflow:hidden;margin-bottom:4px;}
+.prog-bar{height:7px;border-radius:4px;transition:width .4s;}
+.prog-bar.done{background:linear-gradient(90deg,#33ee66,#22cc55);}
+.prog-bar.near{background:linear-gradient(90deg,#f5c842,#cc9900);}
+.prog-bar.far{background:linear-gradient(90deg,#ff5555,#cc2222);}
+.prog-meta{display:flex;justify-content:space-between;font-size:10px;color:#555;}
+.prog-meta .pct{font-weight:700;}
+.prog-meta.done .pct{color:#33ee66;}
+.prog-meta.near .pct{color:#f5c842;}
+.prog-meta.far .pct{color:#ff5555;}
+
+/* roi badge */
+.uc-roi{font-size:10px;background:#1a1a1a;color:#888;
+padding:3px 8px;border-radius:3px;white-space:nowrap;}
+.uc-roi span{color:#f5c842;font-weight:700;}
+
+/* reqs list */
+.uc-reqs{padding:10px 14px;display:none;flex-direction:column;gap:5px;}
+.uc-reqs.open{display:flex;}
+.req-row{display:flex;align-items:center;gap:8px;font-size:11px;}
+.req-icon{width:18px;text-align:center;flex-shrink:0;}
+.req-name{flex:1;color:#bbb;}
+.req-yours{font-size:10px;padding:2px 7px;border-radius:3px;font-weight:600;white-space:nowrap;}
+.req-yours.met{background:#0d2a0d;color:#33ee66;border:1px solid #1a3a1a;}
+.req-yours.close{background:#2a1a00;color:#f5c842;border:1px solid #3a2a00;}
+.req-yours.missing{background:#2a0a0a;color:#ff5555;border:1px solid #3a1010;}
+.req-need{font-size:10px;color:#444;white-space:nowrap;}
+.uc-toggle{font-size:10px;color:#444;padding:4px 14px 8px;cursor:pointer;
+text-align:center;border-top:1px solid #111;}
+.uc-toggle:hover{color:#888;}
+
+/* summary bar */
+.rp-summary{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
+.rp-stat{background:#0e0e0e;border:1px solid #1e1e1e;border-radius:7px;
+padding:10px 16px;text-align:center;min-width:90px;}
+.rp-stat .sv{font-size:22px;font-weight:800;color:#f5c842;}
+.rp-stat .sl{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
+
+/* no-roster placeholder */
+.rp-placeholder{text-align:center;padding:60px 20px;color:#333;}
+.rp-placeholder svg{opacity:.15;margin-bottom:16px;}
+.rp-placeholder p{font-size:14px;}
+
+
+</style>
+</head>
+<body>
+<div class="tab-nav">
+  <button class="tab-btn" id="tbtn-scoring" onclick="switchTab('scoring')">⚡ Tosche Station</button>
+  <button class="tab-btn on" id="tbtn-roster" onclick="switchTab('roster')">🔭 Roster Planner</button>
+</div>
+<div id="panel-scoring">
+<header>
+  <h1>⚡ SWGOH CRYSTAL MAXIMIZER v11</h1>
+  <div class="sub">10 Galactic Legends · Journey Guide Complete · 9 Assault Battles · Capital Ships · Own Ships · GAC Meta · Conquest · Zeta Tiers · Updated 2026-03-18</div>
+</header>
+
+<div class="key">
+  <b>SCORING:</b>
+  <div class="kp"><div class="dot" style="background:#f5c842"></div>GL req/unlock: +3 per GL</div>
+  <div class="kp"><div class="dot" style="background:#bb7722"></div>Unlocks Journey Guide +2</div>
+  <div class="kp"><div class="dot" style="background:#00bbaa"></div>Unlocks capital ship +2</div>
+  <div class="kp"><div class="dot" style="background:#4488ff"></div>Own ship +2</div>
+  <div class="kp"><div class="dot" style="background:#ff6666"></div>Assault Battle +2 per event (9 total)</div>
+  <div class="kp"><div class="dot" style="background:#33ee66"></div>Active Raids +2 per raid (3 active)</div>
+  <div class="kp"><div class="dot" style="background:#cc66ff"></div>GAC: GL+4 · Beskar+3 · Kyber+2 · Aurodium+1</div>
+  <div class="kp"><div class="dot" style="background:#ff4455"></div>S-omi +2 · A-omi +1</div>
+  <div class="kp"><div class="dot" style="background:#ff8800"></div>Conquest +1</div>
+  <div class="kp"><div class="dot" style="background:#cc44ff"></div>Zetas: Kyber×6 · Beskar×5 · Aurodium×4 · Chromium×3 · Bronzium×2 · Carbonite×1 (×0.4)</div>
+</div>
+
+<div class="ctrl">
+  <div class="cg">
+    <span class="cl">Filter:</span>
+    <button class="on" data-f="all">All</button>
+    <button data-f="gl">GL Req</button>
+    <button data-f="glunl">Unlocks GL</button>
+    <button data-f="jgunl">Unlocks JG</button>
+    <button data-f="capunl">Unlocks Capital Ship</button>
+    <button class="r" data-f="ab">Assault Battle</button>
+    <button class="g" data-f="sbp">Active Raids</button>
+    <button class="b" data-f="ship">Has Ship</button>
+    <button class="p" data-f="omi">Omicron</button>
+    <button class="o" data-f="raid">Raid</button>
+    <button class="t" data-f="cq">Conquest</button>
+    <button data-f="lst">LST Eligible</button>
+    <button class="p" data-f="gltier">GAC GL Tier</button>
+    <button class="p" data-f="kyber">Kyber Zetas</button>
+  </div>
+  <div class="cg" style="margin-left:auto">
+    <span class="cl">Sort:</span>
+    <select id="srt">
+      <option value="score">Score ▼</option>
+      <option value="relic">Lowest Relic ▲</option>
+      <option value="eff">Score ÷ Relic</option>
+      <option value="gac">GAC Score ▼</option>
+      <option value="zeta">Zeta Score ▼</option>
+      <option value="name">Name A–Z</option>
+    </select>
+    <input type="text" id="srch" placeholder="Search...">
+  </div>
+</div>
+<div class="stats" id="stats"></div>
+
+<div class="wrap"><table>
+<thead><tr>
+  <th>#</th><th>Character</th><th>Score</th><th>Relic</th><th>÷R</th>
+  <th>GAC</th><th>GL / JG / Cap Ship Unlocks</th><th>Own Ship</th><th>Assault Battle</th><th>Zetas</th><th>Omicrons</th>
+</tr></thead>
+<tbody id="tb"></tbody>
+</table>
+<div class="nr" id="nr" style="display:none">No characters match.</div>
+</div>
+
+<footer>
+  <span><span class="badge b-gl">GL</span> is a GL requirement</span>
+  <span><span class="badge b-glo">GLO</span> GL Leia req</span>
+  <span><span class="badge b-at">AT</span> GL Ahsoka req</span>
+  <span><span class="badge b-glunl">GL UNLOCK</span> required to unlock a Galactic Legend</span>
+  <span><span class="badge b-jg">JG UNLOCK</span> required to unlock a Journey Guide character</span>
+  <span><span class="badge b-caps">CAP SHIP</span> unlocks a capital ship</span>
+  <span><span class="badge b-cq">CQ</span> Conquest character</span>
+  <span><span class="badge b-lst">LST</span> Lightspeed Token eligible</span>
+  <span>Gold row ≥16 · Blue ≥10 · Green ≥6</span>
+</footer>
+
+<script>
+window.onerror = function(msg, src, line, col, err) {
+  console.error('[SWGOH ERROR] ' + msg + ' | line:' + line + ' | ' + (err && err.stack ? err.stack.split('\n')[1] : ''));
+  return false;
+};
+// ════════════════════════════════════════════════════════════
+// GAC TIER DATA
+// ════════════════════════════════════════════════════════════
+const GAC={
+  GLO:{off:10,def:9,ov:9.5,tier:"GL",tp:4,mo:0},
+  AT:{off:10,def:9,ov:9.5,tier:"GL",tp:4,mo:2},
+  SLKR:{off:10,def:9,ov:9.5,tier:"GL",tp:4,mo:3},
+  DB:{off:9,def:null,ov:9,tier:"GL",tp:4,mo:1},
+  JMK:{off:9,def:8,ov:8.5,tier:"GL",tp:4,mo:0},
+  JTH:{off:9,def:8,ov:8.5,tier:"GL",tp:4,mo:0},
+  LV:{off:9,def:8,ov:8.5,tier:"GL",tp:4,mo:0},
+  REY:{off:8,def:9,ov:8.5,tier:"GL",tp:4,mo:1},
+  REVA:{off:9,def:7,ov:8,tier:"GL",tp:4,mo:1},
+  JMLS:{off:8,def:7,ov:7.5,tier:"BESKAR",tp:3,mo:0},
+  SEE:{off:8,def:7,ov:7.5,tier:"BESKAR",tp:3,mo:1},
+  BAYLAN:{off:8,def:7,ov:7.5,tier:"BESKAR",tp:3,mo:2},
+  QUADME:{off:7,def:8,ov:7.5,tier:"BESKAR",tp:3,mo:2},
+  UFU:{off:7,def:8,ov:7.5,tier:"BESKAR",tp:3,mo:4},
+  GUNGANS:{off:7,def:7,ov:7,tier:"BESKAR",tp:3,mo:2},
+  BOKATA:{off:7,def:7,ov:7,tier:"BESKAR",tp:3,mo:1},
+  SK:{off:8,def:6,ov:7,tier:"BESKAR",tp:3,mo:1},
+  GM:{off:7,def:6,ov:6.5,tier:"BESKAR",tp:3,mo:1},
+  DMG:{off:7,def:6,ov:6.5,tier:"BESKAR",tp:3,mo:2},
+  SAW_L:{off:6,def:7,ov:6.5,tier:"BESKAR",tp:3,mo:2},
+  KRU_REY:{off:7,def:5,ov:6,tier:"BESKAR",tp:3,mo:4},
+  DTMG:{off:6,def:6,ov:6,tier:"BESKAR",tp:3,mo:0},
+  MAULD:{off:8,def:4,ov:6,tier:"BESKAR",tp:3,mo:0},
+  GAS_REX:{off:6,def:6,ov:6,tier:"BESKAR",tp:3,mo:0},
+  SITH_T:{off:6,def:6,ov:6,tier:"BESKAR",tp:3,mo:2},
+  MM_L:{off:7,def:5,ov:6,tier:"BESKAR",tp:3,mo:1},
+  BB2:{off:7,def:4,ov:5.5,tier:"KYBER",tp:2,mo:1},
+  APHRA:{off:6,def:5,ov:5.5,tier:"KYBER",tp:2,mo:2},
+  ZORII:{off:6,def:4,ov:5,tier:"KYBER",tp:2,mo:1},
+  NS:{off:5,def:5,ov:5,tier:"KYBER",tp:2,mo:1},
+  GAS:{off:5,def:5,ov:5,tier:"KYBER",tp:2,mo:0},
+  CLS:{off:5,def:5,ov:5,tier:"KYBER",tp:2,mo:0},
+  QGJ:{off:6,def:4,ov:5,tier:"KYBER",tp:2,mo:1},
+  JKR_JKL:{off:6,def:4,ov:5,tier:"KYBER",tp:2,mo:0},
+  WAMPA:{off:5,def:null,ov:5,tier:"KYBER",tp:2,mo:1},
+  IV:{off:5,def:5,ov:5,tier:"KYBER",tp:2,mo:1},
+  RO:{off:5,def:5,ov:5,tier:"KYBER",tp:2,mo:1},
+  REX_PHX:{off:5,def:4,ov:4.5,tier:"KYBER",tp:2,mo:1},
+  PADME_CT:{off:6,def:3,ov:4.5,tier:"KYBER",tp:2,mo:0},
+  GG:{off:5,def:4,ov:4.5,tier:"KYBER",tp:2,mo:1},
+  JKCK:{off:6,def:3,ov:4.5,tier:"KYBER",tp:2,mo:0},
+  TUSKEN:{off:4,def:5,ov:4.5,tier:"KYBER",tp:2,mo:0},
+  ENOCH:{off:5,def:4,ov:4.5,tier:"KYBER",tp:2,mo:0},
+  GI:{off:4,def:4,ov:4,tier:"KYBER",tp:2,mo:0},
+  IT:{off:5,def:3,ov:4,tier:"KYBER",tp:2,mo:0},
+  JKL:{off:5,def:3,ov:4,tier:"KYBER",tp:2,mo:0},
+  SHAAK_C:{off:4,def:4,ov:4,tier:"KYBER",tp:2,mo:0},
+  BH:{off:4,def:4,ov:4,tier:"KYBER",tp:2,mo:1},
+  JTR:{off:4,def:3,ov:3.5,tier:"AURODIUM",tp:1,mo:0},
+  EP:{off:4,def:3,ov:3.5,tier:"AURODIUM",tp:1,mo:0},
+  MM:{off:4,def:3,ov:3.5,tier:"AURODIUM",tp:1,mo:0},
+  EWOKS:{off:4,def:3,ov:3.5,tier:"AURODIUM",tp:1,mo:1},
+  ACKBAR:{off:3,def:3,ov:3,tier:"AURODIUM",tp:1,mo:1},
+};
+
+// ════════════════════════════════════════════════════════════
+// GL REQUIREMENT MAPS  (character → GL they unlock as a req)
+// ════════════════════════════════════════════════════════════
+const GL_REQ_MAPS={
+  // ════════════════════════════════════════════════════════════
+  // GALACTIC LEGEND REQUIREMENTS DATABASE
+  // Data verified from gl_requirements_database.json
+  // Integrated: 2026-03-18
+  // Status: COMPLETE - All 10 current Galactic Legends
+  // ════════════════════════════════════════════════════════════
+  // GLs included: JML, SLKR, SEE, Rey, JMK, LV, Jabba, GLO (Leia), AT (Ahsoka), Pirate King Hondo
+  // ════════════════════════════════════════════════════════════
+  
+  "JML": {
+    "Rey (Jedi Training)": "JML R7",
+    "Mon Mothma": "JML R5",
+    "Threepio & Chewie": "JML R5",
+    "Obi-Wan Kenobi (Old Ben)": "JML R5",
+    "C-3PO": "JML R5",
+    "R2-D2": "JML R7",
+    "Jedi Knight Luke Skywalker": "JML R7",
+    "Han Solo": "JML R6",
+    "Chewbacca": "JML R6",
+    "Hermit Yoda": "JML R5",
+    "Lando Calrissian": "JML R5",
+    "Princess Leia": "JML R3",
+    "Wedge Antilles": "JML R3",
+    "Biggs Darklighter": "JML R3",
+    "Rebel Y-wing": "JML S7"
+  },
+  
+  "SLKR": {
+    "Kylo Ren (Unmasked)": "SLKR R7",
+    "First Order Stormtrooper": "SLKR R5",
+    "First Order Officer": "SLKR R5",
+    "Kylo Ren": "SLKR R7",
+    "Captain Phasma": "SLKR R5",
+    "First Order Executioner": "SLKR R5",
+    "Veteran Smuggler Han Solo": "SLKR R3",
+    "Sith Trooper": "SLKR R5",
+    "First Order SF TIE Pilot": "SLKR R3",
+    "General Hux": "SLKR R5",
+    "First Order TIE Pilot": "SLKR R3",
+    "Emperor Palpatine": "SLKR R7",
+    "Finalizer": "SLKR S7"
+  },
+  
+  "SEE": {
+    "Emperor Palpatine": "SEE R7",
+    "Darth Vader": "SEE R7",
+    "Admiral Piett": "SEE R5",
+    "Director Krennic": "SEE R4",
+    "Royal Guard": "SEE R3",
+    "Darth Sidious": "SEE R7",
+    "Sith Marauder": "SEE R7",
+    "Count Dooku": "SEE R6",
+    "Darth Maul": "SEE R4",
+    "Jedi Knight Anakin": "SEE R7",
+    "Grand Admiral Thrawn": "SEE R6",
+    "Grand Moff Tarkin": "SEE R3",
+    "Colonel Starck": "SEE R3",
+    "General Veers": "SEE R3",
+    "Imperial TIE Bomber": "SEE S7"
+  },
+  
+  "Rey": {
+    "Rey (Jedi Training)": "Rey R7",
+    "Finn": "Rey R5",
+    "Resistance Trooper": "Rey R5",
+    "Rey (Scavenger)": "Rey R7",
+    "Poe Dameron": "Rey R5",
+    "Resistance Pilot": "Rey R3",
+    "Resistance Hero Finn": "Rey R5",
+    "Amilyn Holdo": "Rey R5",
+    "Rose Tico": "Rey R5",
+    "BB-8": "Rey R7",
+    "Resistance Hero Poe": "Rey R5",
+    "Veteran Smuggler Chewbacca": "Rey R3",
+    "Raddus": "Rey S7"
+  },
+  
+  "JMK": {
+    "General Kenobi": "JMK R8",
+    "Bo-Katan Kryze": "JMK R5",
+    "Aayla Secura": "JMK R3",
+    "Mace Windu": "JMK R3",
+    "General Grievous": "JMK R7",
+    "Wat Tambor": "JMK R7",
+    "IG-100 MagnaGuard": "JMK R5",
+    "Clone Sergeant - Phase I": "JMK R5",
+    "Qui-Gon Jinn": "JMK R3",
+    "Grand Master Yoda": "JMK R8",
+    "Jango Fett": "JMK R7",
+    "Shaak Ti": "JMK R7",
+    "Cad Bane": "JMK R5",
+    "CC-2224 \"Cody\"": "JMK R5",
+    "Negotiator": "JMK S7"
+  },
+  
+  "LV": {
+    "Padmé Amidala": "LV R8",
+    "Tusken Raider": "LV R5",
+    "Hunter": "LV R5",
+    "Wrecker": "LV R5",
+    "Tech": "LV R5",
+    "Count Dooku": "LV R8",
+    "Zam Wesell": "LV R7",
+    "CT-21-0408 \"Echo\"": "LV R7",
+    "Embo": "LV R5",
+    "Echo": "LV R5",
+    "General Skywalker": "LV R8",
+    "ARC Trooper": "LV R8",
+    "Grand Moff Tarkin": "LV R7",
+    "Nute Gunray": "LV R7",
+    "BTL-B Y-wing Starfighter": "LV S7"
+  },
+  
+  "Jabba": {
+    "Han Solo": "Jabba R8",
+    "Greedo": "Jabba R6",
+    "Krrsantan": "Jabba R5",
+    "Gamorrean Guard": "Jabba R3",
+    "Jedi Knight Luke Skywalker": "Jabba R7",
+    "C-3PO": "Jabba R7",
+    "Skiff Guard Lando": "Jabba R5",
+    "URoRRuR\'R\'R": "Jabba R4",
+    "Jawa": "Jabba R3",
+    "Fennec Shand": "Jabba R7",
+    "Boba Fett": "Jabba R7",
+    "Aurra Sing": "Jabba R6",
+    "Boushh (Leia Organa)": "Jabba R5",
+    "Mob Enforcer": "Jabba R3",
+    "Outrider": "Jabba S7"
+  },
+  
+  "GLO": {
+    "Captain Rex": "GLO R7",
+    "Princess Kneesaa": "GLO R7",
+    "Wicket": "GLO R3",
+    "Lando Calrissian": "GLO R5",
+    "Admiral Ackbar": "GLO R3",
+    "Scout Trooper": "GLO R7",
+    "R2-D2": "GLO R8",
+    "Captain Han Solo": "GLO R5",
+    "Rebel Officer Leia Organa": "GLO R5",
+    "Chief Chirpa": "GLO R3",
+    "Captain Drogan": "GLO R7",
+    "Commander Luke Skywalker": "GLO R7",
+    "Boushh (Leia Organa)": "GLO R5",
+    "Threepio & Chewie": "GLO R7",
+    "Lobot": "GLO R3"
+  },
+  
+  "AT": {
+    "Ahsoka Tano (Snips)": "AT R9",
+    "General Skywalker": "AT R8",
+    "Asajj Ventress": "AT R5",
+    "Night Trooper": "AT R7",
+    "Commander Ahsoka Tano": "AT R9",
+    "Captain Enoch": "AT R7",
+    "Death Trooper (Peridea)": "AT R7",
+    "Ezra Bridger": "AT R5",
+    "Ahsoka Tano (Fulcrum)": "AT R9",
+    "CT-7567 \"Rex\"": "AT R7",
+    "Barriss Offee": "AT R5",
+    "Padawan Sabine Wren": "AT R7",
+    "General Syndulla": "AT R5",
+    "Plo Koon": "AT R8",
+    "Huyang": "AT R7",
+    "Ahsoka Tano\'s Jedi Starfighter": "AT S7"
+  },
+  
+  "Pirate King Hondo": {
+    "Captain Ithano": "Pirate King Hondo R3",
+    "Hondo Ohnaka": "Pirate King Hondo R9",
+    "Veteran Smuggler Chewbacca": "Pirate King Hondo R7",
+    "Ezra Bridger": "Pirate King Hondo R6",
+    "Quiggold": "Pirate King Hondo R5",
+    "Kix": "Pirate King Hondo R6",
+    "General Skywalker": "Pirate King Hondo R9",
+    "Rey (Scavenger)": "Pirate King Hondo R8",
+    "Brutus": "Pirate King Hondo R7",
+    "Vane": "Pirate King Hondo R7",
+    "General Kenobi": "Pirate King Hondo R9",
+    "Chirrut Imwe": "Pirate King Hondo R5",
+    "Captain Silvo": "Pirate King Hondo R7",
+    "Count Dooku": "Pirate King Hondo R8",
+    "Bossk": "Pirate King Hondo R8",
+    "Rey\'s Millennium Falcon": "Pirate King Hondo S7"
+  }
+};
+
+// Build flat GL req lookup: charName → array of "GL Rx" strings
+function getGLReqs(name){
+  const out=[];
+  for(const [gl,map] of Object.entries(GL_REQ_MAPS)){
+    if(map[name]) out.push(map[name]);
+  }
+  return out;
+}
+
+// Which GL does this character's GL req unlock?  (for the "Unlocks GL" badge)
+function getGLsUnlocked(name){
+  const gls=[];
+  for(const [gl,map] of Object.entries(GL_REQ_MAPS)){
+    if(map[name]) gls.push(gl);
+  }
+  return gls; // e.g. ["Rey","SLKR"] or ["GLO","AT"]
+}
+
+// ════════════════════════════════════════════════════════════
+// RAID ELIGIBILITY MAP (verified vs swgoh.gg + swgoh.wiki)
+// Active raids: Order 66 | Battle for Naboo | Krayt Dragon Hunt
+// ════════════════════════════════════════════════════════════
+const RAID_MAP={
+  // ── ORDER 66 RAID (swgoh.gg: characters tagged "Order 66 Raid") ──────────
+  // Jedi Vanguard faction
+  "Aayla Secura":               ["Order 66","Battle for Naboo"],
+  "Barriss Offee":              ["Order 66","Battle for Naboo"],
+  "Depa Billaba":               ["Order 66"],
+  "Eeth Koth":                  ["Order 66","Battle for Naboo"],
+  "Jedi Master Mace Windu":     ["Order 66","Battle for Naboo"],
+  "Jocasta Nu":                 ["Order 66"],
+  "Temple Guard":               ["Order 66"],
+  // Dark Side Clones (Empire)
+  "Grand Moff Tarkin":          ["Order 66"],
+  "CC-1119 'Appo'":             ["Order 66"],
+  "CX-2":                       ["Order 66"],
+  "Disguised Clone Trooper":    ["Order 66"],
+  "RC-1262 'Scorch'":           ["Order 66"],
+  // Bad Batch
+  "Batcher":                    ["Order 66"],
+  "Crosshair (Scarred)":        ["Order 66"],
+  "Hunter (Mercenary)":         ["Order 66"],
+  // Pirates / Scoundrels (swgoh.gg confirmed)
+  "Enfys Nest":                 ["Order 66"],
+  "Hondo Ohnaka":               ["Order 66"],
+  "Sana Starros":               ["Order 66"],
+  "Brutus":                     ["Order 66"],
+  "Captain Ithano":             ["Order 66"],
+  "Captain Silvo":              ["Order 66"],
+
+  // ── BATTLE FOR NABOO RAID (swgoh.gg confirmed list) ──────────────────────
+  // Gungans
+  "Jar Jar Binks":              ["Battle for Naboo"],
+  "Boss Nass":                  ["Battle for Naboo"],
+  "Captain Tarpals":            ["Battle for Naboo"],
+  "Gungan Boomadier":           ["Battle for Naboo"],
+  "Gungan Phalanx":             ["Battle for Naboo"],
+  // GR non-Jedi
+  "Padme Amidala":              ["Battle for Naboo"],
+  "Queen Amidala":              ["Battle for Naboo"],
+  "R2-D2":                      ["Battle for Naboo"],
+  "Kelleran Beq":               ["Battle for Naboo"],
+  // GR Jedi
+  "Master Qui-Gon":             ["Battle for Naboo"],
+  "Padawan Obi-Wan":            ["Battle for Naboo"],
+  "Qui-Gon Jinn":               ["Battle for Naboo"],
+  "Mace Windu":                 ["Battle for Naboo"],
+  "Kit Fisto":                  ["Battle for Naboo"],
+  "Plo Koon":                   ["Battle for Naboo"],
+  "Luminara Unduli":            ["Battle for Naboo"],
+  "Grand Master Yoda":          ["Battle for Naboo"],
+  "Obi-Wan Kenobi (Old Ben)":   ["Battle for Naboo"],
+  "Shaak Ti":                   ["Battle for Naboo"],
+  "Jedi Knight Anakin":         ["Battle for Naboo"],
+  "General Kenobi":             ["Battle for Naboo"],
+  "Grand Master Yoda":                ["Battle for Naboo"],
+  "Ki-Adi-Mundi":               ["Battle for Naboo"],
+  // Separatists
+  "B1 Battle Droid":            ["Battle for Naboo"],
+  "B2 Super Battle Droid":      ["Battle for Naboo"],
+  "Droideka":                   ["Battle for Naboo"],
+  "Magnaguard":                 ["Battle for Naboo"],
+  "Nute Gunray":                ["Battle for Naboo"],
+  "Darth Maul":                 ["Battle for Naboo"],
+  "Darth Sidious":              ["Battle for Naboo"],
+  "Count Dooku":                ["Battle for Naboo"],
+  "General Grievous":           ["Battle for Naboo"],
+  "Wat Tambor":                 ["Battle for Naboo"],
+
+  // ── KRAYT DRAGON HUNT (swgoh.wiki: Hutt Cartel, Jawa, Mandalorian, Old Republic, Tusken) ──
+  // Mandalorian
+  "Bo-Katan Kryze":             ["Krayt Dragon Hunt"],
+  // Tusken
+  "Tusken Raider":              ["Krayt Dragon Hunt"],
+  "Tusken Shaman":              ["Krayt Dragon Hunt"],
+  "Tusken Chief":               ["Krayt Dragon Hunt"],
+  "Tusken Warrior":             ["Krayt Dragon Hunt"],
+  // Bounty Hunters / Hutt Cartel / Old Republic overlap
+  "Boba Fett":                  ["Krayt Dragon Hunt"],
+  "Bossk":                      ["Krayt Dragon Hunt"],
+  "Jango Fett":                 ["Krayt Dragon Hunt"],
+  "Dengar":                     ["Krayt Dragon Hunt"],
+  "Cad Bane":                   ["Krayt Dragon Hunt"],
+  "Fennec Shand":               ["Krayt Dragon Hunt"],
+  "Aurra Sing":                 ["Krayt Dragon Hunt"],
+  "Embo":                       ["Krayt Dragon Hunt"],
+  "Greedo":                     ["Krayt Dragon Hunt"],
+  "IG-88":                      ["Krayt Dragon Hunt"],
+};
+function getRaids(n){return RAID_MAP[n]||[];}
+
+// ════════════════════════════════════════════════════════════
+// JOURNEY GUIDE UNLOCK MAP
+// character → Journey Guide character they help unlock
+// ════════════════════════════════════════════════════════════
+// JG_UNLOCK: character → array of JG events they are required for
+// Corrected from official wiki event pages
+const JG_UNLOCK={
+  // CLS — Hero's Journey: Princess Leia, Luke Farmboy, R2-D2, Han Solo, Chewbacca
+  "Princess Leia":                  ["CLS"],
+  "Luke Skywalker (Farmboy)":                  ["CLS"],
+  "R2-D2":                  ["CLS"],
+  "Han Solo":                  ["CLS","Chewbacca JG"],
+  "Chewbacca":                  ["CLS","Jedi Knight Luke Skywalker"],
+  // JKL (Jedi Knight Luke Skywalker) — Hero's Journey: Commander Luke, Rebel Officer Leia, Captain Han, Chewbacca, C-3PO, Lando, Hermit Yoda, Darth Vader, Wampa (all R3)
+  "Commander Luke Skywalker":       ["Jedi Knight Luke Skywalker"],
+  "Rebel Officer Leia Organa":      ["Jedi Knight Luke Skywalker"],
+  "Captain Han Solo":               ["Jedi Knight Luke Skywalker"],
+  // Chewbacca already listed above for CLS - also needed for JKL
+  "Lando Calrissian":               ["Jedi Knight Luke Skywalker"],
+  "Hermit Yoda":                    ["Jedi Knight Luke Skywalker"],
+  "Darth Vader":                    ["Jedi Knight Luke Skywalker"],
+  "Wampa":                          ["Jedi Knight Luke Skywalker"],
+  // Rey JT — Hero's Journey: Rey Scavenger, Finn, BB-8, Vet Han, Vet Chewie
+  "Rey Scavenger":                  ["Rey JT"],
+  "Finn":                  ["Rey JT"],
+  "BB-8":                  ["Rey JT"],
+  "Veteran Smuggler Chewbacca":                  ["Rey JT","Pirate King Hondo"],
+  "Veteran Smuggler Han Solo":                  ["Rey JT"],
+  // Chewbacca JG — Legendary "One Famous Wookiee": any 5 Bounty Hunters
+  // Tag common/top BHs used for this event
+  "Boba Fett":                  ["Chewbacca JG"],
+  "Bossk":                  ["Chewbacca JG"],
+  "Jango Fett":                  ["Chewbacca JG","Padme Amidala"],
+  "Dengar":                  ["Chewbacca JG"],
+  "Cad Bane":                  ["Chewbacca JG"],
+  "Aurra Sing":                  ["Chewbacca JG"],
+  "Embo":                  ["Chewbacca JG"],
+  "Greedo":                  ["Chewbacca JG"],
+  "IG-88":                  ["Chewbacca JG"],
+  "Fennec Shand":                  ["Chewbacca JG"],
+  // C-3PO — Legendary "Contact Protocol": any 5 Ewoks
+  "Wicket":                  ["C-3PO JG"],
+  "Chief Chirpa":                  ["C-3PO JG"],
+  "Princess Kneesaa":                  ["C-3PO JG"],
+  "Logray":                  ["C-3PO JG"],
+  "Paploo":                  ["C-3PO JG"],
+  "Ewok Elder":                  ["C-3PO JG"],
+  "Ewok Scout":                  ["C-3PO JG"],
+  // Thrawn — Legendary: Phoenix Squadron (all 6)
+  "Hera Syndulla":                  ["Thrawn","Emperor Palp"],
+  "Ezra Bridger":                  ["Thrawn","Grand Master Yoda","Emperor Palp"],
+  "Sabine Wren":                  ["Thrawn","Emperor Palp"],
+  "Zeb Orrelios":                  ["Thrawn","Emperor Palp"],
+  "Kanan Jarrus":                  ["Thrawn","Grand Master Yoda","Emperor Palp"],
+  "Chopper":                  ["Thrawn","Emperor Palp"],
+  // Grand Master Yoda — Legendary "Grand Master's Training": any 5 Jedi
+  "Ahsoka Tano (Snips)":                  ["Grand Master Yoda"],
+  "Luminara Unduli":                  ["Grand Master Yoda"],
+  "Kit Fisto":                  ["Grand Master Yoda"],
+  "Plo Koon":                  ["Grand Master Yoda"],
+  "Aayla Secura":                  ["Grand Master Yoda"],
+  "Eeth Koth":                  ["Grand Master Yoda"],
+  "Obi-Wan Kenobi (Old Ben)":                  ["Grand Master Yoda"],
+  "Bastila Shan":                  ["Grand Master Yoda","Darth Revan","JK Revan","Leviathan"],
+  "Jolee Bindo":                  ["Grand Master Yoda","JK Revan"],
+  // Emperor Palpatine — Legendary "Emperor's Demise": any 5 REBEL characters (Phoenix best)
+  // R2-D2 — Legendary "Daring Droid": any 5 EMPIRE characters
+  "Stormtrooper":                  ["R2-D2"],
+  "Snowtrooper":                  ["R2-D2"],
+  "Death Trooper":                  ["R2-D2"],
+  // BB-8 — Legendary: 5 First Order chars
+  "Captain Phasma":                  ["BB-8"],
+  "Kylo Ren":                  ["BB-8"],
+  "First Order Stormtrooper":                  ["BB-8"],
+  "First Order TIE Pilot":                  ["BB-8"],
+  "First Order Officer":                  ["BB-8"],
+  // JK Revan — Ancient Journey (Legend of the Old Republic): Bastila, Jolee, T3-M4, Mission, Zaalbar
+  "t3_m4":                  ["JK Revan"],
+  "Mission Vao":                  ["JK Revan"],
+  "Zaalbar":                  ["JK Revan"],
+  // Darth Revan — Ancient Journey (Scourge of the Old Republic): Bastila (DS), HK-47, Canderous, Juhani, Carth
+  "Carth Onasi":                  ["Darth Revan"],
+  "HK-47":                  ["Darth Revan","Leviathan"],
+  "Canderous Ordo":                  ["Darth Revan"],
+  "Bastila Shan (Fallen)":                  ["Darth Revan"],
+  "Juhani":                  ["Darth Revan"],
+  // Jedi Master Mace Windu Legendary — requires all Dark Side Clones AND Jedi Vanguard chars
+  "CC-1119 \"Appo\"":                  ["Jedi Master Mace Windu"],
+  "CX-2":                  ["Jedi Master Mace Windu"],
+  "Disguised Clone Trooper":                  ["Jedi Master Mace Windu"],
+  "RC-1262 \"Scorch\"":                  ["Jedi Master Mace Windu"],
+  "Jocasta Nu":                  ["Jedi Master Mace Windu"],
+  "Depa Billaba":                  ["Jedi Master Mace Windu"],
+  "Temple Guard":                  ["Jedi Master Mace Windu"],
+  // Leviathan / Dark Sovereign — Journey Guide Fleet Mastery (unlocked by Darth Revan)
+  // Char reqs: Darth Revan R9, Darth Malak R9, Sith Empire Trooper R7, Sith Trooper R7,
+  //            Darth Maul R7, HK-47 R7, Bastila Shan R7, Sith Assassin R5, 50R-T R5
+  // Ship reqs: 7 ships at 7★ (ships have NO gear/relic - only stars)
+  //            Fury-class Interceptor, Mark VI Interceptor, TIE Dagger, B-28 Extinction-class Bomber,
+  //            Scimitar, Sith Fighter, Ebon Hawk
+  // Padmé Amidala — Legendary "Aggressive Negotiations": any 5 SEPARATIST
+  "Count Dooku":                  ["Padme Amidala"],
+  "General Grievous":                  ["Padme Amidala"],
+  "Nute Gunray":                  ["Padme Amidala"],
+  "Wat Tambor":                  ["Padme Amidala"],
+  "Magnaguard":                  ["Padme Amidala"],
+  "Geonosian Brood Alpha":                  ["Padme Amidala"],
+  "Sun Fac":                  ["Padme Amidala"],
+  "Poggle the Lesser":                  ["Padme Amidala"],
+  "Geonosian Soldier":                  ["Padme Amidala"],
+  "Geonosian Spy":                  ["Padme Amidala"],
+
+  // Baylan Skoll — Epic Confrontation "One Must Destroy in Order to Create": R7 Thrawn, Great Mothers, Marrok, Morgan Elsbeth, Shin Hati
+  "Shin Hati":                  ["Baylan Skoll"],
+  "Morgan Elsbeth":                  ["Baylan Skoll"],
+  "Great Mothers":                  ["Baylan Skoll"],
+  "Marrok":                  ["Baylan Skoll"],
+
+  // Pirate King Hondo Ohnaka — GL "Tales of the Pirate King" (Galactic Ascension)
+  // Q1: Captain Ithano R3, Hondo Ohnaka R9, Vet Smuggler Chewbacca R7, Ezra Bridger R6
+  // Q2: Quiggold R5, Kix R6, General Skywalker R9, Rey (Scavenger) R8
+  // Q3: Brutus R7, Vane R7, General Kenobi R9, Chirrut Imwe R5
+  // Q4: Captain Silvo R7, Count Dooku R8, Bossk R8, Rey's Millennium Falcon 7*
+  "Hondo Ohnaka":                  ["Pirate King Hondo"],
+  "Captain Ithano":                  ["Pirate King Hondo"],
+  "Quiggold":                  ["Pirate King Hondo"],
+  "Kix":                  ["Pirate King Hondo"],
+  "Brutus":                  ["Pirate King Hondo"],
+  "Vane":                  ["Pirate King Hondo"],
+  "Chirrut Imwe":                  ["Pirate King Hondo"],
+  "Captain Silvo":                  ["Pirate King Hondo"],
+
+  // Jedi Knight Cal Kestis — Hero's Journey: Cal Kestis, Cere Junda, Saw Gerrera, Tarfful, Merrin (G12+)
+  "Cal Kestis":                  ["Jedi Knight Cal Kestis"],
+  "Cere Junda":                  ["Jedi Knight Cal Kestis"],
+  "Saw Gerrera":                  ["Jedi Knight Cal Kestis"],
+  "Tarfful":                  ["Jedi Knight Cal Kestis"],
+  "Merrin":                  ["Jedi Knight Cal Kestis"],
+
+  "Darth Malak":                  ["Darth Revan","Leviathan"],
+  "Sith Trooper":                  ["Leviathan"],
+  "Darth Maul":                  ["Leviathan"],
+  "Sith Assassin":                  ["Leviathan"],
+  "50R-T":                  ["Leviathan"],
+  "Darth Malgus":                  ["Leviathan"],
+  "Sith Empire Trooper":                  ["Leviathan"],
+  // Leviathan ship requirements (7 ships all need 7★ for final tier)
+  "Fury-class Interceptor":                  ["Leviathan"],
+  "Mark VI Interceptor":                  ["Leviathan"],
+  "TIE Dagger":                  ["Leviathan"],
+  "B-28 Extinction-class Bomber":                  ["Leviathan"],
+  "Scimitar":                  ["Leviathan"],
+  "Sith Fighter":                  ["Leviathan"],
+  "Ebon Hawk":                  ["Leviathan"],
+
+  // Grand Inquisitor — Legendary "Dark Times": Ninth Sister, Fifth Brother, Seventh Sister, Second Sister, Eighth Brother (R5+)
+  "Ninth Sister":                  ["Grand Inquisitor"],
+  "Fifth Brother":                  ["Grand Inquisitor"],
+  "Seventh Sister":                  ["Grand Inquisitor"],
+  "Second Sister":                  ["Grand Inquisitor"],
+  "Eighth Brother":                  ["Grand Inquisitor"],
+
+  // Profundity — Fleet Mastery "Stardust Transmission"
+  // Character requirements to unlock: Raddus R9, Cassian R8, Dash R7, Mon Mothma/Bistan/Jyn/Hera R5
+  // Ship requirements: 7 Rebel ships (need 7* to complete all tiers)
+  // NOTE: Ships only have stars, never gear/relic levels
+  "Admiral Raddus":                 ["Profundity"],
+  "Cassian Andor":                  ["Profundity"],
+  "Dash Rendar":                    ["Profundity"],
+  "Mon Mothma":                     ["Profundity"],
+  "Bistan":                         ["Profundity"],
+  "Jyn Erso":                       ["Profundity"],
+  "Hera Syndulla":                  ["Profundity"],
+  "Outrider":                       ["Profundity"],
+  "Cassian's U-wing":               ["Profundity"],
+  "Bistan's U-wing":                ["Profundity"],
+  "Wedge Antilles's X-wing":        ["Profundity"],
+  "Biggs Darklighter's X-wing":     ["Profundity"],
+  "Rebel Y-wing":                   ["Profundity"],
+  "Ghost":                          ["Profundity"],
+  
+  // Starkiller — Legacy Event "The Force Unleashed": R5 minimum ALL
+  "Mara Jade, The Emperor's Hand":  ["Starkiller"],
+  "Darth Talon":                    ["Starkiller"],
+  "Dash Rendar":                    ["Starkiller"],
+  "Kyle Katarn":                    ["Starkiller"],
+  
+  // Bo-Katan (Mand'alor) — Epic Confrontation "Battle For Mandalore": R7 minimum ALL
+  "The Mandalorian (Beskar Armor)": ["Bo-Katan Mandalor"],
+  "Paz Vizsla":                     ["Bo-Katan Mandalor"],
+  "IG12":                  ["Bo-Katan Mandalor"],
+  "Kelleran Beq":                   ["Bo-Katan Mandalor"],
+  
+  // General Skywalker — Epic Confrontation "Clash on Kamino"
+  // Tier 1: Ships (all 7*) - Anakin's Eta-2 + 1 GR Capital + 3+ other GR ships
+  // Tier 2: GR Characters (all 7*) - Padmé, C-3PO, Ahsoka (Snips), Shaak Ti, General Kenobi
+  // Tier 3: Separatist Characters (all 7*) - Asajj, B1, B2, Droideka, MagnaGuard
+  // Recommended: R3-R5 relics for reliable completion
+  // NOTE: Ships only have stars, never gear/relic levels
+  "Padmé Amidala":                  ["General Skywalker"],
+  "C-3PO":                          ["General Skywalker","Jedi Knight Luke Skywalker"],
+  "Ahsoka Tano (Snips)":            ["General Skywalker"],
+  "Shaak Ti":                       ["General Skywalker"],
+  "General Kenobi":                 ["General Skywalker"],
+  "Asajj Ventress":                 ["General Skywalker"],
+  "B1 Battle Droid":                ["General Skywalker"],
+  "B2 Super Battle Droid":          ["General Skywalker"],
+  "Droideka":                       ["General Skywalker"],
+  "IG-100 MagnaGuard":              ["General Skywalker"],
+  "Anakin's Eta-2 Starfighter":     ["General Skywalker"],
+
+  // Baylan Skoll — Epic Confrontation "One Must Destroy in Order to Create": R7 Thrawn, Great Mothers, Marrok, Morgan Elsbeth, Shin Hati
+
+  // Pirate King Hondo Ohnaka — GL "Tales of the Pirate King" (Galactic Ascension)
+  // Q1: Captain Ithano R3, Hondo Ohnaka R9, Vet Smuggler Chewbacca R7, Ezra Bridger R6
+  // Q2: Quiggold R5, Kix R6, General Skywalker R9, Rey (Scavenger) R8
+  // Q3: Brutus R7, Vane R7, General Kenobi R9, Chirrut Imwe R5
+  // Q4: Captain Silvo R7, Count Dooku R8, Bossk R8, Rey's Millennium Falcon 7*
+
+  // Jedi Knight Cal Kestis — Hero's Journey: Cal Kestis, Cere Junda, Saw Gerrera, Tarfful, Merrin (all G12+)
+};
+
+// ════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+// ASSAULT BATTLE FACTION MAP
+// All 9 assault battles and which factions qualify
+// Used to tag characters with which ABs they can participate in
+// ════════════════════════════════════════════════════════════
+const AB_MAP={
+  "Duel of the Fates":  [],                                   // ONLY Master Qui-Gon + Padawan Obi-Wan (specific chars, not faction)
+  "Fanatical Devotion": ["Inquisitorius","Tusken"],
+  "Forest Moon":        ["Empire","Droid"],
+  "Ground War":         ["Ewok"],           // Jedi listed individually in AB_CHARS
+  "Military Might":     ["Rebel","Clone Trooper"],
+  "Peridea Patrol":     ["Imperial Remnant"],                  // Captain Enoch, DT Peridea, Night Trooper
+  "Places of Power":    ["First Order","Sith"],
+  "Rebel Roundup":      ["Bounty Hunter","Imperial Trooper"],
+  "Secrets & Shadows":  ["Phoenix","Nightsister"],
+};
+
+// ════════════════════════════════════════════════════════════
+// ASSAULT BATTLE ELIGIBILITY MAP
+// character name → array of assault battle names they qualify for
+// ════════════════════════════════════════════════════════════
+const AB_CHARS={
+  // DARK SIDE CLONES — Empire faction → Forest Moon
+  "CC-1119 \'Appo\'":["Forest Moon"],
+  "CX-2":["Forest Moon"],
+  "Disguised Clone Trooper":["Forest Moon"],
+  "RC-1262 \'Scorch\'":["Forest Moon"],
+  // JEDI VANGUARD — Ground War ONLY (NOT Duel of the Fates)
+  "Jedi Master Mace Windu":["Ground War"],
+  "Jocasta Nu":["Ground War"],
+  "Depa Billaba":["Ground War"],
+  "Temple Guard":["Ground War"],
+  // SITH EMPIRE
+  "Sith Empire Trooper":["Forest Moon","Places of Power"],
+  "Sith Assassin":["Forest Moon","Places of Power"],
+  // DUEL OF THE FATES — ONLY Master Qui-Gon and Padawan Obi-Wan (wiki-confirmed)
+  "Master Qui-Gon":["Duel of the Fates"],
+  "Padawan Obi-Wan":["Duel of the Fates"],
+
+  // FANATICAL DEVOTION — Inquisitorius and/or Tusken
+  "Grand Inquisitor":["Fanatical Devotion"],
+  "Second Sister":["Fanatical Devotion"],
+  "Seventh Sister":["Fanatical Devotion"],
+  "Eighth Brother":["Fanatical Devotion"],
+  "Fifth Brother":["Fanatical Devotion"],
+  "Tusken Raider":["Fanatical Devotion"],
+  "Tusken Shaman":["Fanatical Devotion"],
+  "Tusken Chief":["Fanatical Devotion"],
+  "Tusken Warrior":["Fanatical Devotion"],
+
+  // FOREST MOON — Empire and Droid
+  "Darth Vader":["Forest Moon"],
+  "Emperor Palpatine":["Forest Moon"],
+  "Grand Moff Tarkin":["Forest Moon"],
+  "Grand Admiral Thrawn":["Forest Moon"],
+  "General Veers":["Forest Moon"],
+  "Colonel Starck":["Forest Moon"],
+  "Director Krennic":["Forest Moon"],
+  "TIE Fighter Pilot":["Forest Moon"],
+  "Shore Trooper":["Forest Moon"],
+  "Death Trooper":["Forest Moon"],
+  "Royal Guard":["Forest Moon"],
+  "Snowtrooper":["Forest Moon"],
+  "Range Trooper":["Forest Moon"],
+  "Stormtrooper":["Forest Moon"],
+  "Moff Gideon":["Forest Moon"],
+  "IG-88":["Forest Moon"],
+  "HK-47":["Forest Moon"],
+  "B1 Battle Droid":["Forest Moon"],
+  "B2 Super Battle Droid":["Forest Moon"],
+  "Magnaguard":["Forest Moon"],
+  "Droideka":["Forest Moon"],
+  "Admiral Piett":["Forest Moon"],
+
+  // GROUND WAR — Ewoks and Jedi
+  "Wicket":["Ground War"],
+  "Chief Chirpa":["Ground War"],
+  "Logray":["Ground War"],
+  "Paploo":["Ground War"],
+  "Ewok Elder":["Ground War"],
+  "Ewok Scout":["Ground War"],
+  // Jedi also qualify for Ground War
+  "Qui-Gon Jinn":["Ground War"],
+  "Mace Windu":["Ground War"],
+  "Grand Master Yoda":["Ground War"],
+  "Grand Master Yoda":["Ground War"],
+  "Kit Fisto":["Ground War"],
+  "Plo Koon":["Ground War"],
+  "Aayla Secura":["Ground War"],
+  "Luminara Unduli":["Ground War"],
+  "Obi-Wan Kenobi (Old Ben)":["Ground War"],
+  "General Kenobi":["Ground War"],
+  "Shaak Ti":["Ground War"],
+  "Jedi Knight Anakin":["Ground War"],
+  "Jedi Knight Luke Skywalker":["Ground War"],
+  "Ahsoka Tano (Snips)":["Ground War"],
+  "Barriss Offee":["Ground War"],
+  "Rey (Jedi Training)":["Ground War"],
+
+  // MILITARY MIGHT — Rebel and Clone Trooper
+  "Commander Luke Skywalker":["Military Might"],
+  "Han Solo":["Military Might"],
+  "Princess Leia":["Military Might"],
+  "Leia Organa":["Military Might"],
+  "Chewbacca":["Military Might"],
+  "Mon Mothma":["Military Might"],
+  "Admiral Ackbar":["Military Might"],
+  "Wedge Antilles":["Military Might"],
+  "Biggs Darklighter":["Military Might"],
+  "Lando Calrissian":["Military Might"],
+  "Rebel Officer Leia Organa":["Military Might"],
+  "Captain Han Solo":["Military Might"],
+  "Hera Syndulla":["Military Might"],
+  "Ezra Bridger":["Military Might"],
+  "Sabine Wren":["Military Might"],
+  "Kanan Jarrus":["Military Might"],
+  "Zeb Orrelios":["Military Might"],
+  "Cassian Andor":["Military Might"],
+  "K-2SO":["Military Might"],
+  "Jyn Erso":["Military Might"],
+  "Chirrut Îmwe":["Military Might"],
+  "Baze Malbus":["Military Might"],
+  "Captain Rex":["Military Might"],
+  "Clone Sergeant Phase I":["Military Might"],
+  "ARC Trooper":["Military Might"],
+  "Echo (Bad Batch)":["Military Might"],
+  "Hunter (Bad Batch)":["Military Might"],
+  "Tech (Bad Batch)":["Military Might"],
+  "Wrecker":["Military Might"],
+  "General Skywalker":["Military Might"],
+  "Fives":["Military Might"],
+  "Clone Trooper":["Military Might"],
+  "Cody (CC-2224)":["Military Might"],
+  "R2-D2":["Military Might"],
+
+  // PERIDEA PATROL — Imperial Remnant (specific: Captain Enoch, DT Peridea, Night Trooper)
+  "Captain Enoch":["Peridea Patrol"],
+  "Death Trooper (Peridea)":["Peridea Patrol"],
+  "Night Trooper":["Peridea Patrol"],
+  "Morgan Elsbeth":["Peridea Patrol"],
+
+  // PLACES OF POWER — First Order and Sith
+  "Kylo Ren Unmasked":["Places of Power"],
+  "Kylo Ren":["Places of Power"],
+  "Supreme Leader Kylo Ren":["Places of Power"],
+  "Captain Phasma":["Places of Power"],
+  "First Order Stormtrooper":["Places of Power"],
+  "First Order TIE Pilot":["Places of Power"],
+  "First Order Officer":["Places of Power"],
+  "General Hux":["Places of Power"],
+  "First Order Executioner":["Places of Power"],
+  "Sith Trooper":["Places of Power"],
+  "Darth Sidious":["Places of Power"],
+  "Darth Maul":["Places of Power"],
+  "Count Dooku":["Places of Power"],
+  "Darth Vader":["Places of Power"],   // also Forest Moon
+  "Emperor Palpatine":["Places of Power"],
+  "Sith Marauder":["Places of Power"],
+  "Darth Nihilus":["Places of Power"],
+  "Darth Traya":["Places of Power"],
+  "Darth Sion":["Places of Power"],
+  "Darth Revan":["Places of Power"],
+
+  // REBEL ROUNDUP — Bounty Hunters and Imperial Troopers
+  "Boba Fett":["Rebel Roundup"],
+  "Jango Fett":["Rebel Roundup"],
+  "Bossk":["Rebel Roundup"],
+  "Dengar":["Rebel Roundup"],
+  "Cad Bane":["Rebel Roundup"],
+  "Aurra Sing":["Rebel Roundup"],
+  "Greedo":["Rebel Roundup"],
+  "Fennec Shand":["Rebel Roundup"],
+  "Embo":["Rebel Roundup"],
+  "Zam Wesell":["Rebel Roundup"],
+  "Krrsantan":["Rebel Roundup"],
+  "Skiff Guard Lando":["Rebel Roundup"],
+  "Boushh (Leia Organa)":["Rebel Roundup"],
+  "General Veers":["Rebel Roundup"],
+  "Colonel Starck":["Rebel Roundup"],
+  "Range Trooper":["Rebel Roundup"],
+  "Death Trooper":["Rebel Roundup"],
+  "Snowtrooper":["Rebel Roundup"],
+  "Shore Trooper":["Rebel Roundup"],
+  "Stormtrooper":["Rebel Roundup"],
+  "Moff Gideon":["Rebel Roundup"],
+  "Admiral Piett":["Rebel Roundup"],
+  "Iden Versio":["Rebel Roundup"],
+  "Imperial Super Commando":["Rebel Roundup"],
+
+  // SECRETS & SHADOWS — Phoenix and Nightsister
+  "Hera Syndulla":["Secrets & Shadows"],
+  "Ezra Bridger":["Secrets & Shadows"],
+  "Sabine Wren":["Secrets & Shadows"],
+  "Kanan Jarrus":["Secrets & Shadows"],
+  "Zeb Orrelios":["Secrets & Shadows"],
+  "Chopper":["Secrets & Shadows"],
+  "Mother Talzin":["Secrets & Shadows"],
+  "Asajj Ventress":["Secrets & Shadows"],
+  "Nightsister Zombie":["Secrets & Shadows"],
+  "Nightsister Spirit":["Secrets & Shadows"],
+  "Nightsister Initiate":["Secrets & Shadows"],
+  "Old Daka":["Secrets & Shadows"],
+  "Merrin":["Secrets & Shadows"],
+};
+
+// Merge multi-AB chars (some chars appear in multiple ABs above - merge arrays)
+// Darth Vader: Forest Moon + Places of Power
+AB_CHARS["Darth Vader"] = ["Forest Moon","Places of Power"];
+// Death Trooper: Forest Moon + Rebel Roundup
+AB_CHARS["Death Trooper"] = ["Forest Moon","Rebel Roundup"];
+// General Veers: Forest Moon + Rebel Roundup
+AB_CHARS["General Veers"] = ["Forest Moon","Rebel Roundup"];
+// Colonel Starck: Forest Moon + Rebel Roundup
+AB_CHARS["Colonel Starck"] = ["Forest Moon","Rebel Roundup"];
+// Shore Trooper: Forest Moon + Rebel Roundup
+AB_CHARS["Shore Trooper"] = ["Forest Moon","Rebel Roundup"];
+// Stormtrooper: Forest Moon + Rebel Roundup
+AB_CHARS["Stormtrooper"] = ["Forest Moon","Rebel Roundup"];
+// Snowtrooper: Forest Moon + Rebel Roundup
+AB_CHARS["Snowtrooper"] = ["Forest Moon","Rebel Roundup"];
+// Moff Gideon: Forest Moon + Rebel Roundup
+AB_CHARS["Moff Gideon"] = ["Forest Moon","Rebel Roundup"];
+// Admiral Piett: Forest Moon + Rebel Roundup
+AB_CHARS["Admiral Piett"] = ["Forest Moon","Rebel Roundup"];
+// Emperor Palpatine: Forest Moon + Places of Power
+AB_CHARS["Emperor Palpatine"] = ["Forest Moon","Places of Power"];
+// Hera Syndulla: Military Might + Secrets & Shadows
+AB_CHARS["Hera Syndulla"] = ["Military Might","Secrets & Shadows"];
+// Ezra Bridger: Military Might + Secrets & Shadows
+AB_CHARS["Ezra Bridger"] = ["Military Might","Secrets & Shadows"];
+// Sabine Wren: Military Might + Secrets & Shadows
+AB_CHARS["Sabine Wren"] = ["Military Might","Secrets & Shadows"];
+// Kanan Jarrus: Military Might + Secrets & Shadows
+AB_CHARS["Kanan Jarrus"] = ["Military Might","Secrets & Shadows"];
+// Zeb Orrelios: Military Might + Secrets & Shadows
+AB_CHARS["Zeb Orrelios"] = ["Military Might","Secrets & Shadows"];
+// Ground War Jedi listed explicitly in AB_CHARS above — no forEach needed
+
+
+// character → capital ship they crew/unlock
+// Some chars crew multiple capital ships
+// ════════════════════════════════════════════════════════════
+const CAP_SHIP={
+  // Executor (Piett leads, BH crew)
+  "Admiral Piett":     ["Executor"],
+  "Bossk":             ["Executor"],
+  "Boba Fett":         ["Executor"],
+  "Dengar":            ["Executor"],
+  "IG-88":             ["Executor"],
+  "TIE Fighter Pilot": ["Executor"],
+  // Chimaera (Thrawn)
+  "Grand Admiral Thrawn": ["Chimaera","R2-D2","Baylan Skoll"],
+  // Home One / Profundity (Rebel capital ships)
+  "Admiral Ackbar":    ["Home One"],
+  "Admiral Raddus":    ["Profundity"],
+  "Mon Mothma":        ["Profundity"],  // Profundity crew
+  "Hera Syndulla":     ["Profundity"],  // Ghost is her personal ship; Profundity = capital she crews
+  "Cassian Andor":     ["Profundity"],
+  // Malevolence (GG)
+  "General Grievous":  ["Malevolence"],
+  // Negotiator — General Kenobi is the SOLE crew captain
+  "General Kenobi":    ["Negotiator"],
+  // Finalizer (Hux / FO)
+  "General Hux":       ["Finalizer"],
+  // Endurance — Mace Windu is the SOLE crew captain (NOT Plo Koon or Kit Fisto)
+  "Mace Windu":        ["Endurance"],
+  // Imperial Star Destroyer (Tarkin)
+  "Grand Moff Tarkin": ["Imperial Star Destroyer"],
+  // Raddus already above
+  // Leviathan (Darth Revan LEADS — Dark Sovereign Journey Guide Fleet Mastery)
+  // Malgus pilots the Fury-class Interceptor (his personal ship) but does NOT captain Leviathan
+  "Darth Revan":       ["Leviathan"],  // CAPTAIN
+  "Darth Malak":       ["Leviathan"],  // crew req R9
+  "Sith Empire Trooper":["Leviathan"], // crew req R7
+  "Sith Trooper":      ["Leviathan"],  // crew req R7
+  "HK-47":             ["Leviathan"],  // crew req R7
+  "Bastila Shan":      ["Leviathan"],  // crew req R7
+  "Sith Assassin":     ["Leviathan"],  // crew req R5
+  "50R-T":             ["Leviathan"],  // crew req R5
+};
+
+// ════════════════════════════════════════════════════════════
+// ZETA TIER LOOKUP
+// Tier values: Kyber=6, Beskar=5, Aurodium=4, Chromium=3, Bronzium=2, Carbonite=1
+// Character → array of {tier, name} objects
+// Scoring: sum of tier values, weighted so Kyber chars rank higher
+// ════════════════════════════════════════════════════════════
+const ZETA_TIERS={
+  "Baylan Skoll":[{t:6,z:"It's All Inevitable"},{t:6,z:"Power Such as You've Never Dreamed"},{t:5,z:"Master and Apprentice"}],
+  "Ben Solo":[{t:6,z:"Force Dyad"},{t:5,z:"Redeemed"},{t:4,z:"Family Legacy"}],
+  "Bo-Katan (Mand'alor)":[{t:6,z:"Way of the Mandalore"},{t:6,z:"Reinforcements Have Arrived"},{t:4,z:"Dark Saber Flourish"}],
+  "Bo-Katan Kryze":[{t:5,z:"Stronger Together"}],
+  "Cere Junda":[{t:6,z:"Rekindle"},{t:5,z:"Determined Assault"}],
+  "Commander Ahsoka Tano":[{t:6,z:"Force Leap"},{t:5,z:"Her Own Path"},{t:4,z:"Shien"}],
+  "Darth Bane":[{t:6,z:"Rule of 2"},{t:5,z:"Soul Sever"},{t:2,z:"Only the Strong Survive"}],
+  "Darth Malgus":[{t:6,z:"Dark Deception"},{t:5,z:"Unfettered Rage"}],
+  "Jabba the Hutt":[{t:6,z:"His High Exaltedness"},{t:6,z:"Illicit Business"},{t:6,z:"Crumb's Revenge"},{t:6,z:"The Illustrious"},{t:5,z:"Crime Lord"},{t:4,z:"Galactic Legend"}],
+  "Jedi Knight Cal Kestis":[{t:6,z:"Impetuous Assault"},{t:5,z:"Jedi Survivor"},{t:5,z:"Windmill"}],
+  "Jedi Knight Luke Skywalker":[{t:6,z:"Jedi Knight's Resolve"},{t:5,z:"Return of the Jedi"}],
+  "Jedi Master Kenobi":[{t:6,z:"Galactic Legend"},{t:6,z:"Harmonious Will"},{t:6,z:"Hello There"},{t:6,z:"May the Force Be With You"},{t:5,z:"I Will Do What I Must"},{t:4,z:"Ardent Bladework"}],
+  "Jedi Master Luke Skywalker":[{t:6,z:"Galactic Legend"},{t:6,z:"Legend of the Jedi"},{t:6,z:"Efflux"},{t:5,z:"Jedi Legacy"},{t:5,z:"They Grow Beyond"},{t:4,z:"Indomitable Blast"}],
+  "Leia Organa":[{t:6,z:"I Know"},{t:6,z:"Galactic Legend"},{t:6,z:"Righteous Retribution"},{t:6,z:"Tactical Offensive"},{t:6,z:"Rebel Ambush"},{t:6,z:"Forever Our Princess"}],
+  "Lord Vader":[{t:6,z:"Galactic Legend"},{t:6,z:"My New Empire"},{t:6,z:"Twisted Prophecy"},{t:6,z:"Dark Harbinger"},{t:5,z:"Unshackled Emotions"},{t:5,z:"Vindictive Storm"}],
+  "Rey":[{t:6,z:"Wisdom of the Sacred Texts"},{t:6,z:"Sudden Whirlwind"},{t:6,z:"Galactic Legend"},{t:6,z:"Lifeblood"},{t:6,z:"Manifest Inspiration"},{t:4,z:"Relentless Advance"}],
+  "Sith Eternal Emperor":[{t:6,z:"Galactic Legend"},{t:6,z:"Sith Eternal"},{t:6,z:"Sow Discord"},{t:5,z:"So Be It, Jedi"},{t:5,z:"Unraveled Destiny"},{t:4,z:"Deception"}],
+  "Supreme Leader Kylo Ren":[{t:6,z:"Supreme Leader"},{t:6,z:"Stasis Strike"},{t:6,z:"Furious Onslaught"},{t:6,z:"Brutal Assault"},{t:6,z:"Galactic Legend"},{t:5,z:"Press the Advantage"}],
+  "Taron Malicos":[{t:6,z:"Echo of the Fallen Order"},{t:6,z:"Strength is Power"},{t:4,z:"Vile Thrash"}],
+  "Third Sister":[{t:6,z:"Harbored Aggression"},{t:6,z:"Reckless Sweep"},{t:4,z:"Unyielding Onslaught"}],
+  "Wat Tambor":[{t:6,z:"Mass Manufacture"}],
+  // BESKAR
+  "Admiral Piett":[{t:5,z:"The Emperor's Trap"},{t:4,z:"Suborbital Strike"}],
+  "Admiral Raddus":[{t:5,z:"Inspiring Maneuver"},{t:4,z:"Transmission from Scarif"}],
+  "Barriss Offee":[{t:5,z:"Swift Recovery"}],
+  "Captain Rex":[{t:5,z:"The Lost Commander"},{t:4,z:"Master Marksman"}],
+  "Chewbacca":[{t:5,z:"Loyal Friend"},{t:3,z:"Raging Wookie"}],
+  "CT-5555 'Fives'":[{t:5,z:"Tactical Awareness"},{t:4,z:"Domino Squad"}],
+  "CT-7567 'Rex'":[{t:5,z:"Captain of the 501st"}],
+  "Dark Trooper Moff Gideon":[{t:5,z:"Shadow Contingency"},{t:5,z:"Unwavering Presence"},{t:5,z:"Dark Trooper Beskar Armor"}],
+  "Darth Malak":[{t:5,z:"Gnawing Terror"},{t:5,z:"Jaws of Life"}],
+  "Darth Revan":[{t:5,z:"Conqueror"},{t:5,z:"Villain"},{t:4,z:"Lord of the Sith"}],
+  "Darth Traya":[{t:5,z:"Compassion is Weakness"},{t:5,z:"Lord of Betrayal"}],
+  "Darth Vader":[{t:5,z:"Merciless Massacre"},{t:4,z:"No Escape"},{t:3,z:"Inspiring Through Fear"}],
+  "Dr. Aphra":[{t:5,z:"Suspended Doctorate"},{t:5,z:"Droid Savant"},{t:4,z:"Dangerous Tech"}],
+  "Emperor Palpatine":[{t:5,z:"Emperor of the Galactic Empire"},{t:3,z:"Crackling Doom"}],
+  "Enoch":[{t:5,z:"Ominous Sentinel"},{t:4,z:"Arbiter of Decay"}],
+  "Ezra Bridger (Exile)":[{t:5,z:"Exile"},{t:5,z:"The Force is My Ally"},{t:3,z:"Daring Advance"}],
+  "Finn":[{t:5,z:"Balanced Tactics"}],
+  "General Grievous":[{t:5,z:"Metalloid Monstrosity"},{t:4,z:"Daunting Presence"}],
+  "General Hux":[{t:5,z:"Boundless Ambition"}],
+  "General Skywalker":[{t:5,z:"The Chosen One"},{t:5,z:"Hero with No Fear"},{t:5,z:"Furious Slash"},{t:4,z:"General of the 501st"}],
+  "Grand Inquisitor":[{t:5,z:"Compassion Leaves a Trail"},{t:5,z:"Master Inquisitorious"},{t:5,z:"Pain Can Break Anyone"}],
+  "Grand Master Yoda":[{t:5,z:"Battle Meditation"},{t:3,z:"Grand Master's Guidance"}],
+  "Great Mothers":[{t:5,z:"Energy Thread"},{t:4,z:"Majik Storm"}],
+  "Han Solo":[{t:5,z:"Shoots First"}],
+  "Jar Jar Binks":[{t:5,z:"Mooie-Mooie, I Love You"},{t:4,z:"Mesa Okeyday"},{t:4,z:"Wesa Warriors"}],
+  "Jedi Knight Revan":[{t:5,z:"Hero"},{t:5,z:"Direct Focus"},{t:4,z:"General"},{t:4,z:"Jedi Knight Revan (GL)"}],
+  "Maul":[{t:5,z:"Bound By Hatred"},{t:5,z:"Seething Rage"},{t:4,z:"Fervent Rush"}],
+  "Merrin":[{t:5,z:"Shadow Stride"},{t:4,z:"Vengeful Bond"}],
+  "Moff Gideon":[{t:5,z:"Control The Situation"},{t:2,z:"Tactical Deployment"}],
+  "Padawan Obi-Wan":[{t:5,z:"Nobility in Restraint"}],
+  "Queen Amidala":[{t:5,z:"Loyal Bodyguard"},{t:5,z:"My Place is with my People"}],
+  "Sith Eternal Emperor (Beskar)":[],
+  "Starkiller":[{t:5,z:"Force Energy"},{t:5,z:"Imbued Lightsaber Strike"}],
+  "The Mandalorian (Beskar Armor)":[{t:5,z:"Protective Intuition"},{t:4,z:"Seasoned Tactics"}],
+  "Tusken Chieftain":[{t:5,z:"Nomadic People"},{t:4,z:"Ceremonial Dance"}],
+  "Zorii Bliss":[{t:5,z:"Spice Runner Skills"},{t:4,z:"There's More of Us"}],
+  "Boss Nass":[{t:5,z:"Boss of Otoh Gunga"},{t:3,z:"Ankura Resilience"}],
+  "Cal Kestis":[{t:5,z:"I'm Persistent"},{t:3,z:"Not So Fast"}],
+  "Master Qui-Gon":[{t:5,z:"Stay Close to Me"}],
+  "Drogan":[{t:5,z:"Second in Command"},{t:4,z:"Coordinated Shot"}],
+  // AURODIUM
+  "50R-T":[{t:4,z:"Sabacc Shuffle"},{t:3,z:"Spare Parts"}],
+  "Admiral Trench":[{t:4,z:"I Smell Fear"},{t:3,z:"Feared Tactician"},{t:3,z:"Net Positive"}],
+  "Ahsoka Tano":[{t:4,z:"Daring Padawan"}],
+  "Ahsoka Tano (Fulcrum)":[{t:4,z:"Whirlwind"}],
+  "Armorer":[{t:4,z:"Earn Your Signet"}],
+  "B1 Battle Droid":[{t:4,z:"Droid Battalion"}],
+  "B2 Super Battle Droid":[{t:4,z:"Reactive Protocol"}],
+  "Bossk":[{t:4,z:"Trandoshan Rage"},{t:4,z:"On the Hunt"}],
+  "Boushh (Leia Organa)":[{t:4,z:"Fearless"}],
+  "BT-1":[{t:4,z:"Homicidal Counterpart"}],
+  "Dark Trooper":[{t:4,z:"Bombarding Reinforcements"}],
+  "Darth Talon":[{t:4,z:"Proven Loyalty"}],
+  "Dash Rendar":[{t:4,z:"Hotshot"}],
+  "Echo":[{t:4,z:"One That Survives"}],
+  "Enfys Nest":[{t:4,z:"Fighting Instinct"}],
+  "General Kenobi":[{t:4,z:"Soresu"}],
+  "Geonosian Brood Alpha":[{t:4,z:"Queen's Will"},{t:3,z:"Geonosian Swarm"}],
+  "Greef Karga":[{t:4,z:"Sweeten the Deal"},{t:3,z:"Bring Them in Cold"}],
+  "Gungan Boomadier":[{t:4,z:"Grand Army Specialist"}],
+  "Gungan Phalanx":[{t:4,z:"Let Mesa Help"}],
+  "Hera Syndulla":[{t:4,z:"Play to Strengths"}],
+  "Hondo Ohnaka":[{t:4,z:"I Don't Want to Kill You Per Se"},{t:4,z:"That's Just Good Business"}],
+  "Hunter (Bad Batch)":[{t:4,z:"A Different Path"}],
+  "Jango Fett":[{t:4,z:"Notorious Reputation"},{t:3,z:"Anything to Get Ahead"}],
+  "Jedi Knight Anakin":[{t:4,z:"Righteous Fury"}],
+  "Jedi Master Kenobi (Omi)":[],
+  "Jolee Bindo":[{t:4,z:"That Looks Pretty Bad"}],
+  "Kanan Jarrus":[{t:4,z:"Total Defense"}],
+  "Kelleran Beq":[{t:4,z:"The Sabered Hand"},{t:3,z:"Jedi Bravery"}],
+  "Ki-Adi-Mundi":[{t:4,z:"Jedi Council"}],
+  "Kuiil":[{t:4,z:"Frontier Wisdom"}],
+  "Kylo Ren (Unmasked)":[{t:4,z:"Scarred"},{t:3,z:"Merciless Pursuit"}],
+  "Luthen Rael":[{t:4,z:"Sunless Space"}],
+  "Mace Windu":[{t:4,z:"This Party's Over"},{t:4,z:"Vaapad"},{t:3,z:"Sense Weakness"}],
+  "Mara Jade":[{t:4,z:"Infiltrate and Disrupt"},{t:2,z:"Ultimate Predator"}],
+  "Marrok":[{t:4,z:"Masked Hunter"}],
+  "Mon Mothma":[{t:4,z:"Alliance Chancellor"},{t:3,z:"This Is Our Rebellion"}],
+  "Morgan Elsbeth":[{t:4,z:"Preordained Destiny"}],
+  "Mother Talzin":[{t:4,z:"Great Mother"},{t:4,z:"Plaguebearer"}],
+  "Nute Gunray":[{t:4,z:"Viceroy's Reach"}],
+  "Obi-Wan Kenobi (Old Ben)":[{t:4,z:"If You Strike Me Down"},{t:3,z:"Devoted Protector"}],
+  "Old Daka":[{t:4,z:"Serve Again"}],
+  "Omega":[{t:4,z:"Part of the Squad"},{t:3,z:"Adaptive Learner"}],
+  "Padme Amidala":[{t:4,z:"Always a Choice"},{t:4,z:"Unwavering Courage"}],
+  "R2-D2":[{t:4,z:"Number Crunch"},{t:4,z:"Combat Analysis"}],
+  "Resistance Hero Finn":[{t:4,z:"Spark of the Resistance"}],
+  "Resistance Hero Poe":[{t:4,z:"Spark of the Resistance"}],
+  "Rey (Jedi Training)":[{t:4,z:"Inspirational Presence"},{t:3,z:"Insight"},{t:2,z:"Virtuous Protector"}],
+  "Royal Guard":[{t:4,z:"Unyielding Defender"}],
+  "Sana Starros":[{t:4,z:"Rebel Sympathizer"}],
+  "Saw Gerrera":[{t:4,z:"Adapt or Survive"},{t:4,z:"Freedom Isn't Free"}],
+  "Scout Trooper":[{t:4,z:"Imperial Vanguard"},{t:3,z:"Strategic Assessment"}],
+  "Shaak Ti":[{t:4,z:"Heightened Reflexes"},{t:3,z:"Unity Wins War"}],
+  "Shin Hati":[{t:4,z:"You Have No Power"}],
+  "Sith Eternal Emperor (Omi)":[],
+  "Sith Trooper":[{t:4,z:"Emperor's Legacy"}],
+  "Skiff Guard Lando":[{t:4,z:"Covert Coordination"}],
+  "STAP":[{t:4,z:"Single Trooper Aerial Platform"}],
+  "t3_m4":[{t:4,z:"Combat Logic Upgrade"},{t:4,z:"Master Gearhead"}],
+  "Tarfful":[{t:4,z:"It's All in the Fur"},{t:4,z:"Better Together"}],
+  "Tech (Bad Batch)":[{t:4,z:"Clone Interpreter"}],
+  "The Mandalorian":[{t:4,z:"Disciplined Bounty Hunter"},{t:4,z:"Asset Acquisition"}],
+  "Third Sister (Omi)":[],
+  "Threepio & Chewie":[{t:4,z:"Chewie's Rage"}],
+  "Taron Malicos (Omi)":[],
+  "Tusken Warrior":[{t:4,z:"Centuries of Tradition"},{t:4,z:"Finishing Strikes"}],
+  "Vandor Chewbacca":[{t:4,z:"Ferocious Protector"}],
+  "Wampa":[{t:4,z:"Cornered Beast"},{t:2,z:"Furious Foe"}],
+  "Wrecker (Bad Batch)":[{t:4,z:"Dauntless Commando"}],
+  "Zorii Bliss (Omi)":[],
+  // CHROMIUM
+  "0-0-0":[{t:3,z:"Drain Organics"}],
+  "ARC Trooper":[{t:3,z:"ARC Arsenal"}],
+  "Amilyn Holdo":[{t:3,z:"Quiet Confidence"}],
+  "Asajj Ventress":[{t:3,z:"Rampage"},{t:2,z:"Nightsister Swiftness"}],
+  "Bastila Shan":[{t:3,z:"Initiative"}],
+  "Bastila Shan (Fallen)":[{t:3,z:"Sith Apprentice"}],
+  "BB-8 (Chromium)":[{t:3,z:"Roll with the Punches"},{t:2,z:"Self-Preservation Protocol"}],
+  "Boba Fett (Scion)":[{t:3,z:"Fett Legacy"}],
+  "C-3PO (Chromium)":[{t:3,z:"Oh My Goodness!"},{t:2,z:"Wait for Me!"}],
+  "Cara Dune":[{t:3,z:"Ex-Rebel Shock Trooper"}],
+  "Chief Chirpa":[{t:3,z:"Simple Tactics"}],
+  "Colonel Starck":[{t:3,z:"Imperial Intelligence"}],
+  "Commander Luke Skywalker":[{t:3,z:"It Binds All Things"},{t:3,z:"Rebel Maneuvers"},{t:3,z:"Learn Control"}],
+  "Count Dooku":[{t:3,z:"Flawless Riposte"}],
+  "CT-21-0408 Echo":[{t:3,z:"Domino Squad"}],
+  "Darth Sion":[{t:3,z:"Lord of Pain"}],
+  "Darth Vader (Chromium)":[{t:3,z:"Inspiring Through Fear"}],
+  "Death Trooper (Peridea)":[{t:3,z:"Just a Little Nibble"}],
+  "Droideka":[{t:3,z:"Deflector Shield Generator"}],
+  "Eighth Brother":[{t:3,z:"Bladed Hilt"}],
+  "Ezra Bridger (Exile Chromium)":[{t:3,z:"Daring Advance"}],
+  "Fennec Shand":[{t:3,z:"Making an Impression"}],
+  "Garazeb 'Zeb' Orrelios":[{t:3,z:"Staggering Sweep"},{t:2,z:"Staggering Sweep (B)"}],
+  "Geonosian Brood Alpha (Chromium)":[{t:3,z:"Geonosian Swarm"}],
+  "Grand Admiral Thrawn":[{t:3,z:"Ebb and Flow"},{t:2,z:"Legendary Strategist"}],
+  "Grand Moff Tarkin":[{t:3,z:"Callous Conviction"},{t:1,z:"Tighten the Grip"}],
+  "Greef Karga (Chromium)":[{t:3,z:"Bring Them in Cold"}],
+  "Grand Master Yoda":[{t:3,z:"Strength Flows from the Force"},{t:3,z:"Do or Do Not"}],
+  "HK-47":[{t:3,z:"Self-Reconstruction"},{t:2,z:"Loyalty to the Maker"}],
+  "Iden Versio":[{t:3,z:"First In, Last Out"}],
+  "IG-11":[{t:3,z:"Child's Favor"}],
+  "IG12":[{t:3,z:"Yes. Yes. Yes."}],
+  "Imperial Probe Droid":[{t:3,z:"Imperial Logistics"}],
+  "Jango Fett (Chromium)":[{t:3,z:"Anything to Get Ahead"}],
+  "Kelleran Beq (Chromium)":[{t:3,z:"Jedi Bravery"}],
+  "Kneesaa":[{t:3,z:"Yub Nub"}],
+  "Kyle Katarn":[{t:3,z:"Power of the Valley"}],
+  "Kylo Ren":[{t:3,z:"Outrage"}],
+  "Mace Windu (Chromium)":[{t:3,z:"Sense Weakness"}],
+  "Mission Vao":[{t:3,z:"Me and Big Z Forever"}],
+  "Mon Mothma (Chromium)":[{t:3,z:"This Is Our Rebellion"}],
+  "Night Trooper":[{t:3,z:"Inevitable End"},{t:3,z:"March of the Undying"}],
+  "Ninth Sister":[{t:3,z:"Ground Pound"},{t:1,z:"Can't Stop the Empire"}],
+  "Obi-Wan Kenobi (Old Ben) (C)":[{t:3,z:"Devoted Protector"}],
+  "Omega (Chromium)":[{t:3,z:"Adaptive Learner"}],
+  "Pao":[{t:3,z:"For Pipada"}],
+  "Paz Vizsla":[{t:3,z:"Legacy of House Vizsla"},{t:3,z:"Vengeful Incineration"}],
+  "Qui-Gon Jinn":[{t:3,z:"Agility Training"}],
+  "Rebel Officer Leia Organa":[{t:3,z:"Dauntless"}],
+  "Rey (JT Chromium)":[{t:3,z:"Insight"}],
+  "Sabine Wren":[{t:3,z:"Demolish"}],
+  "Scout Trooper (Chromium)":[{t:3,z:"Strategic Assessment"}],
+  "Shaak Ti (Chromium)":[{t:3,z:"Unity Wins War"}],
+  "Stormtrooper Han":[{t:3,z:"Bluff"}],
+  "t3_m4 (Chromium)":[{t:3,z:"Combat Logic Upgrade"}],
+  "Tarfful (Chromium)":[{t:3,z:"Better Together"}],
+  "Tech (Chromium)":[{t:3,z:"Clone Interpreter"}],
+  "The Mandalorian (Chromium)":[{t:3,z:"Asset Acquisition"}],
+  "Tusken Chieftain (Chromium)":[{t:3,z:"Ceremonial Dance"}],
+  // BRONZIUM
+  "Aurra Sing":[{t:2,z:"Game Plan"},{t:2,z:"Sniper's Expertise"}],
+  "BB-8 (B)":[{t:2,z:"Self-Preservation Protocol"}],
+  "Boba Fett":[{t:2,z:"Bounty Hunter's Resolve"}],
+  "C-3PO (B)":[{t:2,z:"Wait for Me!"}],
+  "Canderous Ordo":[{t:2,z:"I Like a Challenge"}],
+  "Captain Han Solo":[{t:2,z:"Nick of Time"}],
+  "Carth Onasi":[{t:2,z:"Soldier of the Old Republic"}],
+  "Cassian Andor":[{t:2,z:"Groundwork"}],
+  "Darth Maul":[{t:2,z:"Dancing Shadows"}],
+  "Darth Nihilus":[{t:2,z:"Lord of Hunger"},{t:2,z:"Strength of the Void"}],
+  "Dengar":[{t:2,z:"Grizzled Veteran"}],
+  "Embo":[{t:2,z:"Way of the Kyuzo"},{t:2,z:"The Quiet Assassin"}],
+  "Ezra Bridger":[{t:2,z:"Flourish"}],
+  "Garazeb 'Zeb' Orrelios (B)":[{t:2,z:"Staggering Sweep"}],
+  "Grand Admiral Thrawn (B)":[{t:2,z:"Legendary Strategist"}],
+  "Grand Master Yoda (B)":[{t:2,z:"Grand Master's Guidance"}],
+  "Grand Moff Tarkin (B)":[{t:2,z:"Callous Conviction"}],
+  "Greedo":[{t:2,z:"Threaten"}],
+  "HK-47 (B)":[{t:2,z:"Loyalty to the Maker"}],
+  "IG-88 (B)":[{t:2,z:"Adaptive Aim Algorithm"}],
+  "IG-100 MagnaGuard":[{t:2,z:"Stunning Strike"}],
+  "Juhani":[{t:2,z:"Cathar Resilience"}],
+  "Jyn Erso":[{t:2,z:"Into the Fray"},{t:2,z:"Fierce Determination"}],
+  "L3-37":[{t:2,z:"For the Droids"}],
+  "Logray":[{t:2,z:"Shaman's Insight"}],
+  "Mara Jade (B)":[{t:2,z:"Ultimate Predator"}],
+  "Moff Gideon (B)":[{t:2,z:"Tactical Deployment"}],
+  "Paploo":[{t:2,z:"Don't Hold Back"}],
+  "Princess Leia":[{t:2,z:"Against All Odds"}],
+  "Qi'ra":[{t:2,z:"Insult to Injury"}],
+  "Rey (JT B)":[{t:2,z:"Virtuous Protector"}],
+  "Rey (Scavenger)":[{t:2,z:"Focused Strikes"}],
+  "Rose Tico":[{t:2,z:"Valiant Spirit"}],
+  "Savage Opress":[{t:2,z:"Brute"}],
+  "Second Sister":[{t:2,z:"Everyone is Expendable"}],
+  "Seventh Sister (B)":[{t:2,z:"ID9 Enemy Intelligence"}],
+  "Stormtrooper (B)":[{t:2,z:"Wall of Stormtroopers"}],
+  "Veteran Smuggler Han Solo":[{t:2,z:"Swindle"}],
+  "Visas Marr":[{t:2,z:"Returned to the Light"}],
+  "Wampa (B)":[{t:2,z:"Furious Foe"}],
+  "Wicket":[{t:2,z:"Furtive Tactics"}],
+  "Young Han Solo":[{t:2,z:"Ready for Anything"}],
+  "Young Lando":[{t:2,z:"Perfect Timing"}],
+  "Zaalbar":[{t:2,z:"Mission's Guardian"}],
+  "Zam Wesell":[{t:2,z:"Shapeshifter"}],
+  "Darth Bane (B)":[{t:2,z:"Only the Strong Survive"}],
+  // DARK SIDE CLONES
+  "CC-1119 \'Appo\'":[{t:6,z:"Imperial March"},{t:4,z:"Knightfall"},{t:4,z:"No Witnesses"}],
+  "CX-2":[{t:5,z:"Order 66 Mechanic"},{t:4,z:"Disarm"},{t:3,z:"CX-2 Unique"}],
+  "Disguised Clone Trooper":[{t:5,z:"Ruse Mechanic"},{t:4,z:"DCT Unique"}],
+  "RC-1262 \'Scorch\'":[{t:5,z:"Following Protocol"},{t:4,z:"Entrenched"},{t:3,z:"Breaching Charge"}],
+  // JEDI VANGUARD
+  "Jedi Master Mace Windu":[{t:6,z:"Jedi Vanguard Lead"},{t:5,z:"Vaapad Ultimate"}],
+  "Jocasta Nu":[{t:4,z:"Chief Librarian"},{t:3,z:"Jocasta Unique"}],
+  "Depa Billaba":[{t:4,z:"Counter Chance Boost"}],
+  "Temple Guard":[{t:3,z:"Unyielding Defense"}],
+  // SITH EMPIRE
+  "Sith Empire Trooper":[{t:3,z:"Mark VI Pilot Unique"}],
+  "Sith Assassin":[{t:3,z:"Sith Fighter Pilot"}],
+  // CARBONITE
+  "Bodhi Rook":[{t:1,z:"Double Duty"}],
+  "CC-2224 Cody":[{t:1,z:"Ghost Company Squadron"}],
+  "Clone Wars Chewbacca":[{t:1,z:"Defiant Roar"}],
+  "Death Trooper (C)":[{t:1,z:"Krennic's Guard"}],
+  "Director Krennic":[{t:1,z:"Director of Advanced Weapons Research"}],
+  "First Order TIE Pilot":[{t:1,z:"Keen Eye"}],
+  "Gar Saxon":[{t:1,z:"Mandalorian Retaliation"}],
+  "Grand Moff Tarkin (C)":[{t:1,z:"Tighten the Grip"}],
+  "K-2SO":[{t:1,z:"Reprogrammed Imperial Droid"}],
+  "Krrsantan":[{t:1,z:"Champion of the Fighting Pits"}],
+  "Luke Skywalker (Farmboy)":[{t:1,z:"Draw a Bead"},{t:1,z:"A New Hope"}],
+  "Luminara Unduli":[{t:1,z:"Elegant Steps"}],
+  "Nightsister Initiate":[{t:1,z:"Nightsister Retaliation"}],
+  "Ninth Sister (C)":[{t:1,z:"Can't Stop the Empire"}],
+  "Seventh Sister (C)":[{t:1,z:"Guess Again"}],
+  "Veteran Smuggler Chewbacca":[{t:1,z:"Let the Wookie Win"}],
+};
+
+// Zeta score per character: sum of all zeta tier values
+// Kyber(6)*n + Beskar(5)*n + ... heavily weights Kyber-rich chars
+function getZetaScore(name){
+  const zetas = ZETA_TIERS[name] || [];
+  return zetas.reduce((s,z)=>s+z.t,0);
+}
+function getZetaList(name){
+  return ZETA_TIERS[name] || [];
+}
+function getTopZetaTier(name){
+  const z = ZETA_TIERS[name]||[];
+  if(!z.length) return 0;
+  return Math.max(...z.map(x=>x.t));
+}
+const TIER_LABEL={6:"KYBER",5:"BESKAR",4:"AURODIUM",3:"CHROMIUM",2:"BRONZIUM",1:"CARBONITE",0:""};
+const TIER_COLOR={6:"#cc44ff",5:"#f5c842",4:"#22cc77",3:"#4488ff",2:"#ff8833",1:"#884444",0:"#333"};
+const TIER_BG={6:"#0d0022",5:"#0d0d00",4:"#000d00",3:"#000a1a",2:"#1a0800",1:"#110000",0:"#111"};
+
+// ════════════════════════════════════════════════════════════
+// CHARACTER DATA
+// ship = their own personal ship (not capital crew) → +2
+// cq   = conquest-only character → +1
+// jg   = IS a journey guide character (so no LST)
+// ════════════════════════════════════════════════════════════
+const D=[
+
+// ── JOURNEY GUIDE CHARACTERS ───────────────────────────────
+{n:"Grand Moff Tarkin",s:"Empire / DS Clone lead",jg:1,lst:0,cq:0,r:7,gac:"IT",
+ ship:"Imperial Star Destroyer (capital)",sbp:"Imperial Troopers",
+ ab:"ORDER 66 LEADER — DS Clone Troopers, 2-man max w/ Scorch",raid:"Order 66",
+ o:[{t:"S",m:"GAC",x:"Drives Order 66 max score + Imp Trooper GAC defense"}]},
+
+{n:"Darth Vader",s:"Empire / Sith",jg:1,lst:0,cq:0,r:7,gac:"MAULD",
+ ship:"Darth Vader's TIE Advanced",sbp:"Imperial Troopers / Empire",ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"Top GAC defender — Empire hold rate"},{t:"A",m:"TW",x:"TW Empire defense"}]},
+
+{n:"Emperor Palpatine",s:"Sith Empire lead",jg:1,lst:1,cq:0,r:7,gac:"EP",
+ ship:0,sbp:"Imperial faction",ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Sith TM and sustain boost"}]},
+
+{n:"Grand Admiral Thrawn",s:"Empire / Imperial Remnant",jg:1,lst:0,cq:0,r:6,gac:"GI",
+ ship:"Chimaera (capital)",sbp:"Imperial Troopers",ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"Chimaera fleet + IR GAC"},{t:"A",m:"TW",x:"TW Empire defense"}]},
+
+{n:"C-3PO",s:"Rebel — JML + Jabba + GLO req",jg:1,lst:0,cq:0,r:7,gac:"CLS",
+ ship:0,sbp:"Rebel faction (Endor)",ab:0,raid:0,o:[]},
+
+{n:"Chewbacca",s:"Rebel / Smuggler",jg:1,lst:1,cq:0,r:6,gac:"CLS",
+ ship:0,sbp:"Rebel faction (Endor)",ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Rebel sustain and counter-chance"}]},
+
+{n:"Commander Luke Skywalker",s:"Rebel",jg:1,lst:1,cq:0,r:3,gac:"CLS",
+ ship:0,sbp:"Rebel faction",ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Classic Rebel GAC offense boost"}]},
+
+{n:"Jedi Knight Luke Skywalker",s:"Rebel / Jedi",jg:1,lst:0,cq:0,r:7,gac:"JKL",
+ ship:0,sbp:"Rebel faction",ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Rebel offense boost"}]},
+
+{n:"Rey (Jedi Training)",s:"Resistance",jg:1,lst:0,cq:0,r:7,gac:"JTR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"BB-8",s:"Resistance",jg:1,lst:0,cq:0,r:7,gac:"JTR",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Resistance TM manipulation"}]},
+
+{n:"R2-D2",s:"Rebel / Scoundrel",jg:1,lst:1,cq:0,r:8,gac:"CLS",
+ ship:0,sbp:"Rebel faction",ab:0,raid:0,o:[]},
+
+{n:"Grand Master Yoda",s:"Jedi",jg:1,lst:1,cq:0,r:5,gac:"JMK",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+// ── NON-JG CHARACTERS ──────────────────────────────────────
+{n:"General Skywalker",s:"501st Clone lead — LV+AT req",jg:1,lst:0,cq:0,r:8,gac:"GAS_REX",
+ ship:0,sbp:0,
+ ab:"ORDER 66 — DS Clone Troopers (CX-2/Appo core)",raid:"Order 66 — 501st Clone team",
+ o:[{t:"S",m:"GAC",x:"Transforms 501st into top-tier Beskar GAC"},{t:"A",m:"TB",x:"TB combat"}]},
+
+{n:"Kylo Ren Unmasked",s:"First Order — SLKR req",jg:0,lst:0,cq:0,r:7,gac:"SLKR",
+ ship:"TIE Silencer",sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"FO GAC offense game-changer"}]},
+
+{n:"Padme Amidala",s:"Galactic Republic — LV req",jg:0,lst:0,cq:0,r:8,gac:"QUADME",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"Transforms GR into top-tier Beskar GAC offense"}]},
+
+{n:"Boba Fett",s:"Bounty Hunter — Jabba req",jg:0,lst:1,cq:0,r:7,gac:"BH",
+ ship:"Slave I",sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"Top-tier BH GAC defender"},{t:"A",m:"TW",x:"BH TW dominance"}]},
+
+{n:"Wampa",s:"Creature — solo attacker",jg:0,lst:0,cq:0,r:3,gac:"WAMPA",
+ ship:0,sbp:0,ab:0,raid:"Assault Battles — creature synergy",
+ o:[{t:"S",m:"GAC",x:"+75% all stats when solo — exceptional low-relic Kyber GAC"},{t:"A",m:"CQ",x:"Conquest/GC"}]},
+
+{n:"Mace Windu",s:"Jedi Vanguard lead — JMK req",jg:0,lst:1,cq:0,r:3,gac:"JMK",
+ ship:"Endurance (capital)",sbp:0,ab:"ORDER 66 LEADER — Jedi Vanguard (Mace+Depa+JTG)",raid:"Order 66 — Jedi Vanguard",
+ o:[{t:"A",m:"TW",x:"Sense Weakness — TW Kyber"},{t:"A",m:"GAC",x:"Jedi Vanguard consistency"}]},
+
+{n:"Fennec Shand",s:"Bounty Hunter — Jabba + GLO req",jg:0,lst:1,cq:0,r:7,gac:"BH",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"BH offense consistency"}]},
+
+{n:"Grand Master Yoda",s:"Jedi — JMK req",jg:0,lst:0,cq:0,r:8,gac:"JMK",
+ ship:0,sbp:0,ab:"ORDER 66 — Jedi team support",raid:"Order 66 — Jedi team support",
+ o:[{t:"A",m:"GAC",x:"Jedi team speed and sustain boost"}]},
+
+{n:"General Kenobi",s:"Galactic Republic — JMK req",jg:1,lst:0,cq:0,r:8,gac:"JMK",
+ ship:"Negotiator (capital)",sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Shaak Ti",s:"Jedi / Clone Commander — JMK req",jg:0,lst:1,cq:0,r:7,gac:"SHAAK_C",
+ ship:0,sbp:0,ab:"ORDER 66 — DS Clone Troopers synergy",raid:"Order 66 — DS Clone Troopers",o:[]},
+
+{n:"General Grievous",s:"Separatist Droid — JMK+LV req",jg:0,lst:0,cq:0,r:7,gac:"GG",
+ ship:"Malevolence (capital)",sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Droid offense boost"}]},
+
+{n:"Count Dooku",s:"Sith / Separatist — SEE+LV req",jg:1,lst:0,cq:0,r:8,gac:"SITH_T",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Darth Maul",s:"Sith / Mandalorian — SEE req",jg:0,lst:0,cq:0,r:4,gac:"MAULD",
+ ship:"Scimitar",sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"TW",x:"High TW impact"},{t:"A",m:"GAC",x:"Mauldalorians Beskar GAC"}]},
+
+{n:"Mon Mothma",s:"Rebel Alliance lead — JML req",jg:0,lst:0,cq:0,r:5,gac:"MM_L",
+ ship:0,sbp:"Rebel Alliance lead",ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Rebel Alliance GAC lead bonuses"}]},
+
+{n:"Bo-Katan Kryze",s:"Mandalorian — JMK req",jg:0,lst:0,cq:0,r:5,gac:"BOKATA",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"Way of the Mandalore — core Beskar GAC omi"},{t:"A",m:"GAC",x:"For Mandalore! + Reinforcements"}]},
+
+{n:"Cad Bane",s:"Bounty Hunter — JMK req",jg:0,lst:0,cq:0,r:5,gac:"BH",
+ ship:"Xanadu Blood",sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"BH offense boost"}]},
+
+{n:"ARC Trooper",s:"Clone — LV req",jg:0,lst:0,cq:0,r:8,gac:"GAS_REX",
+ ship:0,sbp:0,ab:"ORDER 66 — DS Clone Troopers",raid:"Order 66 — DS Clone Troopers",
+ o:[{t:"A",m:"GAC",x:"Clone GAC offense"}]},
+
+{n:"Hunter (Bad Batch)",s:"Bad Batch lead — LV req",jg:0,lst:0,cq:0,r:5,gac:"BB2",
+ ship:0,sbp:0,ab:"ORDER 66 — Bad Batch team",raid:"Order 66 — Bad Batch",
+ o:[{t:"S",m:"GAC",x:"Makes Bad Batch a Kyber GAC threat"}]},
+
+{n:"Wrecker (Bad Batch)",s:"Bad Batch tank — LV req",jg:0,lst:0,cq:0,r:5,gac:"BB2",
+ ship:0,sbp:0,ab:"ORDER 66 — Bad Batch team",raid:"Order 66 — Bad Batch",o:[]},
+
+{n:"Tech (Bad Batch)",s:"Bad Batch support — LV req",jg:0,lst:0,cq:0,r:5,gac:"BB2",
+ ship:0,sbp:0,ab:"ORDER 66 — Bad Batch team",raid:"Order 66 — Bad Batch",o:[]},
+
+{n:"Echo (Bad Batch)",s:"Bad Batch attacker — LV req",jg:0,lst:0,cq:0,r:5,gac:"BB2",
+ ship:0,sbp:0,ab:"ORDER 66 — Bad Batch team",raid:"Order 66 — Bad Batch",o:[]},
+
+{n:"CT-210408 Echo",s:"Clone trooper — LV req R7",jg:0,lst:0,cq:0,r:7,gac:"SHAAK_C",
+ ship:0,sbp:0,ab:"ORDER 66 — DS Clone Troopers",raid:"Order 66 — DS Clone Troopers",o:[]},
+
+{n:"General Veers",s:"Imperial Troopers — SEE req",jg:0,lst:0,cq:0,r:3,gac:"IT",
+ ship:0,sbp:"Imperial Troopers",ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Imperial Troopers GAC lead bonus"}]},
+
+{n:"Colonel Starck",s:"Imperial Troopers — SEE req",jg:0,lst:0,cq:0,r:3,gac:"IT",
+ ship:0,sbp:"Imperial Troopers",ab:0,raid:0,o:[]},
+
+{n:"Royal Guard",s:"Empire / Sith — SEE req",jg:0,lst:0,cq:0,r:3,gac:"EP",
+ ship:0,sbp:"Imperial faction",ab:0,raid:0,o:[]},
+
+{n:"Darth Sidious",s:"Sith — SEE req",jg:0,lst:0,cq:0,r:7,gac:"SITH_T",
+ ship:0,sbp:"Imperial faction",ab:0,raid:0,
+ o:[{t:"A",m:"TW",x:"Sadistic Glee — TW Aurodium"}]},
+
+{n:"Aayla Secura",s:"Jedi — JMK req (indirect)",jg:0,lst:0,cq:0,r:3,gac:"JMK",
+ ship:0,sbp:0,ab:"ORDER 66 — Jedi Vanguard roster",raid:0,o:[]},
+
+{n:"Qui-Gon Jinn",s:"Jedi — JMK req (indirect)",jg:0,lst:0,cq:0,r:3,gac:"QGJ",
+ ship:0,sbp:0,ab:"ORDER 66 — Jedi Vanguard roster",raid:0,
+ o:[{t:"A",m:"GAC",x:"Agility Training — QGJ Kyber GAC"}]},
+
+{n:"Clone Sergeant Phase I",s:"Clone — JMK req",jg:0,lst:0,cq:0,r:5,gac:"SHAAK_C",
+ ship:0,sbp:0,ab:"ORDER 66 — DS Clone Troopers",raid:"Order 66 — DS Clones",o:[]},
+
+{n:"Cody (CC-2224)",s:"Clone — JMK req",jg:0,lst:0,cq:0,r:5,gac:"SHAAK_C",
+ ship:0,sbp:0,ab:"ORDER 66 — DS Clone Troopers",raid:"Order 66 — DS Clones",o:[]},
+
+{n:"Wat Tambor",s:"Separatist Droid — JMK req",jg:0,lst:0,cq:0,r:7,gac:"GG",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Droid unique bonuses"}]},
+
+{n:"Jango Fett",s:"BH / Clone",jg:0,lst:0,cq:0,r:7,gac:"BH",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Mandalorian/BH squad boost"}]},
+
+{n:"Embo",s:"Bounty Hunter — LV req",jg:0,lst:0,cq:0,r:5,gac:"BH",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"TW",x:"Way of the Kyuzo — TW Aurodium"}]},
+
+{n:"Nute Gunray",s:"Separatist — LV req",jg:0,lst:0,cq:0,r:7,gac:"GG",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Geonosian Brood Alpha",s:"Geonosian lead — Padme + Wat Tambor req",jg:0,lst:0,cq:0,r:0,gac:"GEO",
+ ship:0,sbp:0,ab:"Ground War",raid:0,o:[]},
+
+{n:"Sun Fac",s:"Geonosian — Padme req",jg:0,lst:0,cq:0,r:0,gac:"GEO",
+ ship:0,sbp:0,ab:"Ground War",raid:0,o:[]},
+
+{n:"Poggle the Lesser",s:"Geonosian — Padme req",jg:0,lst:0,cq:0,r:0,gac:"GEO",
+ ship:0,sbp:0,ab:"Ground War",raid:0,o:[]},
+
+{n:"Geonosian Soldier",s:"Geonosian — Padme req",jg:0,lst:0,cq:0,r:0,gac:"GEO",
+ ship:0,sbp:0,ab:"Ground War",raid:0,o:[]},
+
+{n:"Geonosian Spy",s:"Geonosian — Padme req",jg:0,lst:0,cq:0,r:0,gac:"GEO",
+ ship:0,sbp:0,ab:"Ground War",raid:0,o:[]},
+
+{n:"Aurra Sing",s:"Bounty Hunter — Jabba req",jg:0,lst:0,cq:0,r:6,gac:"BH",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Greedo",s:"Bounty Hunter — Jabba req",jg:0,lst:0,cq:0,r:6,gac:"BH",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Gamorrean Guard",s:"Scoundrel — Jabba req R3",jg:0,lst:0,cq:0,r:3,gac:"JTH",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Mob Enforcer",s:"Scoundrel — Jabba req R3",jg:0,lst:0,cq:0,r:3,gac:"JTH",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"URoRRuR'R'R",s:"Tusken — Jabba req (indirect)",jg:0,lst:0,cq:0,r:4,gac:"TUSKEN",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Krrsantan",s:"BH / Scoundrel — Jabba req",jg:0,lst:0,cq:0,r:5,gac:"JTH",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Skiff Guard Lando",s:"Scoundrel — Jabba req",jg:0,lst:0,cq:0,r:5,gac:"JTH",
+ ship:0,sbp:"Rebel faction",ab:0,raid:0,o:[]},
+
+{n:"Boushh (Leia Organa)",s:"Scoundrel — Jabba+GLO req",jg:0,lst:0,cq:0,r:5,gac:"CLS",
+ ship:0,sbp:"Rebel faction",ab:0,raid:0,o:[]},
+
+{n:"Lando Calrissian",s:"Rebel / Scoundrel — JML+GLO req",jg:0,lst:0,cq:0,r:5,gac:"CLS",
+ ship:"Lando's Millennium Falcon",sbp:"Rebel faction",ab:0,raid:0,o:[]},
+
+{n:"Han Solo",s:"Rebel — JML+Jabba req",jg:0,lst:0,cq:0,r:8,gac:"CLS",
+ ship:"Millennium Falcon",sbp:"Rebel faction (Endor)",ab:0,raid:0,o:[]},
+
+{n:"Princess Leia",s:"Rebel",jg:0,lst:1,cq:0,r:3,gac:"CLS",
+ ship:0,sbp:"Rebel faction",ab:0,raid:0,o:[]},
+
+{n:"Rebel Officer Leia Organa",s:"Rebel — GLO req",jg:0,lst:0,cq:0,r:5,gac:"CLS",
+ ship:0,sbp:"Rebel faction",ab:0,raid:0,
+ o:[{t:"A",m:"TB",x:"Battlefront Command — TB"},{t:"A",m:"TW",x:"TW Rebel defense"}]},
+
+{n:"Captain Han Solo",s:"Rebel — GLO req",jg:0,lst:0,cq:0,r:5,gac:"CLS",
+ ship:0,sbp:"Rebel faction",ab:0,raid:0,o:[]},
+
+{n:"Captain Rex",s:"Clone — GLO+AT req",jg:0,lst:1,cq:0,r:7,gac:"REX_PHX",
+ ship:0,sbp:0,ab:"ORDER 66 — DS Clone Troopers support",raid:"Order 66 — DS Clones",
+ o:[{t:"A",m:"GAC",x:"The Lost Commander — Aurodium GAC"}]},
+
+{n:"General Hux",s:"First Order — SLKR req",jg:0,lst:0,cq:0,r:5,gac:"SLKR",
+ ship:"Finalizer (capital)",sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"FO team speed and synergy boost"}]},
+
+{n:"Kylo Ren",s:"First Order — SLKR req",jg:0,lst:0,cq:0,r:7,gac:"SLKR",
+ ship:"Kylo Ren's Command Shuttle",sbp:0,ab:0,raid:0,o:[]},
+
+{n:"First Order Executioner",s:"First Order — SLKR req",jg:0,lst:0,cq:0,r:5,gac:"SLKR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"First Order Officer",s:"First Order — SLKR req",jg:0,lst:0,cq:0,r:5,gac:"SLKR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"First Order Stormtrooper",s:"First Order — SLKR req",jg:0,lst:0,cq:0,r:5,gac:"SLKR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Captain Phasma",s:"First Order — SLKR req",jg:0,lst:0,cq:0,r:5,gac:"SLKR",
+ ship:"Kylo Ren's Command Shuttle",sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"TW",x:"Fire at Will — TW Aurodium"}]},
+
+{n:"Sith Trooper",s:"First Order / Sith — SLKR req",jg:0,lst:0,cq:0,r:5,gac:"SLKR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Jedi Knight Anakin",s:"Galactic Republic — JMK req",jg:0,lst:1,cq:0,r:7,gac:"PADME_CT",
+ ship:"Anakin's Eta-2 Starfighter",sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Fuels GR Jedi offense loop"}]},
+
+{n:"Poe Dameron",s:"Resistance — Rey req",jg:0,lst:0,cq:0,r:5,gac:"JTR",
+ ship:"Poe Dameron's X-wing",sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Finn",s:"Resistance — Rey req",jg:0,lst:0,cq:0,r:5,gac:"JTR",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"TB",x:"Balanced Tactics — TB"}]},
+
+{n:"Rey Scavenger",s:"Resistance — Rey req",jg:1,lst:0,cq:0,r:7,gac:"JTR",
+ ship:"Rey's Millennium Falcon",sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Rose Tico",s:"Resistance — Rey req",jg:0,lst:0,cq:0,r:5,gac:"JTR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Resistance Hero Finn",s:"Resistance — Rey req",jg:0,lst:0,cq:0,r:5,gac:"JTR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Resistance Hero Poe",s:"Resistance — Rey req",jg:0,lst:0,cq:0,r:5,gac:"JTR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Amilyn Holdo",s:"Resistance — Rey req",jg:0,lst:0,cq:0,r:5,gac:"JTR",
+ ship:"Raddus",sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Resistance Trooper",s:"Resistance — Rey req",jg:0,lst:0,cq:0,r:5,gac:"JTR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Magnaguard",s:"Separatist Droid — JMK req",jg:0,lst:0,cq:0,r:7,gac:"GG",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Droid protection and counter synergy"}]},
+
+{n:"Zam Wesell",s:"BH / Separatist — LV req",jg:0,lst:0,cq:0,r:7,gac:"GG",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Tusken Raider",s:"Tusken — JMK req",jg:0,lst:0,cq:0,r:5,gac:"TUSKEN",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Obi-Wan Kenobi (Old Ben)",s:"Jedi — JML req",jg:0,lst:1,cq:0,r:5,gac:"JMK",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Sith Marauder",s:"Sith Empire — SEE req",jg:0,lst:0,cq:0,r:7,gac:"SEE",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Director Krennic",s:"Empire — SEE req",jg:0,lst:0,cq:0,r:4,gac:"ENOCH",
+ ship:0,sbp:"Imperial faction",ab:0,raid:0,o:[]},
+
+{n:"Admiral Piett",s:"Empire — SEE req",jg:0,lst:0,cq:0,r:5,gac:"IT",
+ ship:"Executor",sbp:"Imperial Troopers",ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Empire offense + Executor fleet synergy"}]},
+
+{n:"Bossk",s:"Bounty Hunter",jg:1,lst:1,cq:0,r:0,gac:"BH",
+ ship:"Hound's Tooth",sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"BH defense hold rate boost"}]},
+
+{n:"TIE Fighter Pilot",s:"Empire",jg:0,lst:0,cq:0,r:0,gac:"IT",
+ ship:"Imperial TIE Fighter",sbp:"Imperial Troopers",ab:0,raid:0,
+ o:[{t:"A",m:"TW",x:"Keen Eye — FO TW/GAC Aurodium"}]},
+
+{n:"IG-88",s:"BH / Droid",jg:0,lst:1,cq:0,r:0,gac:"BH",
+ ship:"IG-2000",sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Dengar",s:"Bounty Hunter",jg:0,lst:1,cq:0,r:0,gac:"BH",
+ ship:"Punishing One",sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Ahsoka Tano (Snips)",s:"Jedi / Phoenix — AT R9 req",jg:0,lst:1,cq:0,r:0,gac:"PADME_CT",
+ ship:"Ahsoka Tano's Jedi Starfighter",sbp:0,ab:"ORDER 66 — Jedi Vanguard",raid:"Order 66",o:[]},
+
+{n:"Hera Syndulla",s:"Phoenix / Rebel — Thrawn + Emperor Palp req",jg:1,lst:1,cq:0,r:0,gac:"REX_PHX",
+ ship:"Ghost",sbp:"Rebel / Phoenix faction",ab:0,raid:0,
+ o:[{t:"A",m:"TW",x:"Rise Together — TW Aurodium"},{t:"A",m:"GAC",x:"Phoenix/Rebel fleet synergy"}]},
+
+{n:"Kanan Jarrus",s:"Jedi / Phoenix — Thrawn + Emperor Palp + Hermit Yoda req",jg:1,lst:0,cq:0,r:0,gac:"REX_PHX",
+ ship:0,sbp:"Rebel / Phoenix faction",ab:0,raid:0,o:[]},
+
+{n:"Cassian Andor",s:"Rebel / Rogue One",jg:0,lst:0,cq:0,r:0,gac:"RO",
+ ship:"Cassian's U-wing",sbp:"Rebel faction",ab:0,raid:0,
+ o:[{t:"A",m:"TB",x:"Groundwork — TB"},
+    {t:"A",m:"GAC",x:"Rogue One GAC offense"}]},
+
+{n:"Chirrut Imwe",s:"Rogue One / Rebel — GL Pirate King Hondo req",jg:1,lst:0,cq:0,r:5,gac:"RO",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Admiral Raddus",s:"Rebel",jg:0,lst:0,cq:0,r:0,gac:"ACKBAR",
+ ship:"Profundity",sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Rebel Assault — Aurodium GAC"}]},
+
+{n:"Hondo Ohnaka",s:"Pirate",jg:1,lst:0,cq:0,r:0,gac:0,
+ ship:0,sbp:0,ab:"ORDER 66 — Pirate team solo 300k",raid:"Order 66 Pirate",
+ o:[{t:"A",m:"GAC",x:"That's Just Good Business"},
+    {t:"A",m:"CQ",x:"Conquest utility"}]},
+
+{n:"Captain Ithano",s:"Pirate — GL Pirate King Hondo req",jg:1,lst:0,cq:0,r:3,gac:"PIR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Quiggold",s:"Pirate — GL Pirate King Hondo req",jg:1,lst:0,cq:0,r:5,gac:"PIR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Kix",s:"Clone Trooper / Pirate — GL Pirate King Hondo req",jg:1,lst:0,cq:0,r:6,gac:"PIR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Brutus",s:"Pirate — GL Pirate King Hondo req",jg:1,lst:0,cq:0,r:7,gac:"PIR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Vane",s:"Pirate — GL Pirate King Hondo req",jg:1,lst:0,cq:0,r:7,gac:"PIR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Captain Silvo",s:"Pirate — GL Pirate King Hondo req",jg:1,lst:0,cq:0,r:7,gac:"PIR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+// GLO SPECIFIC REQS
+{n:"Captain Drogan",s:"Rebel — GLO req R7",jg:0,lst:0,cq:0,r:0,gac:"CLS",
+ ship:"B-Wing",sbp:0,ab:0,raid:0,o:[]},
+{n:"Princess Kneesaa",s:"Ewok — GLO req R7",jg:0,lst:0,cq:0,r:0,gac:"EWOKS",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+{n:"Wicket",s:"Ewok — GLO req R3",jg:0,lst:0,cq:0,r:0,gac:"EWOKS",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+{n:"Chief Chirpa",s:"Ewok — GLO req R3",jg:0,lst:0,cq:0,r:0,gac:"EWOKS",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+{n:"Lobot",s:"Rebel — GLO req R3",jg:0,lst:0,cq:0,r:0,gac:"CLS",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+{n:"Admiral Ackbar",s:"Rebel — GLO req R3",jg:0,lst:1,cq:0,r:0,gac:"ACKBAR",
+ ship:"Home One",sbp:0,ab:0,raid:0,o:[]},
+{n:"Scout Trooper",s:"Imperial — GLO req R7",jg:0,lst:0,cq:0,r:0,gac:"IT",
+ ship:0,sbp:"Imperial faction",ab:0,raid:0,o:[]},
+{n:"Threepio & Chewie",s:"Rebel — GLO req R7",jg:0,lst:0,cq:0,r:0,gac:"CLS",
+ ship:0,sbp:"Rebel faction (Endor)",ab:0,raid:0,o:[]},
+
+// AT SPECIFIC REQS
+{n:"Plo Koon",s:"Jedi — AT req R3",jg:0,lst:0,cq:0,r:0,gac:"JMK",
+ ship:"Plo Koon's Jedi Starfighter",sbp:0,ab:0,raid:0,o:[]},
+{n:"Barriss Offee",s:"Jedi — AT req R5",jg:0,lst:0,cq:0,r:0,gac:"JMK",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+{n:"Huyang",s:"Jedi / AT req R5",jg:0,lst:0,cq:0,r:0,gac:"AT",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"TB",x:"Stay Together — TB Aurodium"}]},
+{n:"Shin Hati",s:"Inquisitor / AT req R5",jg:1,lst:0,cq:0,r:5,gac:"REVA",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"TW",x:"You Have No Power — TW Kyber"}]},
+{n:"Commander Ahsoka",s:"Clone Wars / AT req R7",jg:0,lst:0,cq:0,r:0,gac:"AT",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Zeb Orrelios",s:"Phoenix / Rebel — Secrets & Shadows AB",jg:0,lst:0,cq:0,r:0,gac:"PHX",
+ ship:"Ghost",sbp:"Phoenix / Rebel faction",ab:"Secrets & Shadows",raid:0,o:[]},
+{n:"Sabine Wren",s:"Mandalorian / AT req R8",jg:0,lst:1,cq:0,r:0,gac:"BOKATA",
+ ship:"Gauntlet Starfighter",sbp:0,ab:0,raid:0,o:[]},
+{n:"Sixth Brother",s:"Inquisitor — AT req R5",jg:0,lst:0,cq:0,r:0,gac:"REVA",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+{n:"Ahsoka Tano (Fulcrum)",s:"Rebel / AT req R7",jg:0,lst:0,cq:0,r:7,gac:"REX_PHX",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"TW",x:"Perseverance — TW Kyber"}]},
+
+// CONQUEST CHARACTERS
+{n:"Baylan Skoll",s:"Mercenary — AT req / Conquest",jg:0,lst:0,cq:1,r:5,gac:"BAYLAN",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"It's All Inevitable + Power Such as You've Never Dreamed — 2 Beskar omis"},{t:"A",m:"GAC",x:"Master and Apprentice"}]},
+
+{n:"Ezra Bridger (Exile)",s:"Rebel — AT req / Conquest",jg:0,lst:0,cq:1,r:7,gac:"JKR_JKL",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"Exile + Kanan's Legacy — 2 Kyber GAC omis"},{t:"A",m:"GAC",x:"Daring Advance"}]},
+
+{n:"Taron Malicos",s:"Unaligned Force Users — Conquest",jg:0,lst:0,cq:1,r:0,gac:"UFU",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"Echo of the Fallen Order + Strength is Power — 2 Beskar omis"},{t:"A",m:"GAC",x:"Die, Whelp!"}]},
+
+{n:"Rey (Dark Side Vision)",s:"Dark Side — Conquest",jg:0,lst:0,cq:1,r:0,gac:"KRU_REY",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"3 omis: In Our Nature + Don't Be Afraid + Malevolent Lineage — Beskar GAC"}]},
+
+{n:"Jar Jar Binks",s:"Gungan — Conquest",jg:0,lst:0,cq:1,r:0,gac:"GUNGANS",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"Mooie-Mooie + Uh Oh Big Boomas — 2 Beskar omis"},{t:"A",m:"GAC",x:"Mesa Okeyday"}]},
+
+{n:"Queen Amidala",s:"Gungan / Naboo — Conquest",jg:0,lst:0,cq:1,r:0,gac:"QUADME",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"Loyal Bodyguard + I Am Queen Amidala — Beskar"},{t:"A",m:"GAC",x:"My Place is with My People"}]},
+
+{n:"Starkiller",s:"Dark Jedi — Conquest",jg:0,lst:0,cq:1,r:0,gac:"SK",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"There is Much Conflict in You — Beskar GAC"}]},
+
+{n:"Dr. Aphra",s:"Scoundrel / Droid — Conquest",jg:0,lst:0,cq:1,r:0,gac:"APHRA",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"3 omis: Droid Savant + Suspended Doctorate + Rogue Archaeology — Kyber"}]},
+
+{n:"Darth Bane",s:"Sith — Conquest",jg:0,lst:0,cq:1,r:0,gac:"DB",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"Rule of Two + Essence of Dominance — GL tier GAC (offense only)"}]},
+
+{n:"Great Mothers",s:"Nightsister / Night Trooper — Conquest",jg:1,lst:0,cq:1,r:0,gac:"GM",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"TW",x:"Threads of Destiny + To the Old Ways — 2 TW Kyber omis"},{t:"A",m:"GAC",x:"Great Mothers Beskar GAC"}]},
+
+{n:"Jedi Knight Cal Kestis",s:"Jedi / Mercenary — Conquest",jg:0,lst:0,cq:1,r:0,gac:"JKCK",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"TB",x:"3 TB omis: Weight of Galaxy + Impetuous Assault + Whirlwind Slam"},{t:"A",m:"GAC",x:"JKCK Kyber GAC"}]},
+
+{n:"Dark Trooper Moff Gideon",s:"Imperial Remnant — Conquest",jg:0,lst:0,cq:1,r:0,gac:"DTMG",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"TW",x:"3 TW omis: Shadow Contingency + Beskar Armor + Strategic Onslaught"},{t:"A",m:"GAC",x:"DTMG Beskar GAC"}]},
+
+{n:"Darth Malgus",s:"Sith Empire — Conquest / Leviathan req",jg:0,lst:0,cq:1,r:0,gac:"DMG",
+ ship:"Fury-class Interceptor",sbp:0,ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"Legacy of Power — Beskar GAC lead"}]},
+
+{n:"Darth Revan",s:"Sith Empire lead — Leviathan captain / Ancient Journey",jg:1,lst:0,cq:0,r:0,gac:"DR",
+ ship:"Leviathan",sbp:"Sith Empire",ab:"Places of Power",raid:0,
+ o:[{t:"S",m:"GAC",x:"Conqueror — Sith Empire GAC lead"},{t:"S",m:"GAC",x:"Villain — Sith Empire offense"},{t:"A",m:"GAC",x:"Lord of the Sith"}]},
+
+{n:"Darth Malak",s:"Sith Empire — Leviathan crew / Darth Revan JG req",jg:1,lst:0,cq:0,r:0,gac:"MALKD",
+ ship:0,sbp:"Sith Empire",ab:"Places of Power",raid:0,
+ o:[{t:"S",m:"GAC",x:"Jaws of Darkness — Sith Empire GAC lead"},{t:"A",m:"GAC",x:"Leech"}]},
+
+{n:"HK-47",s:"Old Republic — JK Revan + Darth Revan + Leviathan req",jg:1,lst:0,cq:0,r:0,gac:"JKR",
+ ship:0,sbp:"Old Republic / Sith Empire",ab:"Places of Power",raid:0,
+ o:[{t:"A",m:"GAC",x:"Assassination Protocol"}]},
+
+{n:"Bastila Shan",s:"Old Republic Jedi — JK Revan + Hermit Yoda + Leviathan req",jg:1,lst:0,cq:0,r:0,gac:"JKR",
+ ship:0,sbp:"Old Republic",ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Battle Meditation — Old Republic TM control"}]},
+
+{n:"50R-T",s:"Old Republic Droid — Leviathan crew",jg:0,lst:0,cq:0,r:0,gac:"SITH_E",
+ ship:0,sbp:"Old Republic / Sith Empire",ab:0,raid:0,o:[]},
+
+{n:"Jedi Knight Revan",s:"Old Republic lead — Ancient Journey",jg:1,lst:0,cq:0,r:0,gac:"JKR",
+ ship:0,sbp:"Old Republic",ab:"Places of Power",raid:0,
+ o:[{t:"S",m:"GAC",x:"Hero — Old Republic GAC lead"},{t:"S",m:"GAC",x:"Direct Focus"},{t:"A",m:"GAC",x:"General"},{t:"A",m:"GAC",x:"Jedi Knight Revan (GL)"}]},
+
+{n:"Luthen Rael",s:"Rebel / Saw team",jg:0,lst:0,cq:0,r:0,gac:"SAW_L",
+ ship:0,sbp:"Saw Gerrera / Rebel faction",ab:0,raid:0,
+ o:[{t:"S",m:"GAC",x:"Dreams with Ghosts — key Beskar GAC omi"},{t:"A",m:"GAC",x:"Tools of My Enemy + What Do I Sacrifice"}]},
+
+{n:"Saw Gerrera",s:"Rebel — Jedi Knight Cal Kestis req",jg:1,lst:0,cq:0,r:0,gac:"SAW_L",
+ ship:0,sbp:"Rebel faction",ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Freedom Isn't Free — Saw/Luthen Beskar GAC"}]},
+
+{n:"Iden Versio",s:"Special Forces",jg:0,lst:0,cq:0,r:0,gac:"IV",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Exactly as Planned — Kyber GAC"}]},
+
+{n:"Merrin",s:"Nightsister — Jedi Knight Cal Kestis req",jg:1,lst:0,cq:0,r:0,gac:"NS",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Last of the Nightsisters — Kyber GAC"}]},
+
+{n:"Cal Kestis",s:"Jedi / Fallen Order — Jedi Knight Cal Kestis req",jg:1,lst:0,cq:0,r:0,gac:"CAL",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Cere Junda",s:"Jedi / Fallen Order — Jedi Knight Cal Kestis req",jg:1,lst:0,cq:0,r:0,gac:"CAL",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Tarfful",s:"Wookiee — Jedi Knight Cal Kestis req",jg:1,lst:0,cq:0,r:0,gac:"WROOK",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Marrok",s:"Mercenary / Unaligned Force User — Baylan Skoll req",jg:1,lst:0,cq:0,r:0,gac:"MERC",
+ ship:0,sbp:0,ab:"Fanatical Devotion",raid:0,o:[]},
+
+{n:"Morgan Elsbeth",s:"Night Trooper / Great Mothers",jg:1,lst:0,cq:0,r:0,gac:"GM",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Let None Pass — Great Mothers Beskar GAC"}]},
+
+{n:"Zorri Bliss",s:"Resistance",jg:0,lst:0,cq:0,r:0,gac:"ZORII",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"There's More of Us — Zorii Resistance Kyber GAC"}]},
+
+// ── GL REQUIREMENT CHARS — wiki-verified additions ──
+// JML requirements missing from tool
+{n:"Wedge Antilles",s:"Rebel — JML req R3",jg:0,lst:0,cq:0,r:3,gac:"CLS",
+ ship:"Wedge Antilles's X-wing",sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Biggs Darklighter",s:"Rebel — JML req R3",jg:0,lst:0,cq:0,r:3,gac:"CLS",
+ ship:"Biggs Darklighter's X-wing",sbp:0,ab:0,raid:0,o:[]},
+
+// SLKR requirements corrected/added
+{n:"Veteran Smuggler Han Solo",s:"Scoundrel — SLKR req R3 / Rey JT req",jg:0,lst:0,cq:0,r:3,gac:"JTR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Veteran Smuggler Chewbacca",s:"Scoundrel — Rey JT req / GL Pirate King Hondo req R7",jg:1,lst:0,cq:0,r:7,gac:"JTR",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"First Order SF TIE Pilot",s:"First Order — SLKR req R3",jg:0,lst:0,cq:0,r:3,gac:"SLKR",
+ ship:"First Order SF TIE Fighter",sbp:0,ab:0,raid:0,o:[]},
+
+// Rey requirement added
+{n:"Resistance Pilot",s:"Resistance — Rey req R3",jg:0,lst:0,cq:0,r:3,gac:"JTR",
+ ship:"Resistance X-wing",sbp:0,ab:0,raid:0,o:[]},
+
+// Jabba requirements — Jawa added
+{n:"Jawa",s:"Jawa — Jabba req R3",jg:0,lst:0,cq:0,r:3,gac:"JTH",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+// ── NEW FACTIONS: Dark Side Clones, Jedi Vanguard, Sith Empire missing chars ──
+// SITH EMPIRE (Leviathan requirements)
+{n:"Sith Empire Trooper",s:"Sith Empire — Leviathan req R7",jg:0,lst:0,cq:0,r:0,gac:"SITH_E",
+ ship:"Mark VI Interceptor",sbp:0,ab:0,raid:0,
+ o:[]},
+
+{n:"Sith Assassin",s:"Sith Empire — Leviathan req R5",jg:0,lst:0,cq:0,r:0,gac:"SITH_E",
+ ship:"Sith Fighter",sbp:0,ab:0,raid:0,
+ o:[]},
+
+// DARK SIDE CLONE TROOPERS (Lord Vader / Grand Moff Tarkin team — Order 66 Raid)
+// Lord Vader already in DB. Adding the 4 new Dark Side Clones.
+{n:"CC-1119 'Appo'",s:"Dark Side Clone — Lord Vader team / Order 66 Raid",jg:0,lst:0,cq:0,r:0,gac:"LV_DS",
+ ship:0,sbp:0,ab:0,raid:1,
+ o:[{t:"S",m:"GAC",z:"Imperial March — Dark Side Clones"}]},
+
+{n:"CX-2",s:"Dark Side Clone — Lord Vader team / Order 66 Raid",jg:0,lst:0,cq:0,r:0,gac:"LV_DS",
+ ship:0,sbp:0,ab:0,raid:1,
+ o:[{t:"S",m:"GAC",z:"Order 66 Support — Dark Side Clones"}]},
+
+{n:"Disguised Clone Trooper",s:"Dark Side Clone — Lord Vader team / Order 66 Raid",jg:0,lst:0,cq:0,r:0,gac:"LV_DS",
+ ship:0,sbp:0,ab:0,raid:1,
+ o:[{t:"A",m:"GAC",z:"Ruse stealth mechanic vs Jedi"}]},
+
+{n:"RC-1262 'Scorch'",s:"Dark Side Clone Tank — Lord Vader / Tarkin / Order 66 Raid",jg:0,lst:0,cq:0,r:0,gac:"LV_DS",
+ ship:0,sbp:0,ab:0,raid:1,
+ o:[{t:"S",m:"GAC",z:"Following Protocol — 5v5 + 3v3 omis"}]},
+
+// JEDI VANGUARD (Jedi Master Mace Windu leads — Order 66 Raid counter)
+// Unlocked via Legendary event requiring all Dark Side Clones + Jedi Vanguard chars
+{n:"Jedi Master Mace Windu",s:"Jedi Vanguard lead — Legendary / Order 66 Raid",jg:1,lst:0,cq:0,r:0,gac:"JMW_V",
+ ship:0,sbp:0,ab:1,raid:1,
+ o:[{t:"S",m:"GAC",z:"Jedi Vanguard lead — Kyber GAC"}]},
+
+{n:"Jocasta Nu",s:"Jedi Vanguard — cooldown support / Order 66 Raid",jg:0,lst:0,cq:0,r:0,gac:"JMW_V",
+ ship:0,sbp:0,ab:0,raid:1,
+ o:[{t:"S",m:"GAC",z:"Counter chance + protection immunity"}]},
+
+{n:"Depa Billaba",s:"Jedi Vanguard Attacker — counter chance / Order 66 Raid",jg:0,lst:0,cq:0,r:0,gac:"JMW_V",
+ ship:0,sbp:0,ab:0,raid:1,
+ o:[{t:"A",m:"GAC",z:"High counter chance attacker"}]},
+
+{n:"Temple Guard",s:"Jedi Vanguard Tank — Order 66 Raid",jg:0,lst:0,cq:0,r:0,gac:"JMW_V",
+ ship:0,sbp:0,ab:0,raid:1,
+ o:[]},
+
+// ── LST QUEST CHARACTERS — added from Anniversary Lightspeed Token image ──
+// QUEST 1 (Rebel / Emperor Palpatine JG)
+{n:"Ezra Bridger",s:"Phoenix / Rebel — LST Q1",jg:1,lst:1,cq:0,r:5,gac:"JKR_JKL",
+ ship:"Phantom II",sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Phoenix Rebel offense boost"}]},
+
+{n:"Chopper",s:"Phoenix / Droid — LST Q1",jg:0,lst:1,cq:0,r:5,gac:"REX_PHX",
+ ship:"Ghost",sbp:0,ab:0,raid:0,o:[]},
+
+// QUEST 2 (Jedi / Grand Master Yoda JG)
+{n:"Kelleran Beq",s:"Jedi — LST Q2",jg:0,lst:1,cq:0,r:5,gac:"JMK",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+// QUEST 3 (Empire / R2-D2 JG) — Inquisitorius
+{n:"Eighth Brother",s:"Inquisitorius — LST Q3",jg:1,lst:1,cq:0,r:0,gac:"REVA",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Ninth Sister",s:"Inquisitorius — Dark Times req / LST Q3",jg:1,lst:1,cq:0,r:0,gac:"REVA",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Fifth Brother",s:"Inquisitorius — Dark Times req / LST Q3",jg:1,lst:1,cq:0,r:0,gac:"REVA",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Seventh Sister",s:"Inquisitorius — Dark Times req / LST Q3",jg:1,lst:1,cq:0,r:0,gac:"REVA",
+ ship:0,sbp:0,ab:0,raid:0,
+ o:[{t:"B",m:"GAC",x:"ID9 Enemy Intelligence"}]},
+
+{n:"Second Sister",s:"Inquisitorius — Dark Times req / LST Q3",jg:1,lst:1,cq:0,r:0,gac:"REVA",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Eighth Brother",s:"Inquisitorius — Dark Times req",jg:1,lst:0,cq:0,r:0,gac:"REVA",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Grand Inquisitor",s:"Inquisitorius leader — unlocked via Dark Times JG",jg:0,lst:0,cq:0,r:0,gac:"REVA",
+ ship:0,sbp:0,ab:0,raid:0,o:[{t:"A",m:"GAC",x:"Empire Inquisitorius — Kyber GAC"}]},
+
+// QUEST 4 (Droid faction / CLS JG)
+{n:"Luke Skywalker (Farmboy)",s:"Rebel — LST Q4",jg:0,lst:1,cq:0,r:5,gac:"CLS",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Stormtrooper Han",s:"Rebel / Scoundrel — LST Q4",jg:0,lst:1,cq:0,r:0,gac:"CLS",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+// QUEST 6 (Mandalorian / Mando Beskar JG)
+{n:"The Mandalorian",s:"Mandalorian — LST Q6",jg:0,lst:1,cq:0,r:0,gac:"BOKATA",
+ ship:"The Razor Crest",sbp:0,ab:0,raid:0,
+ o:[{t:"A",m:"GAC",x:"Disciplined Bounty Hunter / Asset Acquisition"}]},
+
+{n:"Cara Dune",s:"Mandalorian / Rebel — LST Q6",jg:0,lst:1,cq:0,r:0,gac:"BOKATA",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"IG-11",s:"Droid / Mandalorian — LST Q6",jg:0,lst:1,cq:0,r:0,gac:"BOKATA",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Kuiil",s:"Mandalorian support — LST Q6",jg:0,lst:1,cq:0,r:0,gac:"BOKATA",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Greef Karga",s:"Mandalorian / Scoundrel — LST Q6",jg:0,lst:1,cq:0,r:0,gac:"BOKATA",
+ ship:0,sbp:0,ab:0,raid:0,o:[]},
+
+{n:"Bistan",s:"Rebel / Rogue One — Bistan's U-wing",jg:0,lst:0,cq:0,r:0,gac:"R1",
+ ship:"Bistan's U-wing",sbp:"Rebel / Rogue One",ab:0,raid:0,o:[]},
+
+{n:"Crosshair",s:"Bad Batch — Havoc Marauder",jg:0,lst:0,cq:0,r:0,gac:"BB",
+ ship:"Havoc Marauder",sbp:"Bad Batch faction",ab:0,raid:0,o:[]},
+
+{n:"First Order TIE Pilot",s:"First Order — SLKR req R3",jg:0,lst:0,cq:0,r:3,gac:"SLKR_FO",
+ ship:"First Order TIE Fighter",sbp:"First Order faction",ab:"Places of Power",raid:0,o:[]},
+
+];
+
+// ════════════════════════════════════════════════════════════
+// INJECT COMPUTED FIELDS
+// ════════════════════════════════════════════════════════════
+const seen=new Set();
+const chars=D.filter(c=>{if(seen.has(c.n))return false;seen.add(c.n);return true;});
+
+chars.forEach(c=>{
+  // GL requirements this character fulfils
+  c.gl = getGLReqs(c.n);
+
+  // Which GLs does this character help unlock?
+  c.glUnlocks = getGLsUnlocked(c.n);  // e.g. ["GLO","AT"]
+
+  // Which GLs can the player unlock once this char is geared?
+  // glUnlocks already covers this — just flag for filter
+  c.gloReq = c.glUnlocks.includes("GLO");
+  c.atReq  = c.glUnlocks.includes("AT");
+
+  // Journey Guide unlocks — array so one char can unlock multiple JG targets
+  // e.g. Han Solo → ["CLS","Chewbacca"], Finn → ["Rey JT","Chewbacca"]
+  c.jgUnlocks = JG_UNLOCK[c.n] || [];
+
+  // Capital ships this character unlocks/crews
+  c.capShips = CAP_SHIP[c.n] || [];
+
+  // Assault battles this character qualifies for
+  c.abList = AB_CHARS[c.n] || [];
+
+  // Raids this character is eligible for
+  c.raidList = getRaids(c.n);
+  c.raidList = getRaids(c.n);
+
+  // Zeta data
+  c.zScore = getZetaScore(c.n);
+  c.zList  = getZetaList(c.n);
+  c.zTop   = getTopZetaTier(c.n);
+
+  // Update relic floor from GL reqs
+  c.gl.forEach(req=>{
+    const r=parseInt(req.match(/R(\d+)/)?.[1]||0);
+    if(r>c.r) c.r=r;
+  });
+});
+
+// ════════════════════════════════════════════════════════════
+// META WEIGHTS - GAC Omicron/Zeta Adoption Rates
+// ════════════════════════════════════════════════════════════
+// Source: SWGOH.gg adoption rate data (% of Relic+ players with ability)
+// Methodology:
+//   - GAC Omicrons ONLY (includes GAC, GAC 3v3, GAC 5v5 modes)
+//   - Excludes TW, TB, and Conquest omicrons (not GAC-relevant)
+//   - All Zetas included (universal application)
+// Meta score per character = (Σ GAC omicron adoption × 2.0) + (Σ zeta adoption × 1.0)
+//
+// Top GAC Meta Characters:
+//   1. Rey (Dark Side Vision): 7.92 (3 GAC omis at 81-86% adoption)
+//   4. The Stranger: 6.69 (3 GAC omis at 72-85% adoption)
+//   6. Starkiller: 6.25 (3 GAC omis including 88% "Conflict in You")
+const META_WEIGHTS = {
+  "Rey (Dark Side Vision)": 7.92,
+  "Baylan Skoll": 7.11,
+  "Bo-Katan Mandalor": 7.07,
+  "The Stranger": 6.69,
+  "Third Sister": 6.62,
+  "Starkiller": 6.25,
+  "Queen Amidala": 6.07,
+  "Ezra Bridger (Exile)": 5.99,
+  "Taron Malicos": 5.85,
+  "Darth Bane": 5.27,
+  "Ben Solo": 5.1,
+  "Jar Jar Binks": 5.06,
+  "Ahsoka Tano": 4.98,
+  "Pirate King Hondo": 4.97,
+  "Jabba the Hutt": 4.97,
+  "Leia Organa": 4.97,
+  "Rey": 4.96,
+  "Lord Vader": 4.96,
+  "Jedi Master Kenobi": 4.95,
+  "Jedi Master Luke Skywalker": 4.94,
+  "Sith Eternal Emperor": 4.9,
+  "Darth Malgus": 4.22,
+  "Dr. Aphra": 3.91,
+  "General Skywalker": 3.88,
+  "Maz Kanata": 3.55,
+  "Jocasta Nu": 3.21,
+  "Jedi Knight Revan": 2.91,
+  "Luthen Rael": 2.39,
+  "RC-1262 Scorch": 2.24,
+  "Cx 2": 2.23,
+  "Padme Amidala": 1.97,
+  "Darth Malak": 1.95,
+  "Jedi Knight Cal Kestis": 1.94,
+  "Grand Inquisitor": 1.93,
+  "Jedi Master Mace Windu": 1.93,
+  "Jedi Knight Luke Skywalker": 1.92,
+  "Commander Ahsoka Tano": 1.92,
+  "Darth Revan": 1.91,
+  "Tusken Chieftain": 1.38,
+  "Iden Versio": 1.25,
+  "Darth Vader Duels End": 1.17,
+  "Merrin": 1.11,
+  "Admiral Raddus": 1.11,
+  "Cere Junda": 1.1,
+  "Krrsantan": 1.08,
+  "Zorii Bliss": 1.06,
+  "Chewbacca": 0.97,
+  "Captain Silvo": 0.95,
+  "Temple Guard": 0.88,
+  "Asajj Ventress": 0.86,
+  "Zam Wesell": 0.85,
+  "Tusken Raider": 0.81,
+  "Chief Chirpa": 0.81,
+  "Grand Moff Tarkin": 0.78,
+  "Hondo Ohnaka": 0.71,
+  "Dash Rendar": 0.7,
+  "First Order Tie Pilot": 0.67,
+  "Saw Gerrera": 0.54,
+  "Zaalbar": 0.52,
+  "Night Trooper": 0.48,
+  "Stap": 0.46,
+  "0 0 0": 0.44,
+  "Bt 1": 0.44,
+  "Omega Fugitive": 0.38,
+  "Luminara Unduli": 0.34,
+  "Princess Leia": 0.29,
+  "Admiral Ackbar": 0.28,
+  "Director Krennic": 0.28,
+  "Crosshair Scarred": 0.28,
+  "Asajj Ventress Dark Disciple": 0.27,
+  "Rose Tico": 0.25,
+  "Yoda Chewie": 0.19,
+  "Stormtrooper Luke": 0.19,
+  "Inquisitor Barriss": 0.16,
+  "Satele Shan": 0.0,
+};
+
+// ════════════════════════════════════════════════════════════
+// SCORING
+// GL req/unlock: +3 per GL unlocked (being a req IS the unlock — no double-counting)
+//                chars required for 2+ GLs (e.g. R2-D2 → JML+GLO) score higher naturally
+// JG unlock:     +2 per JG character unlocked
+// Cap ship:      +2 per capital ship unlocked/crewed
+// Own ship:      +2 (personal ship in fleet)
+// Assault Battle: +2 per assault battle (9 events: DotF, Fanatical, Forest Moon,
+//                 Ground War, Military Might, Peridea, Places of Power, Rebel Roundup, S&S)
+// Speeder:       +2
+// Conquest char: +1
+// GAC tier:      +4/3/2/1
+// S-omi:         +2,  A-omi: +1
+// ════════════════════════════════════════════════════════════
+function calcScore(c){
+  let s = 0;
+  s += c.glUnlocks.length * 3;  // +3 per GL this char is required for (being a req = contributing to unlock)
+  s += c.jgUnlocks.length * 2;
+  s += c.capShips.length  * 2;
+  if(c.ship)  s += 2;
+  if(c.ab || c.abList.length)    s += Math.max(c.abList.length, c.ab?1:0) * 2;
+  s += c.raidList.length * 2;  // +2 per active raid eligible
+  if(c.cq)    s += 1;
+  const g = c.gac ? GAC[c.gac] : null;
+  if(g) s += g.tp;
+  (c.o||[]).forEach(o=>{ if(o.t==='S') s+=2; else if(o.t==='A') s+=1; });
+  // Zeta scoring: Kyber=6, Beskar=5, Aurodium=4, Chromium=3, Bronzium=2, Carbonite=1
+  // Each zeta adds its tier value, heavily rewarding Kyber-dense chars
+  s += Math.round(c.zScore * 0.4); // scaled so zetas augment but don't overwhelm other factors
+  
+  // META OVERLAY: GAC performance multiplier
+  // Add character's meta weight (omicron/zeta adoption rates)
+  // Scale: 1 meta weight point = 2 character score points
+  // Example: The Stranger (6.69 meta) gets +13 points, Rey DSV (7.92) gets +16 points
+  const metaWeight = META_WEIGHTS[c.n] || 0;
+  if (metaWeight > 0) {
+    s += Math.round(metaWeight * 2);
+  }
+  
+  return s;
+}
+
+chars.forEach(c=>{
+  c._sc = calcScore(c);
+  c._g  = c.gac ? GAC[c.gac] : null;
+  c._ef = c.r>0 ? +(c._sc/c.r).toFixed(2) : (c._sc>0?99:0);
+});
+const maxSc = Math.max(...chars.map(c=>c._sc));
+
+// ════════════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════════════
+const rc=r=>r===0?'r0':r<=3?'r3':r<=5?'r5':r<=7?'r7':'r9';
+const scl=s=>s>=16?'s':s>=10?'a':s>=6?'b':'c';
+const bc=s=>s>=16?'#f5c842':s>=10?'#0088dd':s>=6?'#226644':'#1a1a1a';
+const tc=t=>({GL:'#cc44ff',BESKAR:'#f5c842',KYBER:'#0088dd',AURODIUM:'#22cc77'})[t]||'#333';
+const tbg=t=>({GL:'#0d0022',BESKAR:'#0d0d00',KYBER:'#00080d',AURODIUM:'#000d00'})[t]||'#0d0d0d';
+const mc=m=>({GAC:'mgac',TW:'mtw',TB:'mtb',CQ:'mcq'})[m]||'mgac';
+const dash=()=>'<span class="nil">—</span>';
+const rowCls=s=>s>=16?'ts':s>=10?'ta':s>=6?'tg':'';
+const rkCls=s=>s>=16?'s':s>=10?'a':s>=6?'b':'';
+
+function glBadge(l){
+  if(l.startsWith('GLO')) return`<span class='badge b-glo'>${l}</span>`;
+  if(l.startsWith('AT'))  return`<span class='badge b-at'>${l}</span>`;
+  return`<span class='badge b-gl'>${l}</span>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// FILTER / SORT
+// ════════════════════════════════════════════════════════════
+let af='all', sk='score';
+function pass(c){
+  const q=document.getElementById('srch').value.toLowerCase();
+  if(q&&!c.n.toLowerCase().includes(q)&&!(c.s||'').toLowerCase().includes(q)) return false;
+  if(af==='all')    return true;
+  if(af==='gl')     return c.gl.length>0;
+  if(af==='glunl')  return c.glUnlocks.length>0;
+  if(af==='jgunl')  return c.jgUnlocks.length>0;
+  if(af==='capunl') return c.capShips.length>0;
+  if(af==='ab')     return c.abList.length>0 || !!c.ab;
+  if(af==='sbp')    return c.raidList.length > 0;
+  if(af==='ship')   return !!c.ship;
+  if(af==='omi')    return (c.o||[]).length>0;
+  if(af==='raid')   return c.raidList.length>0 || !!c.raid;
+  if(af==='cq')     return c.cq===1;
+  if(af==='lst')    return c.lst===1;
+  if(af==='gltier') return c._g&&c._g.tier==='GL';
+  if(af==='kyber')  return c.zTop>=6;
+  return true;
+}
+function sortFn(a,b){
+  if(sk==='score') return b._sc-a._sc||a.r-b.r;
+  if(sk==='relic') return a.r-b.r||b._sc-a._sc;
+  if(sk==='eff')   return b._ef-a._ef||b._sc-a._sc;
+  if(sk==='gac')   return(b._g?b._g.ov:0)-(a._g?a._g.ov:0);
+  if(sk==='zeta')  return b.zScore-a.zScore||b._sc-a._sc;
+  return a.n.localeCompare(b.n);
+}
+
+// ════════════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════════════
+function render(){
+  const data=chars.filter(pass).sort(sortFn);
+  const tb=document.getElementById('tb');
+  const nr=document.getElementById('nr');
+  if(!data.length){tb.innerHTML='';nr.style.display='block';renderStats(data);return;}
+  nr.style.display='none';
+
+  tb.innerHTML=data.map((c,i)=>{
+    const g=c._g;
+    const pct=Math.round(c._sc/maxSc*100);
+
+    // GAC cell
+    let gacH=dash();
+    if(g){
+      const col=tc(g.tier),bg=tbg(g.tier);
+      const op=Math.round(g.off/10*100);
+      const dp=g.def!=null?Math.round(g.def/10*100):0;
+      gacH=`<div>
+        <span class='gt' style='background:${bg};color:${col};border:1px solid ${col}44'>${g.tier} ${g.ov}${g.mo>0?' ⚡'+g.mo:''}</span>
+        <div class='gr'><span class='gl2'>OFF</span><div class='gb'><div style='width:${op}%;height:100%;background:#1a6633'></div></div><span class='gn' style='color:#22cc77'>${g.off}</span></div>
+        <div class='gr'><span class='gl2'>DEF</span><div class='gb'><div style='width:${dp}%;height:100%;background:#1a3366'></div></div><span class='gn' style='color:#4488ff'>${g.def!=null?g.def:'—'}</span></div>
+      </div>`;
+    }
+
+    // Unlocks cell — GL req/unlocks (same thing), JG unlocks, capital ships
+    let unlockLines=[];
+    c.gl.forEach(req=>unlockLines.push(`<div class='ul ul-gl'>🔓 GL req: <b>${req}</b></div>`));
+    c.jgUnlocks.forEach(jg=>unlockLines.push(`<div class='ul ul-jg'>🗺 JG: <b>${jg}</b></div>`));
+    c.capShips.forEach(cs=>unlockLines.push(`<div class='ul ul-cap'>🚀 Cap: <b>${cs}</b></div>`));
+    const unlockH=unlockLines.length?`<div class='unlocks'>${unlockLines.join('')}</div>`:dash();
+
+    // Omicrons
+    let oH=dash();
+    if((c.o||[]).length) oH=c.o.map(o=>
+      `<div class='oe'>
+        <div class='od ${o.t.toLowerCase()}'></div>
+        <span class='om ${mc(o.m)}'>${o.m}</span>
+        <span class='ot'>${o.x}</span>
+      </div>`
+    ).join('');
+
+    // Name cell badges
+    const lstB   = c.lst?`<span class='badge b-lst'>LST</span>`:(c.jg?`<span class='badge b-jg'>JG</span>`:'');
+    const gloB   = c.gloReq?`<span class='badge b-glo'>GLO</span>`:'';
+    const atB    = c.atReq ?`<span class='badge b-at'>AT</span>`:'';
+    const cqB    = c.cq   ?`<span class='badge b-cq'>CQ</span>`:'';
+    const raidB  = (c.raidList.length>0||c.raid) ?`<span class='badge b-raid' title='${c.raidList.join(', ')||c.raid}'>RAID×${c.raidList.length||1}</span>`:'';
+    const shipB  = c.ship ?`<span class='badge b-ship'>SHIP</span>`:'';
+    const capB   = c.capShips.length ?`<span class='badge b-caps'>CAP ×${c.capShips.length}</span>`:'';
+
+    return`<tr class='${rowCls(c._sc)}'>
+      <td><span class='rk ${rkCls(c._sc)}'>${i+1}</span></td>
+      <td>
+        <div class='cname'>${c.n}</div>
+        <div class='csub'>${c.s||''}</div>
+        <div class='cbadges'>${lstB}${gloB}${atB}${cqB}${capB}${raidB}${shipB}</div>
+      </td>
+      <td><div class='sw'>
+        <span class='sn ${scl(c._sc)}'>${c._sc}</span>
+        <div class='sbg'><div class='sf' style='width:${pct}%;background:${bc(c._sc)}'></div></div>
+      </div></td>
+      <td><span class='rn ${rc(c.r)}'>${c.r===0?'R0':'R'+c.r}</span></td>
+      <td style='font-size:10px;font-weight:700;color:${c._ef>=3?'#0088dd':c._ef>=2?'#555':'#2a2a2a'}'>${c._ef===99?'∞':c._ef}</td>
+      <td>${gacH}</td>
+      <td style='max-width:220px'>${unlockH}</td>
+      <td>${c.ship?`<span style="font-size:10px;color:#4488ff">${c.ship}</span>`:dash()}</td>
+      <td>${(c.abList.length>0)?`<span style="font-size:10px;color:#ff9966;line-height:1.5">${c.abList.join('<br>')}</span>`:(c.ab?`<span style="font-size:10px;color:#ff7777;line-height:1.4">${c.ab}</span>`:dash())}</td>
+      <td style='max-width:200px'>${c.zList.length?`<div style="display:flex;flex-direction:column;gap:2px">${c.zList.map(z=>`<div style='font-size:9px;line-height:1.4'><span style='display:inline-block;padding:1px 4px;border-radius:2px;font-weight:700;background:${TIER_BG[z.t]};color:${TIER_COLOR[z.t]};border:1px solid ${TIER_COLOR[z.t]}33;margin-right:3px'>${TIER_LABEL[z.t]}</span><span style='color:#888'>${z.z}</span></div>`).join('')}</div>`:dash()}</td>
+      <td style='max-width:260px'>${oH}</td>
+    </tr>`;
+  }).join('');
+
+  renderStats(data);
+}
+
+function renderStats(data){
+  document.getElementById('stats').innerHTML=`
+    <b>${data.length}</b> characters &nbsp;|&nbsp;
+    Score≥16 <b style='color:#f5c842'>${data.filter(c=>c._sc>=16).length}</b>
+    Score≥10 <b style='color:#0088dd'>${data.filter(c=>c._sc>=10&&c._sc<16).length}</b>
+    Score≥6 <b style='color:#226644'>${data.filter(c=>c._sc>=6&&c._sc<10).length}</b>
+    &nbsp;|&nbsp;
+    GL reqs <b style='color:#f5c842'>${data.filter(c=>c.gl.length>0).length}</b>
+    GL unlocks <b style='color:#dd88ff'>${data.filter(c=>c.glUnlocks.length>0).length}</b>
+    JG unlocks <b style='color:#bb7722'>${data.filter(c=>c.jgUnlocks.length>0).length}</b>
+    Cap ships <b style='color:#00bbaa'>${data.filter(c=>c.capShips.length>0).length}</b>
+    Own ships <b style='color:#4488ff'>${data.filter(c=>c.ship).length}</b>
+    Conquest <b style='color:#ff8800'>${data.filter(c=>c.cq).length}</b>
+    LST <b style='color:#00bbaa'>${data.filter(c=>c.lst).length}</b>
+  `;
+}
+
+document.querySelectorAll('.ctrl button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.ctrl button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    af=b.dataset.f;
+    render();
+  });
+});
+document.getElementById('srt').addEventListener('change',e=>{sk=e.target.value;render();});
+document.getElementById('srch').addEventListener('input',render);
+render();
+
+
+// ════════════════════════════════════════════════════════════
+// TAB SWITCHER
+// ════════════════════════════════════════════════════════════
+function switchTab(tab) {
+  ['scoring','roster'].forEach(t => {
+    const p = document.getElementById('panel-'+t);
+    const b = document.getElementById('tbtn-'+t);
+    if(p) p.style.display = t === tab ? 'block' : 'none';
+    if(b) b.classList.toggle('on', t === tab);
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// DEFID LOOKUP
+// ════════════════════════════════════════════════════════════
+const DEFID = {
+  // NOTE: There are THREE different Rey characters!
+  // - "Rey" (GL Rey) → base_id "GLREY", is_galactic_legend = true
+  // - "Rey (Scavenger)" → base_id "REY", starter character
+  // - "Rey (Jedi Training)" → base_id "REYJEDITRAINING", Journey Guide unlock
+  "Rey":"GLREY",
+  "Rey (Jedi Training)":"REYJEDITRAINING",
+  "Supreme Leader Kylo Ren":"SUPREMELEADERKYLOREN",
+  "Emperor Palpatine":"EMPERORPALPATINE",
+  "Grand Master Yoda":"GRANDMASTERYODA",
+  "Commander Luke Skywalker":"COMMANDERLUKESKYWALKER",
+  "R2-D2":"R2D2_LEGENDARY",
+  "C-3PO":"C3POLEGENDARY",
+  "BB-8":"BB8",
+  "Chewbacca":"CHEWBACCALEGENDARY",
+  "Padmé Amidala":"PADMEAMIDALA",
+  "Grand Admiral Thrawn":"GRANDADMIRALTHRAWN",
+  "General Kenobi":"GENERALKENOBI",
+  "0-0-0":"TRIPLEZERO",
+  "50R-T":"50RT",
+  "Admiral Ackbar":"ADMIRALACKBAR",
+  "Admiral Piett":"ADMIRALPIETT",
+  "Admiral Raddus":"ADMIRALRADDUS",
+  "Aayla Secura":"AAYLASECURA",
+  "Ahsoka Tano (Snips)":"AHSOKATANO",
+  "Ahsoka Tano (Fulcrum)":"FULCRUMAHSOKA",
+  "ARC Trooper":"ARCTROOPER501ST",
+  "Ahsoka Tano's Jedi Starfighter":"JEDISTARFIGHTERAHSOKATANO",
+  "Anakin's Eta-2 Starfighter":"JEDISTARFIGHTERANAKIN",
+  "Asajj Ventress":"ASAJVENTRESS",
+  "Asajj Ventress (Dark Disciple)":"ASAJJDARKDISCIPLE",
+  "Aurra Sing":"AURRA_SING",
+  "B1 Battle Droid":"B1BATTLEDROIDV2",
+  "B2 Super Battle Droid":"B2SUPERBATTLEDROID",
+  "Barriss Offee":"BARRISSOFFEE",
+  "Bastila Shan":"BASTILASHAN",
+  "Bastila Shan (Fallen)":"BASTILASHANDARK",
+  "Baze Malbus":"BAZEMALBUS",
+  "Biggs Darklighter":"BIGGSDARKLIGHTER",
+  "Biggs Darklighter's X-wing":"XWINGRED3",
+  "Bistan":"BISTAN",
+  "Bistan's U-wing":"UWINGSCARIF",
+  "BTL-B Y-wing Starfighter":"YWINGCLONEWARS",
+  "Boba Fett":"BOBAFETT",
+  "Boss Nass":"BOSSNASS",
+  "Bossk":"BOSSK",
+  "Bo-Katan Kryze":"BOKATAN",
+  "Bo-Katan (Mand'alor)":"BOKATANMANDALORE",
+  "Boushh (Leia Organa)":"BOUSHH",
+  "Brutus":"BRUTUS",
+  "CC-1119 \"Appo\"":"APPO",
+  "CC-2224 \"Cody\"":"CC2224",
+  "CT-21-0408 \"Echo\"":"CT210408",
+  "CT-5555 \"Fives\"":"CT5555",
+  "CT-7567 \"Rex\"":"CT7567",
+  "CX-2":"OPERATIVE",
+  "Cad Bane":"CADBANE",
+  "Cal Kestis":"CALKESTIS",
+  "Canderous Ordo":"CANDEROUSORDO",
+  "Captain Drogan":"CAPTAINDROGAN",
+  "Captain Enoch":"CAPTAINENOCH",
+  "Captain Han Solo":"HOTHHAN",
+  "Captain Ithano":"ITHANO",
+  "Captain Phasma":"PHASMA",
+  "Captain Rex":"CAPTAINREX",
+  "Captain Silvo":"CAPTAINSILVO",
+  "Cara Dune":"CARADUNE",
+  "Cassian Andor":"CASSIANANDOR",
+  "Cassian's U-wing":"UWINGROGUEONE",
+  "Cere Junda":"CEREJUNDA",
+  "Chief Chirpa":"CHIEFCHIRPA",
+  "Chimaera":"CAPITALCHIMAERA",
+  "Chirrut Îmwe":"CHIRRUTIMWE",
+  "Chirrut Imwe":"CHIRRUTIMWE",
+  "Chopper":"CHOPPERS3",
+  "Cinta Kaz":"CINTA",
+  "Clone Sergeant - Phase I":"CLONESERGEANTPHASEI",
+  "Clone Sergeant's ARC-170":"ARC170CLONESERGEANT",
+  "Clone Wars Chewbacca":"CLONEWARSCHEWBACCA",
+  "Commander Ahsoka Tano":"COMMANDERAHSOKA",
+  "Colonel Starck":"COLONELSTARCK",
+  "Count Dooku":"COUNTDOOKU",
+  "Dark Trooper":"DARKTROOPER",
+  "Darth Maul":"MAUL",
+  "Darth Malgus":"DARTHMALGUS",
+  "Darth Malak":"DARTHMALAK",
+  "Darth Nihilus":"DARTHNIHILUS",
+  "Darth Sidious":"DARTHSIDIOUS",
+  "Darth Sion":"DARTHSION",
+  "Darth Talon":"DARTHTALON",
+  "Darth Traya":"DARTHTRAYA",
+  "Darth Vader":"VADER",
+  "Darth Vader (Duel's End)":"VADERDUELSEND",
+  "Dash Rendar":"DASHRENDAR",
+  "Death Trooper":"DEATHTROOPER",
+  "Death Trooper (Peridea)":"DEATHTROOPERPERIDEA",
+  "Dedra Meero":"DEDRAMEERO",
+  "Dengar":"DENGAR",
+  "Director Krennic":"DIRECTORKRENNIC",
+  "Disguised Clone Trooper":"DISGUISEDCLONETROOPER",
+  "Droideka":"DROIDEKA",
+  "Eighth Brother":"EIGHTHBROTHER",
+  "Echo":"BADBATCHECHO",
+  "Embo":"EMBO",
+  "Endurance":"CAPITALJEDICRUISER",
+  "Ewok Elder":"EWOKELDER",
+  "Ewok Scout":"EWOKSCOUT",
+  "Executor":"CAPITALEXECUTOR",
+  "Executrix":"CAPITALSTARDESTROYER",
+  "Ezra Bridger":"EZRABRIDGERS3",
+  "Fennec Shand":"FENNECSHAND",
+  "Fifth Brother":"FIFTHBROTHER",
+  "Finalizer":"CAPITALFINALIZER",
+  "Finn":"FINN",
+  "First Order Executioner":"FIRSTORDEREXECUTIONER",
+  "First Order Officer":"FIRSTORDEROFFICERMALE",
+  "First Order SF TIE Pilot":"FIRSTORDERSPECIALFORCESPILOT",
+  "First Order Stormtrooper":"FIRSTORDERTROOPER",
+  "First Order TIE Fighter":"TIEFIGHTERFIRSTORDER",
+  "First Order TIE Pilot":"FIRSTORDERTIEPILOT",
+  "Gamorrean Guard":"GAMORREANGUARD",
+  "Gar Saxon":"GARSAXON",
+  "Garazeb \"Zeb\" Orrelios":"ZEBS3",
+  "Gauntlet Starfighter":"GAUNTLETSTARFIGHTER",
+  "General Grievous":"GRIEVOUS",
+  "General Hux":"GENERALHUX",
+  "General Skywalker":"GENERALSKYWALKER",
+  "General Syndulla":"GENERALSYNDULLA",
+  "General Veers":"VEERS",
+  "Geonosian Brood Alpha":"GEONOSIANBROODALPHA",
+  "Geonosian Soldier":"GEONOSIANSOLDIER",
+  "Geonosian Soldier's Starfighter":"GEONOSIANSTARFIGHTER2",
+  "Geonosian Spy":"GEONOSIANSPY",
+  "Geonosian Spy's Starfighter":"GEONOSIANSTARFIGHTER3",
+  "Ghost":"GHOST",
+  "Grand Moff Tarkin":"GRANDMOFFTARKIN",
+  "Great Mothers":"GREATMOTHERS",
+  "Greedo":"GREEDO",
+  "Greef Karga":"GREEFKARGA",
+  "Gungan Boomadier":"BOOMADIER",
+  "HK-47":"HK47",
+  "Han Solo":"HANSOLO",
+  "Han's Millennium Falcon":"MILLENNIUMFALCON",
+  "Hera Syndulla":"HERASYNDULLAS3",
+  "Hermit Yoda":"HERMITYODA",
+  "Hondo Ohnaka":"HONDO",
+  "Home One":"CAPITALMONCALAMARICRUISER",
+  "Hoth Rebel Scout":"HOTHREBELSCOUT",
+  "Hoth Rebel Soldier":"HOTHREBELSOLDIER",
+  "Hound's Tooth":"HOUNDSTOOTH",
+  "Hunter":"BADBATCHHUNTER",
+  "Huyang":"HUYANG",
+  "IG-100 MagnaGuard":"MAGNAGUARD",
+  "IG-11":"IG11",
+  "IG12":"IG12",
+  "IG-2000":"IG2000",
+  "IG-86 Sentinel Droid":"IG86SENTINELDROID",
+  "IG-88":"IG88",
+  "IG-90":"IG90",
+  "Iden Versio":"IDENVERSIOEMPIRE",
+  "Imperial Super Commando":"IMPERIALSUPERCOMMANDO",
+  "Imperial TIE Bomber":"TIEBOMBERIMPERIAL",
+  "Imperial TIE Fighter":"TIEFIGHTERIMPERIAL",
+  "Inquisitor Barriss":"INQUISITORBARRISS",
+  "Jango Fett":"JANGOFETT",
+  "Jawa":"JAWA",
+  "Jedi Knight Anakin":"ANAKINKNIGHT",
+  "Jedi Knight Guardian":"JEDIKNIGHTGUARDIAN",
+  "Jedi Knight Luke Skywalker":"JEDIKNIGHTLUKE",
+  "Jolee Bindo":"JOLEEBINDO",
+  "Jocasta Nu":"JOCASTANU",
+  "Juhani":"JUHANI",
+  "Jyn Erso":"JYNERSO",
+  "K-2SO":"K2SO",
+  "KX Security Droid":"KXSECURITYDROID",
+  "Kanan Jarrus":"KANANJARRUSS3",
+  "Kelleran Beq":"KELLERANBEQ",
+  "Kleya Marki":"KLEYA",
+  "Kix":"KIX",
+  "Krrsantan":"KRRSANTAN",
+  "Kuiil":"KUIIL",
+  "Kyle Katarn":"KYLEKATARN",
+  "Kylo Ren":"KYLOREN",
+  "Kylo Ren (Unmasked)":"KYLORENUNMASKED",
+  "Kylo Ren's Command Shuttle":"COMMANDSHUTTLE",
+  "Lando Calrissian":"ADMINISTRATORLANDO",
+  "Lobot":"LOBOT",
+  "Luke Skywalker (Farmboy)":"LUKESKYWALKER",
+  "Mace Windu":"MACEWINDU",
+  "Major Partagaz":"MAJORPARTAGAZ",
+  "Mara Jade, The Emperor's Hand":"MARAJADE",
+  "Marrok":"MARROK",
+  "Master Qui-Gon":"MASTERQUIGON",
+  "Merrin":"MERRIN",
+  "Mission Vao":"MISSIONVAO",
+  "Mob Enforcer":"HUMANTHUG",
+  "Moff Gideon":"MOFFGIDEONS1",
+  "Mon Mothma":"MONMOTHMA",
+  "Morgan Elsbeth":"MORGANELSBETH",
+  "Mother Talzin":"MOTHERTALZIN",
+  "Night Trooper":"NIGHTTROOPER",
+  "Nightsister Spirit":"NIGHTSISTERSPIRIT",
+  "Nightsister Zombie":"NIGHTSISTERZOMBIE",
+  "Negotiator":"CAPITALNEGOTIATOR",
+  "Ninth Sister":"NINTHSISTER",
+  "Nute Gunray":"NUTEGUNRAY",
+  "Obi-Wan Kenobi (Old Ben)":"OLDBENKENOBI",
+  "Old Daka":"DAKA",
+  "Omega (Fugitive)":"OMEGAS3",
+  "Outrider":"OUTRIDER",
+  "Padawan Obi-Wan":"PADAWANOBIWAN",
+  "Padawan Sabine Wren":"PADAWANSABINE",
+  "Paploo":"PAPLOO",
+  "Paz Vizsla":"PAZVIZSLA",
+  "Phantom II":"PHANTOM2",
+  "Poe Dameron":"POE",
+  "Poggle the Lesser":"POGGLETHELESSER",
+  "Plo Koon":"PLOKOON",
+  "Princess Kneesaa":"PRINCESSKNEESAA",
+  "Princess Leia":"PRINCESSLEIA",
+  "Profundity":"PROFUNDITY",
+  "Punishing One":"PUNISHINGONE",
+  "Qui-Gon Jinn":"QUIGONJINN",
+  "Quiggold":"QUIGGOLD",
+  "RC-1262 \"Scorch\"":"SCORCH",
+  "Range Trooper":"RANGETROOPER",
+  "Razor Crest":"RAZORCREST",
+  "Raddus":"CAPITALRADDUS",
+  "Rebel Officer Leia Organa":"HOTHLEIA",
+  "Rebel Y-wing":"YWINGREBEL",
+  "Rebel Y-Wing":"YWINGREBEL",
+  "Resistance Hero Finn":"EPIXFINN",
+  "Resistance Hero Poe":"EPIXPOE",
+  "Resistance Pilot":"RESISTANCEPILOT",
+  "Resistance Trooper":"RESISTANCETROOPER",
+  "Rex's ARC-170":"ARC170REX",
+  "Rey's Millennium Falcon":"MILLENNIUMFALCONEP7",
+  "Rey (Scavenger)":"REY",
+  "Royal Guard":"ROYALGUARD",
+  "Rose Tico":"ROSETICO",
+  "STAP":"STAP",
+  "Sabine Wren":"SABINEWRENS3",
+  "Savage Opress":"SAVAGEOPRESS",
+  "Saw Gerrera":"SAWGERRERA",
+  "Scarif Rebel Pathfinder":"SCARIFREBEL",
+  "Scimitar":"SITHINFILTRATOR",
+  "Scout Trooper":"SCOUTTROOPER_V3",
+  "Fury-class Interceptor":"SCYTHE",
+  "Mark VI Interceptor":"SITHSUPREMACYCLASS",
+  "TIE Dagger":"TIEDAGGER",
+  "B-28 Extinction-class Bomber":"SITHBOMBER",
+  "Sith Fighter":"SITHFIGHTER",
+  "Ebon Hawk":"EBONHAWK",
+  "Second Sister":"SECONDSISTER",
+  "Seventh Sister":"SEVENTHSISTER",
+  "Shaak Ti":"SHAAKTI",
+  "Shin Hati":"SHINHATI",
+  "Shoretrooper":"SHORETROOPER",
+  "Sith Assassin":"SITHASSASSIN",
+  "Sith Empire Trooper":"SITHTROOPER",
+  "Sith Marauder":"SITHMARAUDER",
+  "Sith Trooper":"FOSITHTROOPER",
+  "Skiff Guard Lando":"UNDERCOVERLANDO",
+  "Skiff Guard (Lando Calrissian)":"UNDERCOVERLANDO",
+  "Slave I":"SLAVE1",
+  "Snowtrooper":"SNOWTROOPER",
+  "Stormtrooper":"STORMTROOPER",
+  "Stormtrooper Han":"STORMTROOPERHAN",
+  "Stormtrooper Luke":"STORMTROOPERLUKE",
+  "Starkiller":"STARKILLER",
+  "Sun Fac":"SUNFAC",
+  "Sun Fac's Geonosian Starfighter":"GEONOSIANSTARFIGHTER1",
+  "t3_m4":"T3_M4",
+  "Carth Onasi":"CARTHONASI",
+  "Depa Billaba":"DEPABILLABA",
+  "TIE Advanced x1":"TIEADVANCED",
+  "TIE Fighter Pilot":"TIEFIGHTERPILOT",
+  "TIE Silencer":"TIESILENCER",
+  "Talia":"TALIA",
+  "Tarfful":"TARFFUL",
+  "Temple Guard":"VANGUARDTEMPLEGUARD",
+  "Tech":"BADBATCHTECH",
+  "The Mandalorian":"THEMANDALORIAN",
+  "The Mandalorian (Beskar Armor)":"THEMANDALORIANBESKARARMOR",
+  "Tusken Raider":"TUSKENRAIDER",
+  "Threepio & Chewie":"C3POCHEWBACCA",
+  "URoRRuR'R'R":"URORRURRR",
+  "Ugnaught":"UGNAUGHT",
+  "Umbaran Starfighter":"UMBARANSTARFIGHTER",
+  "Vel Sartha":"VEL",
+  "Vane":"VANE",
+  "Veteran Smuggler Chewbacca":"SMUGGLERCHEWBACCA",
+  "Veteran Smuggler Han Solo":"SMUGGLERHAN",
+  "Vulture Droid":"VULTUREDROID",
+  "Wampa":"WAMPA",
+  "Wat Tambor":"WATTAMBOR",
+  "Wedge Antilles":"WEDGEANTILLES",
+  "Wedge Antilles's X-wing":"XWINGRED2",
+  "Wicket":"WICKET",
+  "Wrecker":"BADBATCHWRECKER",
+  "Xanadu Blood":"XANADUBLOOD",
+  "Yoda & Chewie":"YODACHEWBACCA",
+  "Zaalbar":"ZAALBAR",
+  "Zam Wesell":"ZAMWESELL"
+};
+
+function parseRelicNeeded(label){
+  // Check for ship star requirement (S prefix)
+  const shipMatch = label.match(/S(\d+)/);
+  if (shipMatch) return {needed: parseInt(shipMatch[1]), isShip: true};
+  
+  // Check for character relic requirement (R prefix)
+  const relicMatch = label.match(/R(\d+)/);
+  if (relicMatch) return {needed: parseInt(relicMatch[1]), isShip: false};
+  
+  // Default: gear-only requirement (no relic/ship stars specified)
+  return {needed: 0, isShip: false};
+}
+function apiRelicToGame(rt){if(!rt||rt<2)return 0;return rt-1;}
+
+// ════════════════════════════════════════════════════════════
+// BUILD UNLOCK TARGETS
+// ════════════════════════════════════════════════════════════
+function buildUnlockTargets(){
+  const targets=[];
+  
+  // Helper: Calculate numeric score based on requirements
+  // Score = base + meta bonus
+  // Base: (num chars × 10) + (avg relic level × 5) + type bonus
+  // Meta bonus: sum of character GAC meta weights (adoption-rate-driven)
+  function calculateScore(reqs, type) {
+    if (!reqs || reqs.length === 0) return 0;
+    
+    // Base scoring
+    const totalRelics = reqs.reduce((sum, r) => sum + (r.neededRelic || 0), 0);
+    const avgRelic = totalRelics / reqs.length;
+    const typeBonus = type === 'gl' ? 100 : 50; // GLs worth more than JG
+    const baseScore = (reqs.length * 10) + (avgRelic * 5) + typeBonus;
+    
+    // Meta overlay: GAC performance value
+    // Characters with high-adoption GAC omicrons/zetas increase event value
+    const metaBonus = reqs.reduce((sum, r) => {
+      const charWeight = META_WEIGHTS[r.name] || 0;
+      return sum + charWeight;
+    }, 0);
+    
+    // Scale meta bonus: each meta weight point = 5 score points
+    // Example: Rey DSV (7.92 meta) = +40 bonus, The Stranger (6.69) = +33 bonus
+    const scaledMetaBonus = metaBonus * 5;
+    
+    const finalScore = Math.round(baseScore + scaledMetaBonus);
+    
+    // Debug logging
+    if (type === 'gl' && metaBonus > 10) {
+      const topMeta = reqs
+        .map(r => ({ name: r.name, weight: META_WEIGHTS[r.name] || 0 }))
+        .filter(c => c.weight > 5)
+        .sort((a, b) => b.weight - a.weight)
+        .slice(0, 3)
+        .map(c => `${c.name}(${c.weight.toFixed(1)})`)
+        .join(', ');
+      console.log(`[META] Event: base=${baseScore}, meta=${metaBonus.toFixed(1)} [${topMeta}], final=${finalScore}`);
+    }
+    
+    return finalScore;
+  }
+
+  // GL targets
+  const GL_NAME_MAP={
+    "Rey":"Rey","SLKR":"Supreme Leader Kylo Ren",
+    "JML":"Jedi Master Luke Skywalker","SEE":"Sith Eternal Emperor",
+    "JMK":"Jedi Master Kenobi","LV":"Lord Vader","Jabba":"Jabba the Hutt",
+    "GLO":"Leia Organa","AT":"Ahsoka Tano",
+    "Pirate King Hondo":"Pirate King Hondo Ohnaka"
+  };
+  for(const[glKey,reqMap] of Object.entries(GL_REQ_MAPS)){
+    const reqs=Object.entries(reqMap).map(([charName,label])=>{
+      const parsed = parseRelicNeeded(label);
+      return {
+        name: charName,
+        defId: DEFID[charName]||null,
+        neededRelic: parsed.needed,
+        isShip: parsed.isShip,
+        label
+      };
+    });
+    const unlockName=GL_NAME_MAP[glKey]||glKey;
+    const score = calculateScore(reqs, 'gl');
+    console.log(`[DEBUG] GL ${glKey}: ${reqs.length} chars, score = ${score}`);
+    targets.push({id:'gl_'+glKey,name:glKey+' (GL)',unlockName,
+      type:'gl',score:score,reqs});
+  }
+
+  // JG targets — invert JG_UNLOCK map
+  const jgEvents={};
+  for(const[charName,events] of Object.entries(JG_UNLOCK)){
+    for(const ev of events){
+      if(!jgEvents[ev])jgEvents[ev]=[];
+      jgEvents[ev].push(charName);
+    }
+  }
+  const JG_RELIC_OVERRIDES={
+    "Baylan Skoll":{"Grand Admiral Thrawn":7,"Great Mothers":7,"Marrok":7,"Morgan Elsbeth":7,"Shin Hati":7},
+    "Grand Inquisitor":{"Ninth Sister":5,"Fifth Brother":5,"Seventh Sister":5,"Second Sister":5,"Eighth Brother":5},
+    "Starkiller":{"Mara Jade, The Emperor's Hand":5,"Darth Talon":5,"Dash Rendar":5,"Kyle Katarn":5},
+    "Bo-Katan Mandalor":{"The Mandalorian (Beskar Armor)":7,"Paz Vizsla":7,"IG12":7,"Kelleran Beq":7},
+    "Jedi Knight Luke Skywalker":{"Commander Luke Skywalker":3,"Rebel Officer Leia Organa":3,"Captain Han Solo":3,"Chewbacca":3,"C-3PO":3,"Lando Calrissian":3,"Hermit Yoda":3,"Darth Vader":3,"Wampa":3},
+    "Leviathan":{"Darth Revan":9,"Darth Malak":9,"Sith Empire Trooper":7,"Sith Trooper":7,"Darth Maul":7,"HK-47":7,"Bastila Shan":7,"Sith Assassin":5,"50R-T":5},
+    "Profundity":{"Admiral Raddus":9,"Cassian Andor":8,"Dash Rendar":7,"Mon Mothma":5,"Bistan":5,"Jyn Erso":5,"Hera Syndulla":5},
+    "Executor":{"Darth Vader":7,"Admiral Piett":8,"Boba Fett":8,"TIE Fighter Pilot":5,"Bossk":7,"IG-88":5,"Imperial Stormtrooper":5},
+  };
+  
+  // Ship names - these require stars only, not relics
+  const SHIP_NAMES = new Set([
+    "Outrider", "Cassian's U-wing", "Bistan's U-wing", "Wedge Antilles's X-wing",
+    "Biggs Darklighter's X-wing", "Rebel Y-wing", "Ghost",
+    "TIE Advanced x1", "Razor Crest", "Hound's Tooth", "Slave I",
+    "IG-2000", "Imperial TIE Fighter", "Imperial TIE Bomber",
+    "Rey's Millennium Falcon", "Resistance X-wing", "Poe Dameron's X-wing",
+    "Ebon Hawk", "Ahsoka Tano's Jedi Starfighter", "Lando's Millennium Falcon",
+    "Raddus", "Xanadu Blood", "Leviathan",
+    "Fury-class Interceptor", "Mark VI Interceptor", "TIE Dagger",
+    "B-28 Extinction-class Bomber", "Scimitar", "Sith Fighter"
+  ]);
+  
+  const JG_UNLOCK_NAME={
+    "CLS":"Commander Luke Skywalker","Rey JT":"Rey (Jedi Training)",
+    "Chewbacca JG":"Chewbacca","C-3PO JG":"C-3PO","Thrawn":"Grand Admiral Thrawn",
+    "Grand Master Yoda":"Grand Master Yoda","Emperor Palp":"Emperor Palpatine",
+    "R2-D2":"R2-D2","BB-8":"BB-8","JK Revan":"Jedi Knight Revan",
+    "Darth Revan":"Darth Revan","Leviathan":"Leviathan",
+    "Jedi Master Mace Windu":"Jedi Master Mace Windu",
+    "Padme Amidala":"Padmé Amidala","Baylan Skoll":"Baylan Skoll",
+    "Pirate King Hondo":"Pirate King Hondo",
+    "Jedi Knight Cal Kestis":"Jedi Knight Cal Kestis",
+    "Grand Inquisitor":"Grand Inquisitor",
+    "Profundity":"Profundity","Starkiller":"Starkiller",
+    "Bo-Katan Mandalor":"Bo-Katan (Mand'alor)",
+    "General Skywalker":"General Skywalker",
+    "Jedi Knight Luke Skywalker":"Jedi Knight Luke Skywalker",
+    "Executor":"Executor",
+  };
+  for(const[evName,charNames] of Object.entries(jgEvents)){
+    const overrides=JG_RELIC_OVERRIDES[evName]||{};
+    const unlockName=JG_UNLOCK_NAME[evName]||evName;
+    const reqs=charNames.map(charName=>{
+      const isShip = SHIP_NAMES.has(charName);
+      const overrideVal = overrides[charName] || 0;
+      
+      // Ships: use S7 format (7 stars), characters: use R/G format
+      let label, neededRelic;
+      if (isShip) {
+        label = 'S7'; // All ships require 7 stars
+        neededRelic = 7; // Ships: neededRelic represents stars, not relics
+      } else if (overrideVal > 0) {
+        label = 'R' + overrideVal; // Character with relic requirement
+        neededRelic = overrideVal;
+      } else {
+        label = 'Any (G12+)'; // Character with gear-only requirement
+        neededRelic = 0;
+      }
+      
+      return {
+        name: charName,
+        defId: DEFID[charName] || null,
+        neededRelic: neededRelic,
+        isShip: isShip,
+        label: label
+      };
+    });
+    const score = calculateScore(reqs, 'jg');
+    targets.push({id:'jg_'+evName,name:evName,unlockName,
+      type:'jg',score:score,reqs});
+  }
+  return targets;
+}
+
+// ════════════════════════════════════════════════════════════
+// ROSTER STATE
+// ════════════════════════════════════════════════════════════
+let rp_roster={};
+let rp_targets=[];
+let rp_filter='all';
+
+// ════════════════════════════════════════════════════════════
+// FETCH ROSTER
+// ════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+// ROSTER CACHE MANAGEMENT
+// ════════════════════════════════════════════════════════════
+
+function loadCachedRoster() {
+  try {
+    const cached = localStorage.getItem('swgoh_roster_cache');
+    if (!cached) return false;
+    
+    const cacheData = JSON.parse(cached);
+    rp_roster = cacheData.roster;
+    
+    // Update UI
+    document.getElementById('ally-code').value = cacheData.allyCode;
+    document.getElementById('rp-placeholder').style.display='none';
+    document.getElementById('rp-summary').style.display='block';
+    
+    rp_targets=buildUnlockTargets();
+    rp_render();
+    updateCacheDisplay(cacheData);
+    setStatus('✓ Loaded from cache','ok');
+    
+    return true;
+  } catch(e) {
+    console.warn('Failed to load cache:', e);
+    return false;
+  }
+}
+
+function updateCacheDisplay(cacheData) {
+  const age = Date.now() - cacheData.timestamp;
+  const minutes = Math.floor(age / 60000);
+  const hours = Math.floor(age / 3600000);
+  const days = Math.floor(age / 86400000);
+  
+  let timeStr;
+  if (days > 0) timeStr = `${days} day${days > 1 ? 's' : ''} ago`;
+  else if (hours > 0) timeStr = `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  else if (minutes > 0) timeStr = `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  else timeStr = 'just now';
+  
+  const cacheInfo = document.getElementById('cache-info');
+  if (cacheInfo) {
+    cacheInfo.innerHTML = `
+      <span style='color:#888'>📦 Cached: <b style='color:#f5c842'>${cacheData.playerName}</b> (${cacheData.allyCode}) · Updated ${timeStr}</span>
+      <button onclick='clearCache()' style='margin-left:10px;padding:3px 8px;font-size:10px;background:#2a0a0a;border:1px solid #441111;color:#ff5555'>Clear Cache</button>
+    `;
+  }
+}
+
+function clearCache() {
+  if (confirm('Clear cached roster data? You\'ll need to fetch from swgoh.gg again.')) {
+    localStorage.removeItem('swgoh_roster_cache');
+    location.reload();
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// FETCH ROSTER
+// ════════════════════════════════════════════════════════════
+
+async function fetchRoster(){
+  const raw=document.getElementById('ally-code').value.replace(/\D/g,'');
+  if(raw.length<9){setStatus('Enter a valid 9-digit ally code','err');return;}
+  const btn=document.getElementById('ally-fetch-btn');
+  btn.disabled=true;
+  setStatus('Fetching roster...','loading');
+  try{
+    // Use CORS proxy to bypass browser restrictions
+    const apiUrl = 'https://swgoh.gg/api/player/'+raw+'/';
+    const proxyUrl = 'https://api.allorigins.win/raw?url=';
+    const resp=await fetch(proxyUrl + encodeURIComponent(apiUrl));
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    const data=await resp.json();
+    processRoster(data, raw);
+  }catch(e){
+    console.error('Fetch error:', e);
+    setStatus('Failed to fetch roster — use JSON paste method below','err');
+    showCORSHelper(raw);
+  }finally{btn.disabled=false;}
+}
+
+function processRoster(data, allyCode){
+  rp_roster={};
+  const units=data.units||data.roster||[];
+  for(const u of units){
+    const id=(u.data?.base_id||u.base_id||'').toUpperCase();
+    if(!id)continue;
+    const rt=u.data?.relic_tier??u.relic_tier??0;
+    const gl=u.data?.gear_level??u.gear_level??0;
+    const st=u.data?.rarity??u.rarity??u.data?.stars??u.stars??0;
+    const isGL=u.data?.is_galactic_legend??u.is_galactic_legend??false;
+    rp_roster[id]={relic:apiRelicToGame(rt),gear:gl,stars:st,isGL:isGL};
+  }
+  const count=Object.keys(rp_roster).length;
+  console.log('[DEBUG] Processed roster, total characters:', count);
+  
+  // Debug: Show sample of loaded roster
+  const sampleKeys = Object.keys(rp_roster).slice(0, 20);
+  console.log('[DEBUG] First 20 roster defIds:', sampleKeys);
+  
+  // Debug: Check for Emperor Palpatine and Grand Master Yoda specifically
+  const palpatineKeys = Object.keys(rp_roster).filter(k => k.includes('PALPATINE'));
+  const yodaKeys = Object.keys(rp_roster).filter(k => k.includes('YODA'));
+  console.log('[DEBUG] Palpatine variants found:', palpatineKeys);
+  console.log('[DEBUG] Yoda variants found:', yodaKeys);
+  
+  // Debug: Show star counts for JG unlocked characters
+  const jgChars = ['GRANDMASTERYODA', 'C3POLEGENDARY', 'CHEWBACCALEGENDARY', 'GRANDADMIRALTHRAWN', 'EMPERORPALPATINE'];
+  jgChars.forEach(id => {
+    if (rp_roster[id]) {
+      console.log(`[DEBUG] ${id}: ${rp_roster[id].stars}* R${rp_roster[id].relic} G${rp_roster[id].gear}`);
+    }
+  });
+  
+  // Debug: Show GL status for SLKR and Rey characters
+  if (rp_roster['SUPREMELEADERKYLOREN']) {
+    console.log(`[DEBUG] SUPREMELEADERKYLOREN: ${rp_roster['SUPREMELEADERKYLOREN'].stars}* R${rp_roster['SUPREMELEADERKYLOREN'].relic} G${rp_roster['SUPREMELEADERKYLOREN'].gear} | isGL=${rp_roster['SUPREMELEADERKYLOREN'].isGL}`);
+  }
+  if (rp_roster['GLREY']) {
+    console.log(`[DEBUG] GLREY (GL Rey): ${rp_roster['GLREY'].stars}* R${rp_roster['GLREY'].relic} G${rp_roster['GLREY'].gear} | isGL=${rp_roster['GLREY'].isGL}`);
+  }
+  if (rp_roster['REY']) {
+    console.log(`[DEBUG] REY (Scavenger): ${rp_roster['REY'].stars}* R${rp_roster['REY'].relic} G${rp_roster['REY'].gear} | isGL=${rp_roster['REY'].isGL}`);
+  }
+  if (rp_roster['REYJEDITRAINING']) {
+    console.log(`[DEBUG] REYJEDITRAINING: ${rp_roster['REYJEDITRAINING'].stars}* R${rp_roster['REYJEDITRAINING'].relic} G${rp_roster['REYJEDITRAINING'].gear} | isGL=${rp_roster['REYJEDITRAINING'].isGL}`);
+  }
+  
+  // Debug: Show relic conversion for Great Mothers (if present)
+  if (rp_roster['GREATMOTHERS']) {
+    console.log(`[DEBUG] Great Mothers: ${rp_roster['GREATMOTHERS'].stars}* R${rp_roster['GREATMOTHERS'].relic} G${rp_roster['GREATMOTHERS'].gear}`);
+    console.log('[DEBUG] Note: API relic_tier converts to game relic. relic_tier=5 → R4, relic_tier=6 → R5, etc.');
+  }
+  
+  // Cache the roster data with timestamp
+  const cacheData = {
+    allyCode: allyCode || document.getElementById('ally-code').value.replace(/\D/g,''),
+    roster: rp_roster,
+    timestamp: Date.now(),
+    playerName: data.name || data.data?.name || 'Unknown Player'
+  };
+  try {
+    localStorage.setItem('swgoh_roster_cache', JSON.stringify(cacheData));
+  } catch(e) {
+    console.warn('Failed to cache roster:', e);
+  }
+  
+  setStatus('✓ Loaded '+count+' units (cached)','ok');
+  updateCacheDisplay(cacheData);
+  document.getElementById('rp-placeholder').style.display='none';
+  document.getElementById('rp-summary').style.display='block';
+  rp_targets=buildUnlockTargets();
+  rp_render();
+}
+
+function showCORSHelper(allyCode){
+  document.getElementById('rp-placeholder').innerHTML=`
+    <div style='max-width:540px;margin:0 auto;text-align:left;background:#0e0e0e;
+      border:1px solid #2a2a2a;border-radius:10px;padding:24px;'>
+      <h3 style='color:#f5c842;margin:0 0 12px'>⚠️ Auto-fetch failed</h3>
+      <p style='color:#888;font-size:12px;line-height:1.7'>
+        The CORS proxy may be temporarily unavailable. To manually load your roster:<br><br>
+        <b style='color:#ccc'>Step 1.</b> Open this link in a new tab:<br>
+        <a href='https://swgoh.gg/api/player/${allyCode}/' target='_blank'
+           style='color:#66aaff;word-break:break-all;font-size:11px'>
+           https://swgoh.gg/api/player/${allyCode}/</a><br><br>
+        <b style='color:#ccc'>Step 2.</b> Select All (Ctrl+A) and Copy (Ctrl+C)<br><br>
+        <b style='color:#ccc'>Step 3.</b> Paste below and click Load:
+      </p>
+      <textarea id='json-paste' placeholder='Paste roster JSON here...'
+        style='width:100%;height:110px;background:#111;border:1px solid #333;
+          border-radius:6px;color:#ccc;padding:10px;font-size:11px;
+          box-sizing:border-box;margin:12px 0;resize:vertical;font-family:monospace;'></textarea>
+
+  <button onclick='loadPastedJSON()'
+    style='background:#f5c842;color:#000;border:none;border-radius:6px;
+      padding:9px 20px;font-weight:700;cursor:pointer;font-size:13px;'>
+    Load Roster
+  </button>
+</div>`;
+
+document.getElementById('rp-placeholder').style.display='block';
+}
+
+function loadPastedJSON(){
+try{
+const txt=document.getElementById('json-paste').value.trim();
+const data=JSON.parse(txt);
+processRoster(data);
+}catch(e){alert('Invalid JSON — copy the full page content from the swgoh.gg API link.');}
+}
+
+function setStatus(msg,cls){
+const el=document.getElementById('ally-status');
+el.textContent=msg;
+el.className='rp-status '+(cls||'');
+}
+
+// ════════════════════════════════════════════════════════════
+// GAP COMPUTATION
+// ════════════════════════════════════════════════════════════
+function computeGap(target){
+// GL COMPLETION CHECK:
+// If this is a GL and you already have the GL at 7*, it's completed!
+// IMPORTANT: Must check is_galactic_legend flag to avoid false positives
+// (e.g., Rey Scavenger vs GL Rey - both use base_id "REY")
+if (target.type === 'gl' && target.unlockName) {
+  const unlockDefId = DEFID[target.unlockName];
+  if (unlockDefId) {
+    const unlockEntry = rp_roster[unlockDefId.toUpperCase()];
+    if (unlockEntry && unlockEntry.stars >= 7 && unlockEntry.isGL === true) {
+      console.log(`[DEBUG] GL ${target.name} already unlocked! ${target.unlockName} is ${unlockEntry.stars}* R${unlockEntry.relic} in roster (isGL=true)`);
+      return {
+        reqs: target.reqs.map(r => ({...r, yourRelic: 0, yourGear: 0, yourStars: 0, met: true, gap: 0})),
+        totalGap: 0,
+        pct: 100
+      };
+    }
+  }
+}
+
+// JOURNEY GUIDE COMPLETION CHECK:
+// If this is a JG unlock and you already have the character at 7*, it's completed!
+if (target.type === 'jg' && target.unlockName) {
+  const unlockDefId = DEFID[target.unlockName];
+  if (unlockDefId) {
+    const unlockEntry = rp_roster[unlockDefId.toUpperCase()];
+    if (unlockEntry && unlockEntry.stars >= 7) {
+      console.log(`[DEBUG] JG ${target.name} already unlocked! ${target.unlockName} is ${unlockEntry.stars}* in roster`);
+      // Return completed status
+      return {
+        reqs: target.reqs.map(r => ({...r, yourRelic: 0, yourGear: 0, yourStars: 0, met: true, gap: 0})),
+        totalGap: 0,
+        pct: 100
+      };
+    }
+  }
+}
+
+let totalNeeded=0,totalHave=0,totalGap=0;
+let debugInfo = { target: target.name, lookups: [] };
+
+const reqs=target.reqs.map(r=>{
+const defId=r.defId?r.defId.toUpperCase():null;
+const entry=defId?(rp_roster[defId]||null):null;
+
+// Debug: track lookup results
+if (debugInfo.lookups.length < 3) { // Only log first 3 to avoid spam
+  debugInfo.lookups.push({
+    char: r.name,
+    defId: defId,
+    found: !!entry,
+    yourRelic: entry ? entry.relic : 'NOT FOUND',
+    neededRelic: r.neededRelic
+  });
+}
+
+// Debug: Special logging for Emperor Palpatine and Grand Master Yoda
+if (r.name === "Emperor Palpatine" || r.name === "Grand Master Yoda") {
+  console.log('[DEBUG] Looking up', r.name, '| defId:', defId, '| Found:', !!entry, '| Your relic:', entry ? entry.relic : 'NOT IN ROSTER');
+}
+
+const yourRelic=entry?entry.relic:-1;
+const yourGear=entry?entry.gear:0;
+const yourStars=entry?entry.stars:0;
+const needed=r.neededRelic;
+let gap=0,met=false;
+
+// Ships: compare stars, not relics (ships don't have gear/relic)
+if(r.isShip){
+  met = yourStars >= needed;
+  gap = met ? 0 : Math.max(0, needed - yourStars);
+  totalNeeded += needed;
+  totalHave += Math.min(yourStars, needed);
+  // For ships: set yourRelic to -1 if not owned, 0 if owned (gear doesn't apply)
+  totalGap+=gap;
+  return{...r,yourStars,met,gap,yourRelic:entry?0:-1,yourGear:0};
+}else if(needed===0){
+  // Character gear-only requirement (G12+)
+  met=entry&&(entry.gear>=12||entry.relic>=1);
+  gap=met?0:1;
+  totalNeeded+=1;
+  if(met)totalHave+=1;
+}else{
+  // Character relic requirement
+  met=yourRelic>=needed;
+  gap=met?0:Math.max(0,needed-Math.max(0,yourRelic));
+  totalNeeded+=needed;
+  totalHave+=Math.min(yourRelic>=0?yourRelic:0,needed);
+}
+totalGap+=gap;
+return{...r,yourRelic,yourGear,yourStars,met,gap};
+});
+
+// Log debug info for first few targets
+if (window.debugGapCounter === undefined) window.debugGapCounter = 0;
+if (window.debugGapCounter < 3) {
+  console.log('[DEBUG] computeGap for', debugInfo.target, ':', JSON.stringify(debugInfo.lookups, null, 2));
+  window.debugGapCounter++;
+}
+
+const pct=totalNeeded>0?Math.round((totalHave/totalNeeded)*100):100;
+return{reqs,totalGap,pct};
+}
+
+// ════════════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════════════
+function rp_setFilter(btn,val){
+document.querySelectorAll('.rp-flt').forEach(b=>b.classList.remove('on'));
+btn.classList.add('on');
+rp_filter=val;
+rp_render();
+}
+
+function rp_render(){
+if(!rp_targets.length)return;
+const sort=document.getElementById('rp-sort').value;
+const search=(document.getElementById('rp-search').value||'').toLowerCase();
+
+let debugCount = 0;
+let items=rp_targets.map(t=>{
+const gap=computeGap(t);
+const roi=gap.totalGap===0?(t.score+999):(t.score/gap.totalGap);
+// Debug first 5 items to show ROI calculation
+if (debugCount < 5) {
+  console.log(`[DEBUG ROI] ${t.name}: score=${t.score}, gap=${gap.totalGap}, pct=${gap.pct}%, ROI=${roi.toFixed(2)}`);
+  debugCount++;
+}
+return{...t,gap,roi};
+});
+
+// Filter
+items=items.filter(it=>{
+if(rp_filter==='gl')return it.type==='gl';
+if(rp_filter==='jg')return it.type==='jg';
+if(rp_filter==='incomplete')return it.gap.pct<100;
+if(rp_filter==='ready')return it.gap.pct===100;
+return true;
+});
+if(search)items=items.filter(it=>it.name.toLowerCase().includes(search)||it.unlockName.toLowerCase().includes(search));
+
+// Sort
+items.sort((a,b)=>{
+if(sort==='score')return b.score-a.score;
+if(sort==='pct')return b.gap.pct-a.gap.pct;
+if(sort==='gap')return a.gap.totalGap-b.gap.totalGap;
+if(sort==='name')return a.name.localeCompare(b.name);
+return b.roi-a.roi;
+});
+
+// Summary bar
+const allGaps=rp_targets.map(t=>computeGap(t));
+const ready=allGaps.filter(g=>g.pct===100).length;
+const close=allGaps.filter(g=>g.pct>=75&&g.pct<100).length;
+const total=rp_targets.length;
+document.getElementById('rp-stats-bar').innerHTML=` <div class='rp-stat'><div class='sv'>${total}</div><div class='sl'>Unlocks Tracked</div></div> <div class='rp-stat'><div class='sv' style='color:#33ee66'>${ready}</div><div class='sl'>Ready Now</div></div> <div class='rp-stat'><div class='sv' style='color:#f5c842'>${close}</div><div class='sl'>75%+ Done</div></div> <div class='rp-stat'><div class='sv' style='color:#ff5555'>${total-ready-close}</div><div class='sl'>Far Away</div></div> <div class='rp-stat'><div class='sv'>${Object.keys(rp_roster).length}</div><div class='sl'>Chars Owned</div></div>`;
+
+// Cards
+const grid=document.getElementById('rp-grid');
+if(!items.length){grid.innerHTML='<div style="color:#444;padding:40px;text-align:center">No unlocks match your filters.</div>';return;}
+
+grid.innerHTML=items.map(it=>{
+const{gap,roi}=it;
+const pct=gap.pct;
+const pctCls=pct===100?'done':pct>=60?'near':'far';
+const typeLbl=it.type==='gl'
+?'<span class="uc-type gl">GL</span>'
+:'<span class="uc-type jg">Journey</span>';
+const roiStr=gap.pct===100?'✅ Ready':roi.toFixed(1);
+const roiColor=pct===100?'#33ee66':pct>=60?'#f5c842':'#ff5555';
+
+const reqRows=gap.reqs.map(r=>{
+  const cls=r.met?'met':(r.yourRelic>=0&&r.gap<=2)?'close':'missing';
+  const icon=r.met?'✅':r.yourRelic>=0?'🔶':'❌';
+  
+  // Ships only have stars, no gear/relic
+  let yourStr;
+  if(r.isShip){
+    yourStr = r.yourRelic<0 ? 'Not owned' : `${r.yourStars}★`;
+  }else{
+    // Characters: show stars + gear/relic
+    if(r.yourRelic<0){
+      yourStr='Not owned';
+    }else if(r.neededRelic===0){
+      // Gear-only requirement
+      yourStr=`${r.yourStars}★ G${r.yourGear}`;
+    }else if(r.yourRelic>=1){
+      // Has relics
+      yourStr=`${r.yourStars}★ R${r.yourRelic}`;
+    }else{
+      // No relics yet - show gear level
+      yourStr=r.yourGear>=1?`${r.yourStars}★ G${r.yourGear}`:`${r.yourStars}★ R0`;
+    }
+  }
+  
+  // Ships need stars, characters need 7★ + gear/relic
+  const needStr = r.isShip 
+    ? `${r.neededRelic}★` 
+    : (r.neededRelic===0 ? '7★ G12+' : '7★ R'+r.neededRelic);
+  return`<div class='req-row'>
+    <span class='req-icon'>${icon}</span>
+    <span class='req-name'>${r.name}</span>
+    <span class='req-yours ${cls}'>${yourStr}</span>
+    <span class='req-need'>${r.met?'':'\u2192 '+needStr}</span>
+  </div>`;
+}).join('');
+
+return`<div class='unlock-card'>
+  <div class='uc-head' onclick='toggleCard("${it.id}")'>
+    ${typeLbl}
+    <h3>${it.name}</h3>
+    <div class='uc-roi'>ROI&nbsp;<span style='color:${roiColor}'>${roiStr}</span></div>
+    <div class='uc-score'>${it.score}<span> pts</span></div>
+  </div>
+  <div class='uc-prog'>
+    <div class='prog-bar-wrap'><div class='prog-bar ${pctCls}' style='width:${Math.max(2,pct)}%'></div></div>
+    <div class='prog-meta ${pctCls}'>
+      <span class='pct'>${pct}% complete</span>
+      <span>${gap.totalGap===0?'All requirements met!':gap.totalGap+' relic levels remaining'}</span>
+    </div>
+  </div>
+  <div class='uc-reqs' id='reqs-${it.id}'>${reqRows}</div>
+  <div class='uc-toggle' onclick='toggleCard("${it.id}")'>&#9660; Show ${gap.reqs.length} requirements</div>
+</div>`;
+
+}).join('');
+}
+
+function toggleCard(id){
+const el=document.getElementById('reqs-'+id);
+if(!el)return;
+el.classList.toggle('open');
+const tog=el.nextElementSibling;
+if(tog)tog.textContent=el.classList.contains('open')
+?'\u25b2 Hide requirements'
+:'\u25bc Show '+el.children.length+' requirements';
+}
+
+
+// Defer ally-code listener until DOM is fully loaded
+(function(){
+const ac = document.getElementById('ally-code');
+if(ac) ac.addEventListener('keydown',e=>{ if(e.key==='Enter')fetchRoster(); });
+// Auto-load cached roster if available
+setTimeout(() => { loadCachedRoster(); }, 100);
+})();
+
+</script>
+
+</div><!-- /panel-scoring -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     ROSTER PLANNER PANEL
+════════════════════════════════════════════════════════════ -->
+
+<div id="panel-roster">
+  <!-- Hero / input -->
+  <div class="rp-hero">
+    <div style="flex:1;min-width:260px;">
+      <h2>🔭 Roster Planner</h2>
+      <p>Enter your ally code to see how far you are from every GL &amp; Journey Guide unlock — ranked by crystal value per relic invested.</p>
+      <div id="cache-info" style="margin-top:8px;font-size:11px;"></div>
+    </div>
+    <div>
+      <div class="ally-row">
+        <input class="ally-input" id="ally-code" placeholder="Ally code (no dashes)" maxlength="12" type="text">
+        <button class="ally-btn" id="ally-fetch-btn" onclick="fetchRoster()">Fetch Roster</button>
+        <span class="rp-status" id="ally-status"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- placeholder shown before any fetch -->
+
+  <div id="rp-placeholder" class="rp-placeholder">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <p>Enter your ally code above to load your roster and see your unlock progress.</p>
+  </div>
+
+  <!-- summary stats (hidden until loaded) -->
+
+  <div id="rp-summary" style="display:none">
+    <div class="rp-summary" id="rp-stats-bar"></div>
+
+<!-- filter + sort bar -->
+<div class="rp-filters">
+  <span class="cl">Show:</span>
+  <button class="rp-flt on" data-rf="all" onclick="rp_setFilter(this,'all')">All</button>
+  <button class="rp-flt" data-rf="gl" onclick="rp_setFilter(this,'gl')">GL Unlocks</button>
+  <button class="rp-flt" data-rf="jg" onclick="rp_setFilter(this,'jg')">Journey Guide</button>
+  <button class="rp-flt" data-rf="incomplete" onclick="rp_setFilter(this,'incomplete')">Incomplete</button>
+  <button class="rp-flt" data-rf="ready" onclick="rp_setFilter(this,'ready')">Ready Now ✅</button>
+</div>
+<div class="rp-sortbar">
+  <span class="cl" style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.5px;">Sort:</span>
+  <select id="rp-sort" onchange="rp_render()">
+    <option value="pct" selected>Closest (% done)</option>
+    <option value="roi">Best ROI (Score ÷ Gap)</option>
+    <option value="score">Highest Score</option>
+    <option value="gap">Fewest Relics Needed</option>
+    <option value="name">Name A–Z</option>
+  </select>
+  <input type="text" id="rp-search" placeholder="Search unlocks..." oninput="rp_render()">
+</div>
+
+<!-- cards grid -->
+<div class="unlock-grid" id="rp-grid"></div>
+
+  </div>
+</div>
+
+  </div>
+</div>
+
+</body>
+</html>
