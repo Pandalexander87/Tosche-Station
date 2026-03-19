@@ -172,8 +172,7 @@ td{padding:8px 10px;vertical-align:middle;color:#ccc}
 
 footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:8px 16px;display:flex;flex-wrap:wrap;gap:5px 16px;font-size:10px;color:#444}
 
-/* ═══════ TABS ═══════ (HIDDEN) */
-.tab-nav{display:none !important;}
+/* ═══════ TABS ═══════ */
 
 .tab-nav{display:flex;gap:0;background:#0a0a0a;border-bottom:2px solid #1e1e1e;padding:0 16px;}
 
@@ -189,9 +188,123 @@ transition:color .2s,border-color .2s;text-transform:uppercase;}
 
 /* ═══════ ROSTER PANEL ═══════ */
 
-#panel-roster{display:block !important;padding:16px;}
+#panel-scoring{display:none;}
+#panel-roster{display:block;padding:16px;}
+#panel-guide{display:none;padding:0;}
 
-#panel-scoring{display:none !important;}
+
+/* ═══════ PLAYER GUIDE TAB ═══════ */
+.pg-hero{
+background:linear-gradient(135deg,#0a0a0a 0%,#0d1a0d 40%,#0a100a 100%);
+border-bottom:1px solid #1a2a1a;
+padding:32px 24px 24px;
+position:relative;overflow:hidden;
+}
+.pg-hero::before{
+content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+background:radial-gradient(ellipse at 20% 50%,#f5c84208 0%,transparent 60%),
+radial-gradient(ellipse at 80% 20%,#22cc7708 0%,transparent 50%);
+pointer-events:none;
+}
+.pg-hero h1{
+font-family:'Orbitron',sans-serif;
+font-size:clamp(16px,2.5vw,26px);
+color:#f5c842;letter-spacing:3px;margin-bottom:6px;
+}
+.pg-hero p{color:#555;font-size:12px;max-width:600px;line-height:1.7;}
+.pg-gp-bar{
+display:flex;gap:0;margin-top:20px;
+border:1px solid #222;border-radius:6px;overflow:hidden;max-width:500px;
+}
+.pg-gp-btn{
+flex:1;padding:10px 8px;background:#111;border:none;
+color:#444;font-size:11px;font-weight:700;cursor:pointer;
+font-family:'Inter',sans-serif;text-transform:uppercase;letter-spacing:.5px;
+border-right:1px solid #222;transition:all .15s;line-height:1.5;
+}
+.pg-gp-btn:last-child{border-right:none;}
+.pg-gp-btn:hover{background:#1a1a1a;color:#888;}
+.pg-gp-btn.on.beginner{background:#0d2a0d;color:#33ee66;border-bottom:2px solid #33ee66;}
+.pg-gp-btn.on.mid{background:#2a2000;color:#f5c842;border-bottom:2px solid #f5c842;}
+.pg-gp-btn.on.end{background:#1a0d2a;color:#cc66ff;border-bottom:2px solid #cc66ff;}
+.pg-body{padding:24px;display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start;}
+@media(max-width:800px){.pg-body{grid-template-columns:1fr;}}
+.pg-sidebar{display:flex;flex-direction:column;gap:12px;}
+.pg-phase-card{background:#0e0e0e;border:1px solid #1e1e1e;border-radius:10px;overflow:hidden;}
+.pg-phase-card.active.beginner{border-color:#33ee6644;}
+.pg-phase-card.active.mid{border-color:#f5c84244;}
+.pg-phase-card.active.end{border-color:#cc66ff44;}
+.pg-phase-head{padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.pg-phase-icon{font-size:20px;}
+.pg-phase-title{flex:1;}
+.pg-phase-title h3{font-size:13px;font-weight:700;color:#eee;margin:0 0 2px;}
+.pg-phase-title p{font-size:10px;color:#444;margin:0;}
+.pg-phase-gp{font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;padding:3px 7px;border-radius:3px;white-space:nowrap;}
+.beginner .pg-phase-gp{background:#0d2a0d;color:#33ee66;}
+.mid .pg-phase-gp{background:#2a2000;color:#f5c842;}
+.end .pg-phase-gp{background:#1a0d2a;color:#cc66ff;}
+.pg-phase-stats{padding:8px 14px 12px;display:flex;gap:12px;flex-wrap:wrap;border-top:1px solid #111;}
+.pg-pstat{text-align:center;}
+.pg-pstat .v{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;}
+.pg-pstat .l{font-size:9px;color:#444;text-transform:uppercase;letter-spacing:.5px;margin-top:1px;}
+.beginner .pg-pstat .v{color:#33ee66;}
+.mid .pg-pstat .v{color:#f5c842;}
+.end .pg-pstat .v{color:#cc66ff;}
+.pg-main{display:flex;flex-direction:column;gap:16px;}
+.pg-path{background:#0e0e0e;border:1px solid #1e1e1e;border-radius:10px;overflow:hidden;}
+.pg-path-head{padding:14px 16px;border-bottom:1px solid #111;display:flex;align-items:center;gap:12px;}
+.pg-path-head h2{margin:0;font-size:15px;font-weight:700;color:#eee;flex:1;}
+.pg-path-roi{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;padding:4px 10px;border-radius:4px;}
+.roi-s{background:#0d0022;color:#cc44ff;border:1px solid #cc44ff44;}
+.roi-a{background:#0d0d00;color:#f5c842;border:1px solid #f5c84244;}
+.roi-b{background:#00080d;color:#0088dd;border:1px solid #0088dd44;}
+.pg-path-body{padding:14px 16px;display:flex;flex-direction:column;gap:12px;}
+.pg-why{font-size:11px;color:#666;line-height:1.7;padding:10px 12px;background:#080808;border-radius:6px;border-left:2px solid #222;}
+.pg-unlocks{display:flex;flex-direction:column;gap:6px;}
+.pg-unlock-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#111;border-radius:6px;border:1px solid #1a1a1a;}
+.pg-unlock-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0;}
+.pg-unlock-name{flex:1;font-size:12px;font-weight:700;color:#ddd;}
+.pg-unlock-type{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+.ut-gl{background:#331a00;color:#f5c842;}
+.ut-jg{background:#001133;color:#4488ff;}
+.ut-cap{background:#001515;color:#00bbaa;}
+.ut-leg{background:#1a0033;color:#cc66ff;}
+.pg-farms{display:flex;flex-direction:column;gap:0;}
+.pg-farm-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #111;}
+.pg-farm-item:last-child{border-bottom:none;}
+.pg-farm-num{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;color:#333;min-width:22px;padding-top:2px;}
+.pg-farm-info{flex:1;}
+.pg-farm-name{font-size:12px;font-weight:700;color:#ccc;margin-bottom:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.pg-farm-reason{font-size:10px;color:#555;line-height:1.5;}
+.pg-farm-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
+.pg-farm-tag{font-size:9px;padding:1px 5px;border-radius:2px;font-weight:700;}
+.ft-gl{background:#331a00;color:#f5c842;}
+.ft-jg{background:#001133;color:#4488ff;}
+.ft-cap{background:#001515;color:#00bbaa;}
+.ft-free{background:#001a33;color:#44aaff;}
+.ft-ship{background:#000d1a;color:#4488ff;}
+.ft-warn{background:#2a0a00;color:#ff6644;}
+.pg-free-badge{font-size:8px;font-weight:800;background:#0055aa;color:#aaddff;padding:1px 5px;border-radius:2px;letter-spacing:.3px;}
+.pg-roi-box{background:#080808;border:1px solid #1a1a1a;border-radius:8px;padding:12px 14px;}
+.pg-roi-box h4{font-size:10px;color:#444;text-transform:uppercase;letter-spacing:.8px;margin:0 0 8px;}
+.pg-roi-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.pg-roi-bar-wrap{flex:1;height:4px;background:#111;border-radius:2px;overflow:hidden;}
+.pg-roi-bar{height:100%;border-radius:2px;}
+.pg-roi-label{font-size:10px;color:#888;min-width:140px;}
+.pg-roi-val{font-size:10px;font-weight:700;min-width:36px;text-align:right;}
+.pg-overlap{display:flex;flex-wrap:wrap;gap:5px;padding:6px 0 4px;}
+.pg-overlap-char{font-size:10px;padding:3px 8px;border-radius:4px;background:#0d1a0d;color:#88cc88;border:1px solid #1e3e1e;white-space:nowrap;}
+.pg-overlap-char.hot{background:#1a1000;color:#f5c842;border-color:#3a2800;}
+.pg-overlap-char.free{background:#001a33;color:#44aaff;border-color:#003366;}
+.pg-section-label{font-size:9px;font-weight:700;color:#333;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.pg-callout{display:flex;gap:10px;align-items:flex-start;background:#0a0f0a;border:1px solid #1e2e1e;border-radius:8px;padding:12px 14px;}
+.pg-callout-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.pg-callout-text{font-size:11px;color:#666;line-height:1.6;}
+.pg-callout-text strong{color:#33ee66;}
+.pg-throughline{background:linear-gradient(135deg,#0a100a,#080d08);border:1px solid #1e2e1e;border-radius:10px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start;}
+.pg-throughline-icon{font-size:24px;flex-shrink:0;}
+.pg-throughline-text h3{font-size:13px;color:#33ee66;font-weight:700;margin:0 0 6px;}
+.pg-throughline-text p{font-size:11px;color:#555;line-height:1.7;margin:0;}
 
 .rp-hero{background:linear-gradient(135deg,#0d1117 0%,#111820 100%);
 
@@ -379,9 +492,8 @@ padding:10px 16px;text-align:center;min-width:90px;}
 
 <div class="tab-nav">
 
-  <button class="tab-btn" id="tbtn-scoring" onclick="switchTab('scoring')">⚡ Tosche Station</button>
-
   <button class="tab-btn on" id="tbtn-roster" onclick="switchTab('roster')">🔭 Roster Planner</button>
+  <button class="tab-btn" id="tbtn-guide" onclick="switchTab('guide')">📖 Player Guide</button>
 
 </div>
 
@@ -4451,7 +4563,7 @@ render();
 
 function switchTab(tab) {
 
-  ['scoring','roster'].forEach(t => {
+  ['scoring','roster','guide'].forEach(t => {
 
     const p = document.getElementById('panel-'+t);
 
@@ -6388,6 +6500,467 @@ setTimeout(() => { loadCachedRoster(); }, 100);
 
 </div>
 
+<!-- ═══════════════════════════════════════════════════════════
+     PLAYER GUIDE PANEL
+════════════════════════════════════════════════════════════ -->
+
+<div id="panel-guide">
+  <div class="pg-hero">
+    <h1>📖 NEW PLAYER ROADMAP</h1>
+    <p>From the data, this  path from zero to end-game, ranked by ROI — crystals unlocked per relic invested is the best way to go. Every recommendation is driven by character overlap across multiple GLs, Journey Guide events, capital ships, and raid eligibility and my own personal bias. You don’t have to follow this, it’s just a suggestion. Have fun.</p>
+    <div class="pg-gp-bar">
+      <button class="pg-gp-btn on beginner" onclick="pgSetPhase('beginner',this)">🟢 Beginner<br><span style="font-size:9px;opacity:.6">0 – 4M GP</span></button>
+      <button class="pg-gp-btn mid" onclick="pgSetPhase('mid',this)">🟡 Mid Game<br><span style="font-size:9px;opacity:.6">4 – 12M GP</span></button>
+      <button class="pg-gp-btn end" onclick="pgSetPhase('end',this)">🟣 End Game<br><span style="font-size:9px;opacity:.6">12M+ GP</span></button>
+    </div>
+  </div>
+  <div class="pg-body">
+    <div class="pg-sidebar" id="pg-sidebar"></div>
+    <div class="pg-main" id="pg-main"></div>
+  </div>
+</div>
+
+<script>
+const PG_PHASES = {
+  beginner: {
+    label:"Beginner", gp:"0 – 4M GP", icon:"🟢", cls:"beginner",
+    stats:[{v:"1–2",l:"Target GLs"},{v:"3",l:"Cap Ships"},{v:"~15",l:"Key Farms"}],
+    summary:"The Skywalker Triangle dominates this phase. The goal is your first GL — either Jabba or GLO — while simultaneously building the Executor fleet and unlocking C-3PO and Chewbacca legendaries. The LST anniversary quest removes most shard farming from this phase.",
+    roiPrinciple:"Han Solo, Fennec and Boba feed <strong>three GLs and two capital ships</strong> at the same time — the highest overlap of any beginner farm in the game.",
+    paths:[
+      {
+        name:"The Skywalker Triangle", icon:"⭐", roi:"S",
+        why:"The highest-overlap starting path in the game. Jabba, GLO and JML share an enormous character pool — farming one faction directly feeds two or three GLs simultaneously. The Executor and Profundity capital ships are reachable as natural byproducts. This is not one path — it is three GLs and two capital ships for the price of one sustained farm effort.",
+        unlocks:[
+          {icon:"👑",name:"Jabba the Hutt (GL)",type:"gl"},
+          {icon:"👑",name:"GL Leia / GLO (GL)",type:"gl"},
+          {icon:"🗺",name:"Jedi Knight Luke Skywalker",type:"jg"},
+          {icon:"🗺",name:"C-3PO Legendary",type:"leg"},
+          {icon:"🗺",name:"Chewbacca Legendary",type:"leg"},
+          {icon:"🚀",name:"Executor Capital Ship",type:"cap"},
+        ],
+        farms:[
+          {n:1,name:"Han Solo",free:false,
+           reason:"NOT given free. Required for JML R6, Jabba R8, and the entire Rebel core. The single most important shard farm of the beginner phase — do not delay this under any circumstances.",
+           tags:["gl","gl"],labels:["Jabba req R8","JML req R6"]},
+          {n:2,name:"Boba Fett",free:"Chain 4",
+           reason:"Given free at Relic 0 — zero shard farming needed. Required for Jabba GL at R7, Executor crew, and Chewbacca JG. Triple payoff from relic materials alone.",
+           tags:["gl","cap","free"],labels:["Jabba req R7","Executor crew","LST ✓"]},
+          {n:3,name:"Fennec Shand",free:"Chain 4",
+           reason:"Given free at Relic 0. Required for BOTH Jabba R7 AND GLO R7 — one of only two characters that simultaneously feeds two different GL requirements. Relic immediately.",
+           tags:["gl","gl","free"],labels:["Jabba req R7","GLO req R7","LST ✓"]},
+          {n:4,name:"Commander Luke Skywalker",free:"Chain 6",
+           reason:"Given free at Relic 0. Required for JKL journey event and GLO GL at R7. JKL must be completed before Jabba GL is accessible — start relicing immediately.",
+           tags:["jg","gl","free"],labels:["JKL event","GLO req R7","LST ✓"]},
+          {n:5,name:"Bossk + Dengar + IG-88",free:false,
+           reason:"NOT given free. All three are Executor crew AND Chewbacca JG requirements. Chewbacca JG needs any 5 Bounty Hunters — your free Boba and Fennec count, so you only need 3 more from this group.",
+           tags:["cap","jg"],labels:["Executor crew","Chewie JG"]},
+          {n:6,name:"Wicket + Chief Chirpa + Princess Kneesaa",free:false,
+           reason:"NOT given free. The Ewok core unlocks C-3PO legendary (any 5 Ewoks) and feeds GLO requirements. Farm all three simultaneously from the same node.",
+           tags:["leg","gl"],labels:["C-3PO unlock","GLO req"]},
+          {n:7,name:"R2-D2",free:"Chain 3-A",
+           reason:"Given free at Relic 0. Required for GLO at R8 — one of the highest relic floors in any GL. Also unlocks the Empire legendary event using characters already owned. No shard farming needed.",
+           tags:["gl","free"],labels:["GLO req R8","LST ✓"]},
+          {n:8,name:"Rebel Officer Leia + Captain Han Solo",free:false,
+           reason:"NOT given free. Both are JKL event requirements and GLO requirements. Cheap, fast farms from Cantina and guild store.",
+           tags:["jg","gl"],labels:["JKL req","GLO req"]},
+          {n:9,name:"Ahsoka Tano (Snips)",free:"Chain 2-A",
+           reason:"Given free — but AT GL requires her at R9. That is 9 relic levels of materials with zero shard farming. Start relicing on day one and never stop. She will not be ready until end-game but the grind must begin here.",
+           tags:["warn","free"],labels:["AT req R9 ⚠","Start NOW"]},
+        ],
+        overlap:{
+          label:"Highest overlap characters — farm these first",
+          chars:[
+            {n:"Han Solo",hot:true},{n:"Boba Fett",hot:true,free:true},
+            {n:"Fennec Shand",hot:true,free:true},{n:"CLS",hot:true,free:true},
+            {n:"C-3PO",hot:true},{n:"Lando Calrissian",hot:true},
+            {n:"Chewbacca",free:true},{n:"R2-D2",free:true},
+            {n:"Rebel Officer Leia"},{n:"Bossk"},{n:"Boushh (Leia)"},
+            {n:"Wicket"},{n:"Princess Kneesaa"},{n:"Admiral Ackbar",free:true},
+          ]
+        },
+        roiBreakdown:[
+          {label:"GLs accessible",val:3,max:3,color:"#cc44ff"},
+          {label:"Capital ships",val:2,max:3,color:"#00bbaa"},
+          {label:"Legendary unlocks",val:2,max:4,color:"#4488ff"},
+          {label:"LST free characters",val:8,max:10,color:"#44aaff"},
+        ]
+      }
+    ]
+  },
+  mid: {
+    label:"Mid Game", gp:"4 – 12M GP", icon:"🟡", cls:"mid",
+    stats:[{v:"3–5",l:"Target GLs"},{v:"5+",l:"Cap Ships"},{v:"~25",l:"Key Farms"}],
+    summary:"Three parallel tracks run simultaneously. Empire/SEE comes first — most characters are adjacent to triangle farms already done. JMK runs in parallel anchored by General Kenobi and General Skywalker. JML completes here using Rebel characters already farmed. Profundity becomes accessible as a byproduct. Count Dooku is the single most valuable farm of this entire phase.",
+    roiPrinciple:"Count Dooku and General Skywalker are the two characters that bridge <strong>every mid-game path into end-game</strong> — farming both means three future GLs cost significantly less.",
+    paths:[
+      {
+        name:"Empire / SEE — First Mid-Game GL", icon:"⚡", roi:"A",
+        why:"The natural second GL path because most characters are adjacent to triangle farms already done. Darth Vader was already needed for the JKL event at R3. Emperor Palpatine is free via LST. Grand Admiral Thrawn unlocks the Chimaera capital ship. Phoenix Squadron unlocks two legendaries simultaneously and five of seven members are free via LST chains.",
+        unlocks:[
+          {icon:"👑",name:"Sith Eternal Emperor (GL)",type:"gl"},
+          {icon:"🚀",name:"Chimaera Capital Ship",type:"cap"},
+          {icon:"🚀",name:"Imperial Star Destroyer",type:"cap"},
+          {icon:"🗺",name:"Grand Admiral Thrawn Legendary",type:"leg"},
+          {icon:"🗺",name:"Emperor Palpatine Legendary",type:"leg"},
+        ],
+        farms:[
+          {n:1,name:"Count Dooku",free:false,
+           reason:"The single most valuable farm of the entire mid-game. Required for SEE R6, LV R8, AND Pirate King R8 — three separate GLs from one character. Farming Dooku now means three future GLs cost significantly less when you reach them.",
+           tags:["gl","gl","gl"],labels:["SEE req","LV req","Pirate King req"]},
+          {n:2,name:"Darth Vader",free:false,
+           reason:"Already at R3 from the JKL event. SEE needs him at R7 — only four more relic levels rather than starting from zero. The cheapest high-relic GL requirement in the game given the head start.",
+           tags:["gl"],labels:["SEE req R7"]},
+          {n:3,name:"Emperor Palpatine",free:"Chain 1-C",
+           reason:"Given free at Relic 0. SEE requires him at R7 — zero shard farming. Also needed as a Legendary event unlock using Phoenix already in roster.",
+           tags:["gl","free"],labels:["SEE req R7","LST ✓"]},
+          {n:4,name:"Grand Admiral Thrawn",free:false,
+           reason:"SEE req R6 and Chimaera capital ship captain. Phoenix Squadron (mostly free via LST) unlocks him as a legendary. Also feeds the AT path later. One of the most future-proof farms in the game.",
+           tags:["gl","cap"],labels:["SEE req R6","Chimaera captain"]},
+          {n:5,name:"Phoenix — Kanan + Zeb still needed",free:false,
+           reason:"Hera, Sabine, Ezra, Chopper, Rex all given free via LST. Only Kanan Jarrus and Zeb Orrelios still need shard farming. All six together unlock Thrawn AND Palpatine legendaries simultaneously.",
+           tags:["leg","leg"],labels:["Thrawn unlock","Palp unlock"]},
+        ],
+        overlap:{
+          label:"Key overlap characters",
+          chars:[
+            {n:"Count Dooku",hot:true},{n:"Darth Vader",hot:true},
+            {n:"Emperor Palpatine",free:true},{n:"Grand Admiral Thrawn",hot:true},
+            {n:"Hera Syndulla",free:true},{n:"Ezra Bridger",free:true},
+            {n:"Darth Maul"},{n:"Darth Sidious"},{n:"Grand Moff Tarkin"},
+          ]
+        },
+        roiBreakdown:[
+          {label:"GLs accessible",val:1,max:3,color:"#cc44ff"},
+          {label:"Capital ships",val:2,max:3,color:"#00bbaa"},
+          {label:"Legendary unlocks",val:2,max:4,color:"#4488ff"},
+          {label:"Chars already farmed",val:5,max:8,color:"#f5c842"},
+        ]
+      },
+      {
+        name:"JMK — Parallel Mid-Game GL", icon:"🔵", roi:"A",
+        why:"JMK is the top GAC arena GL. General Kenobi is the single highest ROI character in the mid-game — required for JMK R8, Negotiator capital ship, AND Pirate King R9. General Skywalker hits JMK, LV, AT and Pirate King simultaneously. The clone core and Jedi council build naturally alongside the SEE farms.",
+        unlocks:[
+          {icon:"👑",name:"Jedi Master Kenobi (GL)",type:"gl"},
+          {icon:"🚀",name:"Negotiator Capital Ship",type:"cap"},
+          {icon:"🚀",name:"Endurance Capital Ship",type:"cap"},
+          {icon:"🗺",name:"Padmé Amidala Legendary",type:"leg"},
+          {icon:"🗺",name:"Grand Master Yoda Legendary",type:"leg"},
+        ],
+        farms:[
+          {n:1,name:"General Kenobi",free:false,
+           reason:"JMK req R8, Negotiator captain, and Pirate King req R9. Three major payoffs from one character. The Negotiator is one of the strongest fleet options in the game.",
+           tags:["gl","cap","gl"],labels:["JMK req R8","Negotiator","Pirate King R9"]},
+          {n:2,name:"General Skywalker",free:false,
+           reason:"Required for JMK R8, LV R8, AT R8, and Pirate King R9 — four separate GLs from one character. The highest multi-GL overlap of any character in the entire database. The most future-proof farm in the game.",
+           tags:["gl","gl","gl","gl"],labels:["JMK","LV","AT","Pirate King"]},
+          {n:3,name:"Shaak Ti + Clone Core",free:false,
+           reason:"Shaak Ti is free via LST Chain 2-B. Clone Sergeant Phase I and Cody round out the 501st. The clone team feeds JMK requirements and unlocks Padmé legendary using Separatists already farmed for SEE.",
+           tags:["gl","leg"],labels:["JMK req","Padmé unlock"]},
+          {n:4,name:"Jango Fett",free:false,
+           reason:"JMK req R7 and Krayt Dragon Hunt raid eligibility. A natural extension of the Bounty Hunter core from the triangle phase.",
+           tags:["gl","raid"],labels:["JMK req R7","Krayt Hunt"]},
+        ],
+        overlap:{
+          label:"Key overlap characters",
+          chars:[
+            {n:"General Kenobi",hot:true},{n:"General Skywalker",hot:true},
+            {n:"Shaak Ti",free:true},{n:"Grand Master Yoda",free:true},
+            {n:"Jango Fett"},{n:"Mace Windu",free:true},
+            {n:"Count Dooku",hot:true},{n:"General Grievous"},
+          ]
+        },
+        roiBreakdown:[
+          {label:"GLs accessible",val:1,max:3,color:"#cc44ff"},
+          {label:"Capital ships",val:2,max:3,color:"#00bbaa"},
+          {label:"Multi-GL overlap chars",val:2,max:8,color:"#f5c842"},
+          {label:"Future GL pre-load",val:3,max:4,color:"#33ee66"},
+        ]
+      },
+      {
+        name:"JML + Profundity — Rebel Completion", icon:"🔴", roi:"A",
+        why:"JML uses characters almost entirely already farmed in the triangle phase. Mon Mothma and the Rogue One characters are the only meaningful additions. Profundity becomes accessible as a natural byproduct — a player farming the triangle and JML simultaneously is already building roughly half the Profundity roster without realising it. Wedge and Biggs feed both JML requirements and Profundity ship requirements simultaneously.",
+        unlocks:[
+          {icon:"👑",name:"Jedi Master Luke Skywalker (GL)",type:"gl"},
+          {icon:"🚀",name:"Profundity Capital Ship",type:"cap"},
+          {icon:"🗺",name:"Hermit Yoda Legendary",type:"leg"},
+        ],
+        farms:[
+          {n:1,name:"Mon Mothma",free:false,
+           reason:"JML req R5 and Profundity crew. The primary new farm of the JML path — most other JML requirements are already done from the triangle phase.",
+           tags:["gl","cap"],labels:["JML req R5","Profundity crew"]},
+          {n:2,name:"Admiral Raddus",free:false,
+           reason:"Profundity captain at R9 — the only character in the Profundity requirements that does not overlap with anything else. Start this as a background grind. Everything else in Profundity is already being farmed.",
+           tags:["cap","warn"],labels:["Profundity captain","R9 grind ⚠"]},
+          {n:3,name:"Cassian Andor + Jyn Erso",free:false,
+           reason:"Profundity crew at R8 and R5. Both are natural Rebel additions. Their ships (Cassian's U-wing, Bistan's U-wing) are also Profundity ship requirements.",
+           tags:["cap","ship"],labels:["Profundity crew","Rebel ships"]},
+          {n:4,name:"Wedge + Biggs X-wings",free:false,
+           reason:"Both are JML requirements at R3 AND their X-wings are Profundity ship requirements. One investment feeds both the GL and the capital ship simultaneously.",
+           tags:["gl","cap"],labels:["JML req R3","Profundity ships"]},
+        ],
+        overlap:{
+          label:"Already farmed from the triangle — zero additional cost",
+          chars:[
+            {n:"Han Solo",hot:true},{n:"C-3PO",hot:true},
+            {n:"R2-D2",free:true},{n:"Chewbacca",free:true},
+            {n:"Lando Calrissian",hot:true},{n:"Princess Leia",free:true},
+            {n:"Wedge Antilles"},{n:"Biggs Darklighter"},
+            {n:"Hera Syndulla",free:true},{n:"Mon Mothma"},
+          ]
+        },
+        roiBreakdown:[
+          {label:"Chars already farmed",val:8,max:10,color:"#f5c842"},
+          {label:"Capital ships",val:1,max:3,color:"#00bbaa"},
+          {label:"New farms needed",val:3,max:10,color:"#33ee66"},
+          {label:"Wedge/Biggs dual payoff",val:2,max:2,color:"#cc44ff"},
+        ]
+      }
+    ]
+  },
+  end: {
+    label:"End Game", gp:"12M+ GP", icon:"🟣", cls:"end",
+    stats:[{v:"7–10",l:"Target GLs"},{v:"8+",l:"Cap Ships"},{v:"3",l:"Key Farms"}],
+    summary:"The end-game GL cluster is SLKR, Rey and Pirate King. SLKR comes first — First Order characters are clean isolated farms. Rey second since BB-8 and Rey JT are already done. Pirate King last since almost every requirement is already at the right relic level from previous phases. Leviathan and AT complete here as the long background grinds finally pay off.",
+    roiPrinciple:"Pirate King has the highest effective ROI of any end-game GL — <strong>seven of sixteen requirements are already at the correct relic level</strong> from previous phases. The only new R9 is Hondo himself.",
+    paths:[
+      {
+        name:"SLKR — First End-Game GL", icon:"🔴", roi:"A",
+        why:"SLKR first because the First Order characters are clean isolated farms with no prerequisites from other paths. General Hux unlocks the Finalizer capital ship. SLKR's GAC scores are among the highest in the entire database — top three GLs for offensive power. Emperor Palpatine is already at R7 from the SEE path, removing one requirement entirely.",
+        unlocks:[
+          {icon:"👑",name:"Supreme Leader Kylo Ren (GL)",type:"gl"},
+          {icon:"🚀",name:"Finalizer Capital Ship",type:"cap"},
+        ],
+        farms:[
+          {n:1,name:"Kylo Ren Unmasked",free:false,
+           reason:"SLKR req R7. The anchor of the First Order path and highest GAC offensive First Order character. No overlap with other paths — a dedicated farm but fast from the First Order node.",
+           tags:["gl"],labels:["SLKR req R7"]},
+          {n:2,name:"General Hux",free:false,
+           reason:"SLKR req R5 and Finalizer capital ship captain. Two payoffs from one character.",
+           tags:["gl","cap"],labels:["SLKR req R5","Finalizer captain"]},
+          {n:3,name:"FO Core — Phasma, Executioner, Officer, Stormtrooper",free:false,
+           reason:"All required at R5 — the lowest relic floor of any GL in the game. Fast farms. Emperor Palpatine is also an SLKR requirement and is already at R7 from the SEE path.",
+           tags:["gl"],labels:["SLKR reqs R5"]},
+        ],
+        overlap:{
+          label:"Already done from previous phases",
+          chars:[
+            {n:"Emperor Palpatine",free:true,hot:true},
+            {n:"Veteran Smuggler Han Solo"},{n:"Sith Trooper"},
+            {n:"First Order TIE Pilot"},{n:"First Order SF TIE Pilot"},
+          ]
+        },
+        roiBreakdown:[
+          {label:"GAC offense tier",val:3,max:3,color:"#cc44ff"},
+          {label:"Chars already done",val:4,max:10,color:"#f5c842"},
+          {label:"Capital ships",val:1,max:3,color:"#00bbaa"},
+          {label:"Relic floor (lowest GL)",val:3,max:4,color:"#33ee66"},
+        ]
+      },
+      {
+        name:"Rey GL — Natural SLKR Follow-On", icon:"⚪", roi:"B",
+        why:"Rey second because BB-8 and Rey (Jedi Training) are already unlocked as Journey Guide events from the beginner phase. The remaining Resistance requirements are fast farms at R5. Rey (Scavenger) overlaps with the Pirate King path at R8, creating one final overlap payoff between the last two GLs.",
+        unlocks:[
+          {icon:"👑",name:"Rey (GL)",type:"gl"},
+        ],
+        farms:[
+          {n:1,name:"Rey (Scavenger)",free:false,
+           reason:"Rey GL req R7 and Pirate King req R8. One of the few end-game characters that overlaps across two different GL paths — highest ROI farm of the entire Rey path.",
+           tags:["gl","gl"],labels:["Rey req R7","Pirate King req R8"]},
+          {n:2,name:"Resistance Core — Finn, Poe, Rose, Trooper",free:false,
+           reason:"All required at R5. Fast, accessible farms. BB-8 and Rey JT are already done from Journey Guide events completed in the beginner phase.",
+           tags:["gl"],labels:["Rey reqs R5"]},
+        ],
+        overlap:{
+          label:"Already done from earlier phases",
+          chars:[
+            {n:"BB-8",hot:true},{n:"Rey (Jedi Training)",hot:true},
+            {n:"Veteran Smuggler Chewbacca"},{n:"Amilyn Holdo"},
+            {n:"Resistance Hero Finn"},{n:"Resistance Hero Poe"},
+          ]
+        },
+        roiBreakdown:[
+          {label:"JG chars already unlocked",val:2,max:4,color:"#4488ff"},
+          {label:"Pirate King overlap",val:1,max:2,color:"#cc44ff"},
+          {label:"New farms needed",val:4,max:10,color:"#33ee66"},
+          {label:"GAC defense tier",val:3,max:4,color:"#f5c842"},
+        ]
+      },
+      {
+        name:"Pirate King Hondo — The Free End-Game GL", icon:"🏴", roi:"S",
+        why:"Pirate King has the highest effective ROI of any end-game unlock because nearly every requirement is already at the right relic level from previous phases. General Kenobi R9 done for JMK. General Skywalker R9 done for JMK/LV/AT. Count Dooku R8 done for SEE/LV. Bossk R8 feeds from the triangle. The only genuinely new investments are the Pirate crew and Hondo himself.",
+        unlocks:[
+          {icon:"👑",name:"Pirate King Hondo (GL)",type:"gl"},
+        ],
+        farms:[
+          {n:1,name:"Hondo Ohnaka",free:false,
+           reason:"Pirate King req R9. The only R9 requirement in the path and the only character with no prior overlap. Hondo also qualifies for the Order 66 raid and has Aurodium-tier GAC omicrons — useful before the GL is unlocked.",
+           tags:["gl","warn"],labels:["Pirate King R9","Only new R9"]},
+          {n:2,name:"Pirate Crew — Ithano, Quiggold, Kix, Brutus, Vane, Silvo",free:false,
+           reason:"Required between R3 and R7. All cheap, fast farms from accessible nodes. Captain Ithano is only R3. The entire pirate crew costs less relic investment than a single mid-game GL character.",
+           tags:["gl"],labels:["R3–R7 requirements"]},
+          {n:3,name:"Veteran Smuggler Chewbacca",free:false,
+           reason:"Required at R7 — already farmed for the Rey GL path. Zero additional investment if Rey was completed first.",
+           tags:["gl"],labels:["Already done ✓"]},
+        ],
+        overlap:{
+          label:"Already at required relic level from previous phases",
+          chars:[
+            {n:"General Kenobi",hot:true},{n:"General Skywalker",hot:true},
+            {n:"Count Dooku",hot:true},{n:"Bossk",hot:true},
+            {n:"Chirrut Imwe"},{n:"Ezra Bridger",free:true},
+            {n:"Rey (Scavenger)"},{n:"Vet Smuggler Chewbacca"},
+          ]
+        },
+        roiBreakdown:[
+          {label:"Chars already at req relic",val:7,max:16,color:"#f5c842"},
+          {label:"Genuinely new R9 farms",val:1,max:5,color:"#cc44ff"},
+          {label:"New farms total",val:2,max:10,color:"#33ee66"},
+          {label:"Effective new investment",val:1,max:4,color:"#4488ff"},
+        ]
+      },
+      {
+        name:"AT (Ahsoka) + Leviathan — The Long Games", icon:"🟣", roi:"A",
+        why:"Both AT and Leviathan are end-game unlocks that should have been grinding in the background since the beginner phase. AT is gated entirely by Ahsoka Snips at R9 — no shard farming needed, just nine relic levels of sustained investment. Leviathan requires Darth Revan R9 and Darth Malak R9 following the KOTOR ancient journeys, which complete naturally during the end-game phase.",
+        unlocks:[
+          {icon:"👑",name:"Ahsoka Tano / AT (GL)",type:"gl"},
+          {icon:"🚀",name:"Leviathan Capital Ship",type:"cap"},
+          {icon:"🗺",name:"Grand Inquisitor Legendary",type:"leg"},
+          {icon:"🗺",name:"Baylan Skoll Epic Confrontation",type:"leg"},
+        ],
+        farms:[
+          {n:1,name:"Ahsoka Tano (Snips) to R9",free:"Chain 2-A",
+           reason:"Given free — zero shard farming. But R9 is nine relic levels of materials, making this the single largest relic investment in the game. Should have been started day one. With consistent relicing from beginner phase she should be at R6-R8 by now.",
+           tags:["gl","free","warn"],labels:["AT req R9","No shards needed","Biggest grind ⚠"]},
+          {n:2,name:"Inquisitorius — all 5",free:"Chain 3",
+           reason:"Second Sister, Ninth Sister, Fifth Brother, Seventh Sister, Eighth Brother all given free via LST Chain 3. Grand Inquisitor legendary only needs them at R5. One of the cleanest legendary unlocks in the game.",
+           tags:["leg","free"],labels:["Grand Inquisitor","All 5 LST ✓"]},
+          {n:3,name:"Darth Revan + Darth Malak",free:false,
+           reason:"Both required at R9 for Leviathan. KOTOR ancient journeys unlock them via Bastila Shan and the Old Republic team. Once Darth Revan hits R9 the Leviathan becomes accessible — one of the strongest fleet options in end-game.",
+           tags:["cap","warn"],labels:["Leviathan req R9","KOTOR path"]},
+        ],
+        overlap:{
+          label:"AT requirements already farmed",
+          chars:[
+            {n:"General Skywalker",hot:true},{n:"Ahsoka (Snips)",free:true,hot:true},
+            {n:"Ahsoka (Fulcrum)"},{n:"Commander Ahsoka"},
+            {n:"Barriss Offee"},{n:"Plo Koon"},
+            {n:"Grand Admiral Thrawn",hot:true},{n:"Sabine Wren",free:true},
+          ]
+        },
+        roiBreakdown:[
+          {label:"LST free characters",val:6,max:8,color:"#44aaff"},
+          {label:"Chars already farmed",val:4,max:8,color:"#f5c842"},
+          {label:"GAC GL tier (AT)",val:3,max:3,color:"#cc44ff"},
+          {label:"Capital ships",val:1,max:3,color:"#00bbaa"},
+        ]
+      }
+    ]
+  }
+};
+let pg_phase = 'beginner';
+function pgSetPhase(phase, btn) {
+  pg_phase = phase;
+  document.querySelectorAll('.pg-gp-btn').forEach(b => b.classList.remove('on','beginner','mid','end'));
+  btn.classList.add('on', phase);
+  pgRender();
+}
+function pgRender() {
+  const data = PG_PHASES[pg_phase];
+  if (!data) return;
+  document.getElementById('pg-sidebar').innerHTML = `
+    <div class="pg-phase-card active ${data.cls}">
+      <div class="pg-phase-head">
+        <span class="pg-phase-icon">${data.icon}</span>
+        <div class="pg-phase-title">
+          <h3>${data.label}</h3>
+          <p>${data.gp}</p>
+        </div>
+        <span class="pg-phase-gp">${data.stats[0].v} GLs</span>
+      </div>
+      <div class="pg-phase-stats">
+        ${data.stats.map(s=>`<div class="pg-pstat"><div class="v">${s.v}</div><div class="l">${s.l}</div></div>`).join('')}
+      </div>
+    </div>
+    <div class="pg-callout">
+      <span class="pg-callout-icon">💡</span>
+      <div class="pg-callout-text">${data.summary}</div>
+    </div>
+    <div class="pg-throughline">
+      <span class="pg-throughline-icon">📊</span>
+      <div class="pg-throughline-text">
+        <h3>ROI Principle</h3>
+        <p>${data.roiPrinciple}</p>
+      </div>
+    </div>
+  `;
+  document.getElementById('pg-main').innerHTML = data.paths.map(path => {
+    const roiValue = String(path.roi || 'a');
+    const roiClass = `roi-${roiValue.toLowerCase()}`;
+    const roiLabel = roiValue==='S'?'S-TIER ROI':roiValue==='A'?'A-TIER ROI':'B-TIER ROI';
+    const unlockHTML = path.unlocks.map(u=>`
+      <div class="pg-unlock-row">
+        <span class="pg-unlock-icon">${u.icon}</span>
+        <span class="pg-unlock-name">${u.name}</span>
+        <span class="pg-unlock-type ut-${u.type}">${u.type.toUpperCase()}</span>
+      </div>`).join('');
+    const farmHTML = path.farms.map(f=>{
+      const freeBadge = f.free ? `<span class="pg-free-badge">FREE ${f.free}</span>` : '';
+      const tagsHTML = f.tags.map((t,i)=>{
+        const cls = t==='gl'?'ft-gl':t==='jg'?'ft-jg':t==='cap'?'ft-cap':t==='free'?'ft-free':t==='ship'?'ft-ship':t==='raid'?'ft-jg':'ft-warn';
+        return `<span class="pg-farm-tag ${cls}">${f.labels[i]}</span>`;
+      }).join('');
+      return `
+        <div class="pg-farm-item">
+          <span class="pg-farm-num">${f.n}</span>
+          <div class="pg-farm-info">
+            <div class="pg-farm-name">${f.name} ${freeBadge}</div>
+            <div class="pg-farm-reason">${f.reason}</div>
+            <div class="pg-farm-tags">${tagsHTML}</div>
+          </div>
+        </div>`;
+    }).join('');
+    const overlapHTML = path.overlap.chars.map(c=>{
+      const cls = c.free?'free':c.hot?'hot':'';
+      return `<span class="pg-overlap-char ${cls}">${c.n}</span>`;
+    }).join('');
+    const roiHTML = (path.roiBreakdown || []).map(r=>{
+      const pct = Math.round((r.val/r.max)*100);
+      return `
+        <div class="pg-roi-row">
+          <span class="pg-roi-label">${r.label}</span>
+          <div class="pg-roi-bar-wrap"><div class="pg-roi-bar" style="width:${pct}%;background:${r.color}"></div></div>
+          <span class="pg-roi-val" style="color:${r.color}">${r.val}/${r.max}</span>
+        </div>`;
+    }).join('');
+    return `
+      <div class="pg-path">
+        <div class="pg-path-head">
+          <span style="font-size:20px">${path.icon}</span>
+          <h2>${path.name}</h2>
+          <span class="pg-path-roi ${roiClass}">${roiLabel}</span>
+        </div>
+        <div class="pg-path-body">
+          <div class="pg-why">${path.why}</div>
+          <div class="pg-section-label">Unlocks This Path</div>
+          <div class="pg-unlocks">${unlockHTML}</div>
+          <div class="pg-section-label">Priority Farm Order</div>
+          <div class="pg-farms">${farmHTML}</div>
+          <div class="pg-section-label">🔗 ${path.overlap.label}</div>
+          <div class="pg-overlap">${overlapHTML}</div>
+          <div class="pg-roi-box">
+            <h4>ROI Breakdown</h4>
+            ${roiHTML}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+pgRender();
+</script>
+
+
 </body>
 
 </html>
+
