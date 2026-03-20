@@ -5682,19 +5682,19 @@ async function fetchRoster(){
 
   try{
 
-    // Use CORS proxy to bypass browser restrictions
+    const workerUrl = 'https://tosche-station-api.alexholland1987.workers.dev/?allycode=' + raw;
 
-    const apiUrl = 'https://swgoh.gg/api/player/'+raw+'/';
-
-    const proxyUrl = 'https://api.allorigins.win/raw?url=';
-
-    const resp=await fetch(proxyUrl + encodeURIComponent(apiUrl));
+    const resp=await fetch(workerUrl);
 
     if(!resp.ok)throw new Error('HTTP '+resp.status);
 
     const data=await resp.json();
 
+    if(data.error)throw new Error(data.error);
+
     processRoster(data, raw);
+
+    setStatus('Roster loaded successfully!','success');
 
   }catch(e){
 
@@ -5705,6 +5705,8 @@ async function fetchRoster(){
     showCORSHelper(raw);
 
   }finally{btn.disabled=false;}
+
+}
 
 }
 
