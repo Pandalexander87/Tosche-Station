@@ -6098,24 +6098,35 @@ if(r.isShip){
 
 }else{
 
-  // Character relic requirement
+   // Character relic requirement
 
   met=yourRelic>=needed;
 
   gap=met?0:Math.max(0,needed-Math.max(0,yourRelic));
 
-  totalNeeded+=needed;
+  // Full journey: G1→G13 (13 gear) + R0→R5 (relic levels)
 
-  totalHave+=Math.min(yourRelic>=0?yourRelic:0,needed);
+  // For R5: 13 gear + 5 relic = 18 total checkpoints
+
+  // Character at G8: 8/18 = 44%, at G13/R0: 13/18 = 72%, at R3: 16/18 = 89%
+
+  totalNeeded += 13 + needed;
+
+  if(yourRelic >= 0) {
+
+    totalHave += yourGear + yourRelic;
+
+  } else {
+
+    totalHave += 0; // Not owned
+
+  }
 
 }
-
+  
 totalGap+=gap;
-
 return{...r,yourRelic,yourGear,yourStars,met,gap};
-
-});
-
+  
 // Log debug info for first few targets
 
 if (window.debugGapCounter === undefined) window.debugGapCounter = 0;
