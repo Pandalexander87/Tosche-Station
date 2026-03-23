@@ -6098,8 +6098,13 @@ if(r.isShip){
   // Character relic requirement
   met=yourRelic>=needed;
   gap=met?0:Math.max(0,needed-Math.max(0,yourRelic));
-  totalNeeded+=needed;
-  totalHave+=Math.min(yourRelic>=0?yourRelic:0,needed);
+  // Full journey: G1→G13 (13 gear) + R0→R5 (relic levels)
+  totalNeeded += 13 + needed;
+  if(yourRelic >= 0) {
+    totalHave += Math.min(yourGear, 13) + Math.min(yourRelic, needed);
+  } else {
+    totalHave += 0; // Not owned
+  }
 }
 totalGap+=gap;
 return{...r,yourRelic,yourGear,yourStars,met,gap};
