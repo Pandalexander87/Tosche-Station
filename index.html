@@ -5208,15 +5208,12 @@ function parseRelicNeeded(label){
 
   if (shipMatch) return {needed: parseInt(shipMatch[1]), isShip: true};
 
-  
-
   // Check for character relic requirement (R prefix)
 
   const relicMatch = label.match(/R(\d+)/);
 
   if (relicMatch) return {needed: parseInt(relicMatch[1]), isShip: false};
 
-  
 
   // Default: gear-only requirement (no relic/ship stars specified)
 
@@ -6126,6 +6123,8 @@ if(r.isShip){
   
 totalGap+=gap;
 return{...r,yourRelic,yourGear,yourStars,met,gap};
+
+  });
   
 // Log debug info for first few targets
 
